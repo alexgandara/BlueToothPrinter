@@ -1,0 +1,147 @@
+package global.factura.qrpos;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import zj.com.cn.bluetooth.sdk.R;
+
+public class init_alfilPOS  extends Activity {
+
+    ListView lista;
+
+    Button Agragar_Documento;
+
+    connectionDB db;
+    List<String> item = null;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Set up the window layout
+        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+        setContentView(R.layout.device_list_doctos);
+       getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+                R.layout.custom_title);
+
+
+        lista = (ListView) findViewById(R.id.listView_Lista);
+
+        showNotes();
+
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                int _id= Integer.parseInt(item.get(i).split(" ")[0]);
+                String _naturaleza = item.get(i).split(" ")[1];
+
+
+             //   if (_naturaleza.equals("01")) {
+                    Intent intent = new Intent(init_alfilPOS.this,Modificar2.class);
+                    intent.putExtra("id",_id);
+                    startActivity(intent);
+             //   }
+
+
+       /*         if (_naturaleza.equals("03")) {
+                    Intent intent = new Intent(init_alfilPOS.this,Modificar.class);
+                    intent.putExtra("id",_id);
+                    startActivity(intent);
+                }
+
+                if (_naturaleza.equals("07")) {
+                    Intent intent = new Intent(init_alfilPOS.this,Modificar_Notas.class);
+                    intent.putExtra("id",_id);
+                    startActivity(intent);
+                }
+
+                if (_naturaleza.equals("08")) {
+                    Intent intent = new Intent(init_alfilPOS.this,Modificar_Notas.class);
+                    intent.putExtra("id",_id);
+                    startActivity(intent);
+                }*/
+
+
+
+            }
+        });
+
+
+        Agragar_Documento = (Button) findViewById(R.id.Button_Agregar_Documento);
+
+
+
+
+
+        Agragar_Documento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(init_alfilPOS.this, addDatos.class);
+                startActivity(intent);
+              //  return true;
+
+            }
+        });
+
+    }
+
+
+
+    private void showNotes() {
+
+
+        db = new connectionDB(this);
+        Cursor c = db.getNotes();
+        item = new ArrayList<String>();
+        String serie = "",  ruc="", razon_social = "", fecha="", naturaleza ="", serie_rel;
+        int id, folio, folio_rel;
+
+        if (c.moveToFirst()) {
+            do {
+                id = c.getInt(0);
+                serie = c.getString(1);
+                folio = c.getInt(2);
+                ruc = c.getString(3);
+                razon_social = c.getString(4);
+                fecha = c.getString(5);
+                serie_rel = c.getString(6);
+                folio_rel = c.getInt(7);
+
+                naturaleza =  db.get_Naturaleza(serie);
+                item.add(id+" "+naturaleza+" "+serie+" "+folio+" "+ruc+" "+razon_social+" "+fecha+" "+serie_rel+" "+folio_rel);
+
+            } while (c.moveToNext());
+
+        }
+
+
+
+
+
+        ArrayAdapter<String> adaptador =
+                new ArrayAdapter<String>(this,
+                        android.R.layout.simple_list_item_1,item);
+        lista.setAdapter(adaptador);
+
+    }
+
+
+
+
+
+
+
+
+}

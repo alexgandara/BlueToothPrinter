@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/assets"><file name="demo.bmp" path="/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/assets/demo.bmp"/></source><source path="/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/generated/assets/shaders/debug"/></dataSet><dataSet config="debug"><source path="/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/debug/assets"/></dataSet></merger>
