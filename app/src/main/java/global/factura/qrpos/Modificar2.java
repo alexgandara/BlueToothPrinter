@@ -232,7 +232,7 @@ public class Modificar2 extends Activity implements OnClickListener{
     connectionDB db;
     Button Modificar, Eliminar, Salir, Detalle, Imprimir;
 
-
+	// alex
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
