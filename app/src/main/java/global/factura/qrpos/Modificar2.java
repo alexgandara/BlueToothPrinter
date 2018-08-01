@@ -220,6 +220,8 @@ public class Modificar2 extends Activity implements OnClickListener{
     public String Mcorreo="";
 
     public double _igv_global;
+    public String _datos_qr="";
+
 
 
     EditText serie, folio, ruc, razon_social, direccion, moneda, fecha, correo;
@@ -585,10 +587,33 @@ public class Modificar2 extends Activity implements OnClickListener{
 				String msg = Imprimir_Ticket();
 				if(msg.length()>0){
 
+					String _buttom="";
+					String _salto ="\n";
+
+					String _linea = "================================";
+
 					SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
 					SendDataByte(Command.LF);
-					String data_qr="Esto es una Prueba del QR, Viva Mexico" ;  //    data_qr();
-					createImage(data_qr);
+
+					createImage(_datos_qr);
+
+
+					_buttom=_buttom+"Puede Solicitar  su  Comprobante"+_salto;
+					_buttom=_buttom+"en   creacionesgrume.documentos@"+_salto;
+					_buttom=_buttom+"gmail.com                       "+_salto;
+
+					_buttom=_buttom+_salto;
+					_buttom=_buttom+"Representacion    Impresa     de"+_salto;
+					_buttom=_buttom+"del   Comprobante    de    Venta"+_salto;
+					_buttom=_buttom+"Electronica  autorizado mediante"+_salto;
+					_buttom=_buttom+"la   Resolucion   155-2017/SUNAT"+_salto;
+					_buttom=_buttom+_linea+_salto;
+					_buttom=_buttom+_salto+_salto;
+
+					SendDataByte(PrinterCommand.POS_Print_Text(_buttom, CHINESE, 0, 0, 0, 0));
+					SendDataByte(Command.LF);
+
+
 
 				}
 			}
@@ -831,10 +856,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 		String lang = getString(R.string.strLang);
   		if((lang.compareTo("en")) == 0){
 			String msg = "ok\n\n";
-			String data = "...\n";
+
+			String data = "    Conexion Esteblacida...  \n";
+			String data2 = "<<<   www.factura.global  >>>\n\n\n";
 
 		//	SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 1, 1, 0));
-			SendDataByte(PrinterCommand.POS_Print_Text(data, CHINESE, 0, 0, 0, 0));
+			SendDataByte(PrinterCommand.POS_Print_Text(data+data2, CHINESE, 0, 0, 0, 0));
 		//	SendDataByte(PrinterCommand.POS_Set_Cut(1));
 			SendDataByte(PrinterCommand.POS_Set_PrtInit());
 		}
@@ -1691,6 +1718,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 
     }
 
+
+
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private String Imprimir_Ticket () {
 
@@ -1746,6 +1776,7 @@ public class Modificar2 extends Activity implements OnClickListener{
         String _linea05="";
         String _linea06="";
         String _linea07="";
+        String _ruc_empresa="";
 
 
 
@@ -1763,6 +1794,7 @@ public class Modificar2 extends Activity implements OnClickListener{
                 _linea05 = cursor.getString(5);
                 _linea06 = cursor.getString(6);
                 _linea07 = cursor.getString(7);
+				_ruc_empresa = cursor.getString(8);
             } while (cursor.moveToNext());
 
         }
@@ -1775,7 +1807,9 @@ public class Modificar2 extends Activity implements OnClickListener{
         String _salto ="\n";
 
         String _linea = "================================";
-        _salida=_salida+_salto+_salto+_salto;
+
+
+        _salida=_salida+_salto;
         _salida=_salida+_linea+_salto;
 
         //   _salida=_salida+"   < M O D A   G R U M E >"+_salto;
@@ -1817,6 +1851,7 @@ public class Modificar2 extends Activity implements OnClickListener{
         String _naturaleza =  db.get_Naturaleza(Mserie);
 
         _cadena="LA SERIE NO HA SIDO DEFINIDA";
+
 
         if (_naturaleza.equals("03"))  {
             _cadena="BOLETA ELECTRONICA";
@@ -1863,17 +1898,6 @@ public class Modificar2 extends Activity implements OnClickListener{
         _salida=_salida+"TIPO DE PAGO:"+"CONTADO"+_salto;
         _salida=_salida+_salto;
 
-        _salida=_salida+"Puede Solicitar  su  Comprobante"+_salto;
-        _salida=_salida+"en   creacionesgrume.documentos@"+_salto;
-        _salida=_salida+"gmail.com                       "+_salto;
-
-        _salida=_salida+_salto;
-        _salida=_salida+"Representacion    Impresa     de"+_salto;
-        _salida=_salida+"del   Comprobante    de    Venta"+_salto;
-        _salida=_salida+"Electronica  autorizado mediante"+_salto;
-        _salida=_salida+"la   Resolucion   155-2017/SUNAT"+_salto;
-        _salida=_salida+_linea+_salto;
-        _salida=_salida+_salto+_salto;
 
 
 
@@ -1884,6 +1908,18 @@ public class Modificar2 extends Activity implements OnClickListener{
 		ClipData clip = ClipData.newPlainText("recibo", _salida);
 		clipboard.setPrimaryClip(clip);
 		Toast.makeText(Modificar2.this,"Es Registro fue enviado a Memoria"+_salida, Toast.LENGTH_LONG ).show();
+
+		String _tipo_documento_adquiriente="1";
+		if (Mruc.length()>8) {
+			_tipo_documento_adquiriente="6";
+		}
+
+		 _datos_qr = _ruc_empresa+"|"+_naturaleza+"|"+
+				 Mserie+"-"+_folio_nuevo+"|"+
+				 _cantidad(_igv).trim()+"|"+_cantidad(_total).trim()+"|"+Mfecha+"|"+
+				 _tipo_documento_adquiriente+"|"+
+				 Mruc+"|";
+
 
 		return _salida;
 

@@ -747,7 +747,7 @@ public class connectionDB extends SQLiteOpenHelper {
     }
 
     public Cursor getReg_TicketPos(int _id) {
-        String columnas[] = {"_id","linea01", "linea02", "linea03", "linea04", "linea05", "linea06", "linea07"};
+        String columnas[] = {"_id","linea01", "linea02", "linea03", "linea04", "linea05", "linea06", "linea07","ruc_empresa"};
 
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
         return c;
