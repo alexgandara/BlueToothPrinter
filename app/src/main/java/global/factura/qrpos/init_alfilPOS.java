@@ -20,7 +20,7 @@ public class init_alfilPOS  extends Activity {
 
     ListView lista;
 
-    Button Agragar_Documento;
+    Button Agragar_Documento, Mnt_Empresas, Mnt_Prdductos, Mnt_Series;
 
     connectionDB db;
     List<String> item = null;
@@ -48,20 +48,20 @@ public class init_alfilPOS  extends Activity {
                 String _naturaleza = item.get(i).split(" ")[1];
 
 
-             //   if (_naturaleza.equals("01")) {
+                if (_naturaleza.equals("01")) {
                     Intent intent = new Intent(init_alfilPOS.this,Modificar2.class);
-                    intent.putExtra("id",_id);
-                    startActivity(intent);
-             //   }
-
-
-       /*         if (_naturaleza.equals("03")) {
-                    Intent intent = new Intent(init_alfilPOS.this,Modificar.class);
                     intent.putExtra("id",_id);
                     startActivity(intent);
                 }
 
-                if (_naturaleza.equals("07")) {
+
+                if (_naturaleza.equals("03")) {
+                    Intent intent = new Intent(init_alfilPOS.this,Modificar2.class);
+                    intent.putExtra("id",_id);
+                    startActivity(intent);
+                }
+
+     /*           if (_naturaleza.equals("07")) {
                     Intent intent = new Intent(init_alfilPOS.this,Modificar_Notas.class);
                     intent.putExtra("id",_id);
                     startActivity(intent);
@@ -81,7 +81,9 @@ public class init_alfilPOS  extends Activity {
 
         Agragar_Documento = (Button) findViewById(R.id.Button_Agregar_Documento);
 
-
+        Mnt_Empresas = (Button) findViewById(R.id.Button_Empresas);
+        Mnt_Prdductos= (Button) findViewById(R.id.Button_Productos);
+        Mnt_Series= (Button) findViewById(R.id.Button_Series);
 
 
 
@@ -94,6 +96,40 @@ public class init_alfilPOS  extends Activity {
 
             }
         });
+
+
+        Mnt_Empresas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(init_alfilPOS.this, Empresas.class);
+                startActivity(intent);
+                //  return true;
+
+            }
+        });
+
+
+        Mnt_Prdductos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(init_alfilPOS.this, MainActivity_Productos.class);
+                startActivity(intent);
+                //  return true;
+
+            }
+        });
+
+        Mnt_Series.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(init_alfilPOS.this, MainActivity_Series.class);
+                startActivity(intent);
+                //  return true;
+
+            }
+        });
+
+
 
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">qrPOS</string>
-    <string name="app_title">qrPOS</string>
+    <string name="app_name">alfilPOS</string>
+    <string name="app_title">alfilPOS</string>
     
 	<!--main_activity-->
 	<string name="connect">Buscar la Impresora  Bluetooth</string>
@@ -53,7 +53,7 @@
     <string name="camer">No pictures</string>
     <string name="msg_error">Input errors, please check!</string>
 
-    <string name="spinner_title">Productos</string>
+    <string name="spinner_title">Elija...</string>
 
 
     

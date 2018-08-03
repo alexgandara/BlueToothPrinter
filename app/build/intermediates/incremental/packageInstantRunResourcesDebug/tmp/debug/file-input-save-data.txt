@@ -1,7 +1,0 @@
-#Internal package file, do not edit.
-#Mon Jul 23 12:26:48 PET 2018
-0.baseType=DIRECTORY
-0.base=/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/assets/debug
-0.path=demo.bmp
-0.set=ASSET
-count=1

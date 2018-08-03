@@ -72,8 +72,10 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String LINEA04 = "linea04";
     public static final String LINEA05 = "linea05";
     public static final String LINEA06 = "linea06";
-    public static final String LINEA07 = "linea07";
-
+    public static final String BASE01 = "base01";
+    public static final String BASE02 = "base02";
+    public static final String BASE03 = "base03";
+    public static final String BASE04 = "base04";
 
 
     // variables para table clientes
@@ -204,72 +206,6 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
 
-                valuesSeries.put("serie", "B002");
-                valuesSeries.put("naturaleza", "03");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-                valuesSeries.put("serie", "F002");
-                valuesSeries.put("naturaleza", "01");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-
-
-                valuesSeries.put("serie", "BNC2");
-                valuesSeries.put("naturaleza", "07");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-                valuesSeries.put("serie", "FNC2");
-                valuesSeries.put("naturaleza", "07");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-
-                valuesSeries.put("serie", "BND2");
-                valuesSeries.put("naturaleza", "08");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-                valuesSeries.put("serie", "FND2");
-                valuesSeries.put("naturaleza", "08");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-
-
-                valuesSeries.put("serie", "B003");
-                valuesSeries.put("naturaleza", "03");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-                valuesSeries.put("serie", "F003");
-                valuesSeries.put("naturaleza", "01");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-
-                valuesSeries.put("serie", "BNC3");
-                valuesSeries.put("naturaleza", "07");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-                valuesSeries.put("serie", "FNC3");
-                valuesSeries.put("naturaleza", "07");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-
-                valuesSeries.put("serie", "BND3");
-                valuesSeries.put("naturaleza", "08");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
-
-                valuesSeries.put("serie", "FND3");
-                valuesSeries.put("naturaleza", "08");
-                valuesSeries.put("folio", 0);
-                db.insert("series", null, valuesSeries);
 
 
 
@@ -300,7 +236,10 @@ public class connectionDB extends SQLiteOpenHelper {
                 LINEA04 + " TEXT, "+
                 LINEA05 + " TEXT, "+
                 LINEA06 + " TEXT, "+
-                LINEA07 + " TEXT)"
+                BASE01 + " TEXT, "+
+                BASE02 + " TEXT, "+
+                BASE03 + " TEXT, "+
+                BASE04 + " TEXT)"
         );
 
 
@@ -321,7 +260,10 @@ public class connectionDB extends SQLiteOpenHelper {
                 valuesEmpresa.put(LINEA04, "");
                 valuesEmpresa.put(LINEA05, "");
                 valuesEmpresa.put(LINEA06, "");
-                valuesEmpresa.put(LINEA07, "");
+                valuesEmpresa.put(BASE01, "");
+                valuesEmpresa.put(BASE02, "");
+                valuesEmpresa.put(BASE03, "");
+                valuesEmpresa.put(BASE04, "");
 
 
                 db.insert(TABLE_EMPRESA, null, valuesEmpresa);
@@ -634,7 +576,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getNotes_series() {
-        String columnas[] = {"id", "serie", "folio"};
+        String columnas[] = {"id", "serie", "folio", "naturaleza"};
         Cursor c = this.getReadableDatabase().query("series", columnas, null, null, null, null, null);
         return c;
     }
@@ -747,7 +689,9 @@ public class connectionDB extends SQLiteOpenHelper {
     }
 
     public Cursor getReg_TicketPos(int _id) {
-        String columnas[] = {"_id","linea01", "linea02", "linea03", "linea04", "linea05", "linea06", "linea07","ruc_empresa"};
+        String columnas[] = {"_id","linea01", "linea02", "linea03", "linea04", "linea05", "linea06",
+                "ruc_empresa",
+                "base01", "base02", "base03", "base04"};
 
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
         return c;
@@ -816,6 +760,26 @@ public class connectionDB extends SQLiteOpenHelper {
         Cursor c = this.getReadableDatabase().query("detalle", columnas, "_id" + "=?",
                 new String[] { String.valueOf(_id) },  null, null, null, null);
         return c;
+    }
+
+
+    public void addNotes_Series (String _Serie,
+                                 String _Folio,
+                                 String _Naturaleza
+
+    ) {
+
+
+
+        ContentValues valoresSeries = new ContentValues();
+        valoresSeries.put("serie", _Serie);
+        valoresSeries.put("folio", _Folio);
+        valoresSeries.put("naturaleza", _Naturaleza);
+
+
+
+        this.getWritableDatabase().insert("series",null, valoresSeries);
+
     }
 
 

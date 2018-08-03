@@ -22,7 +22,7 @@ public class MainActivity_Detalle extends Activity {
     connectionDB db;
     List<String> item = null;
 
-    Button Agregar_Detalle;
+    Button Agregar_Detalle, Ir_a_Documentos;
 
     int _myId;
 
@@ -30,7 +30,11 @@ public class MainActivity_Detalle extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_detalle);
+        Bundle b = getIntent().getExtras();
+        if (b!=null) {
+            _myId = b.getInt("id");
 
+        }
 
 
         lista = (ListView) findViewById(R.id.listView_Lista_Detalle);
@@ -38,6 +42,7 @@ public class MainActivity_Detalle extends Activity {
 
 
         Agregar_Detalle = (Button) findViewById(R.id.Button_Agregar_Detalle);
+        Ir_a_Documentos = (Button) findViewById(R.id.Button_Ir_a_Documentos);
 
 
 
@@ -48,11 +53,26 @@ public class MainActivity_Detalle extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity_Detalle.this, addDatos_Detalle.class);
+                intent.putExtra("id",_myId);
+                startActivity(intent);
+             //   return true;
+
+            }
+        });
+
+
+
+
+        Ir_a_Documentos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity_Detalle.this, init_alfilPOS.class);
                 startActivity(intent);
                 //  return true;
 
             }
         });
+
 
 /*
         Intent intent = new Intent(MainActivity_Detalle.this, addDatos_Detalle.class);

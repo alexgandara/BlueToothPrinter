@@ -223,14 +223,19 @@ public class Modificar2 extends Activity implements OnClickListener{
     public String _datos_qr="";
 
 
+	public String _base01="";
+	public String _base02="";
+	public String _base03="";
+	public String _base04="";
 
-    EditText serie, folio, ruc, razon_social, direccion, moneda, fecha, correo;
+
+	EditText serie, folio, ruc, razon_social, direccion, moneda, fecha, correo;
 
     String _serie, _folio, _ruc, _razon_social, _direccion, _moneda, _fecha, _correo;
 
     int _myId;
     connectionDB db;
-    Button Modificar, Eliminar, Salir, Detalle, Imprimir;
+    Button Modificar, Eliminar, Salir, Detalle, Imprimir, Documentos;
 
 	// alex
 
@@ -243,6 +248,16 @@ public class Modificar2 extends Activity implements OnClickListener{
 		// Set up the window layout
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.main2);
+
+
+		Bundle b = getIntent().getExtras();
+		if (b!=null) {
+			_myId = b.getInt("id");
+			Toast.makeText(Modificar2.this,"ID a Modifcar :"+_myId, Toast.LENGTH_SHORT ).show();
+
+		}
+
+
 		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
 				R.layout.custom_title);
 
@@ -255,11 +270,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
 
-        Bundle b = getIntent().getExtras();
-        if (b!=null) {
-            _myId = b.getInt("id");
 
-        }
 
 
         db = new connectionDB(this);
@@ -363,6 +374,7 @@ public class Modificar2 extends Activity implements OnClickListener{
         Eliminar = (Button) findViewById(R.id.button_Eliminar);
         Detalle = (Button) findViewById(R.id.button_Detalle);
 //        Imprimir = (Button) findViewById(R.id.button_Imprimir);
+        Documentos = (Button) findViewById(R.id.button_Documentos);
 
         Salir = (Button) findViewById(R.id.button_Salir);
 
@@ -403,6 +415,19 @@ public class Modificar2 extends Activity implements OnClickListener{
                 startActivity(intent);
             }
         });
+
+
+        Documentos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Modificar2.this,init_alfilPOS.class );
+                startActivity(intent);
+            }
+        });
+
+
+
+
 
 
         Eliminar.setOnClickListener(new View.OnClickListener() {
@@ -598,9 +623,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 					createImage(_datos_qr);
 
 
-					_buttom=_buttom+"Puede Solicitar  su  Comprobante"+_salto;
-					_buttom=_buttom+"en   creacionesgrume.documentos@"+_salto;
-					_buttom=_buttom+"gmail.com                       "+_salto;
+
+
+                    _buttom=_buttom+_base01+_salto;
+                    _buttom=_buttom+_base02+_salto;
+                    _buttom=_buttom+_base03+_salto;
+                    _buttom=_buttom+_base04+_salto;
 
 					_buttom=_buttom+_salto;
 					_buttom=_buttom+"Representacion    Impresa     de"+_salto;
@@ -1775,9 +1803,7 @@ public class Modificar2 extends Activity implements OnClickListener{
         String _linea04="";
         String _linea05="";
         String _linea06="";
-        String _linea07="";
         String _ruc_empresa="";
-
 
 
         //∫ db = new connectionDB(this);
@@ -1793,8 +1819,12 @@ public class Modificar2 extends Activity implements OnClickListener{
                 _linea04 = cursor.getString(4);
                 _linea05 = cursor.getString(5);
                 _linea06 = cursor.getString(6);
-                _linea07 = cursor.getString(7);
-				_ruc_empresa = cursor.getString(8);
+                _ruc_empresa = cursor.getString(7);
+                _base01 = cursor.getString(8);
+				_base02 = cursor.getString(9);
+				_base03 = cursor.getString(10);
+				_base04 = cursor.getString(11);
+
             } while (cursor.moveToNext());
 
         }
@@ -1841,9 +1871,6 @@ public class Modificar2 extends Activity implements OnClickListener{
             _salida=_salida+_linea06+_salto;
         }
 
-        if (_linea07.trim().length()>0) {
-            _salida=_salida+_linea07+_salto;
-        }
 
 
         _salida=_salida+_linea+_salto;
