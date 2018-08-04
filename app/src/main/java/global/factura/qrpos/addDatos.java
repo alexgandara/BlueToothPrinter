@@ -24,14 +24,15 @@ import zj.com.cn.bluetooth.sdk.R;
  */
 
 public class addDatos extends Activity {
-    EditText serie, folio, ruc, razon_social, direccion, moneda;
+    EditText serie, folio, ruc, razon_social, direccion, moneda, correo;
     Button Add;
-    String _serie, _folio, _ruc, _razon_social, _direccion, _moneda;
+    String _serie, _folio, _ruc, _razon_social, _direccion, _moneda, _correo;
     connectionDB db;
 
     List<String> _lista_series = null;
+    List<String> _lista_clientes = null;
 
-    Spinner spinner_Series;
+    Spinner spinner_Series, spinner_Clientes ;
 
 
     @Override
@@ -51,25 +52,56 @@ public class addDatos extends Activity {
            ruc = (EditText) findViewById(R.id.editText_Ruc);
            razon_social = (EditText) findViewById(R.id.editText_RazonSocial);
            direccion = (EditText) findViewById(R.id.editText_Direccion);
+           correo = (EditText) findViewById(R.id.editText_Correo);
            moneda = (EditText) findViewById(R.id.editText_Moneda);
 
 
             spinner_Series = (Spinner) findViewById(R.id.spinner_Series);
 
+            spinner_Clientes = (Spinner) findViewById(R.id.spinner_Clientes);
+
+
+
 
         // llenar datos del spiner de series
         showNotes_Series();
-        ArrayAdapter<String> adapter_precios = new ArrayAdapter <String>(this, android.R.layout.simple_spinner_dropdown_item, _lista_series);
-        spinner_Series.setAdapter(adapter_precios);
+        ArrayAdapter<String> adapter_series = new ArrayAdapter <String>(this, android.R.layout.simple_spinner_dropdown_item, _lista_series);
+        spinner_Series.setAdapter(adapter_series);
 
 
         spinner_Series.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
                 String _serie_elegida = _lista_series.get(i).split("/")[0];
-
                 serie.setText(_serie_elegida);
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView <?> adapterView) {
+
+            }
+        });
+        /// termian spinig de series
+
+
+
+
+
+        // llenar datos del spiner de clientes
+        showNotes_Clientes();
+        ArrayAdapter<String> adapter_clientes = new ArrayAdapter <String>(this, android.R.layout.simple_spinner_dropdown_item, _lista_clientes);
+        spinner_Clientes.setAdapter(adapter_clientes);
+        spinner_Clientes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
+                String _ruc_elegida = _lista_clientes.get(i).split("/")[0];
+                String _razon_social_elegida = _lista_clientes.get(i).split("/")[1];
+                String _direccion_elegida = _lista_clientes.get(i).split("/")[2];
+                String _correo_elegida = _lista_clientes.get(i).split("/")[3];
+                ruc.setText(_ruc_elegida);
+                razon_social.setText(_razon_social_elegida);
+                direccion.setText(_direccion_elegida);
+                correo.setText(_correo_elegida);
 
 
 
@@ -80,6 +112,11 @@ public class addDatos extends Activity {
 
             }
         });
+
+
+
+
+
 
 
 
@@ -99,10 +136,11 @@ public class addDatos extends Activity {
     private void addDatos() {
 
         _serie        = serie.getText().toString();
-        _folio        = folio.getText().toString();
+        _folio        = "0";
         _ruc          = ruc.getText().toString();
         _razon_social = razon_social.getText().toString();
         _direccion    = direccion.getText().toString();
+        _correo       = correo.getText().toString();
         _moneda       = moneda.getText().toString();
 
 
@@ -164,6 +202,58 @@ public class addDatos extends Activity {
 
         }
 
+
+
+    }
+
+
+
+
+
+    private void showNotes_Clientes() {
+
+
+        db = new connectionDB(this);
+        Cursor c = db.getNotes_clientes();
+        _lista_clientes = new ArrayList<String>();
+        String _cliente="", _razon_social="", _direccion="",_correo="", _telefono="";
+
+
+
+
+        //    public static final String DIRECCION_CLIENTE = "direccion_cliente";
+//    public static final String CORREO_CLIENTE = "correo_cliente";
+//    public static final String TELEFONO_CLIENTE = "telefono_cliente";
+
+
+
+
+        int _id, _folio;
+
+        if (c.moveToFirst()) {
+            do {
+                _id = c.getInt(0);
+                _ruc = c.getString(1);
+                _razon_social = c.getString(2);
+                _direccion = c.getString(3);
+                _correo = c.getString(4);
+
+               // _naturaleza = c.getString(3);
+
+
+                    _lista_clientes.add(_ruc+"/"+
+                    _razon_social+"/"+
+                    _direccion+"/"+_correo
+                    );
+
+
+
+
+
+            } while (c.moveToNext());
+
+        }
+
 /*        Salir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,6 +265,8 @@ public class addDatos extends Activity {
 */
 
     }
+
+
 
 
 

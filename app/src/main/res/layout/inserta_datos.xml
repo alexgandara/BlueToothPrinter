@@ -37,25 +37,25 @@
         android:text="B001"
         android:maxLength="4"/>
 
-    <EditText
-        android:id="@+id/editText_Folio"
-        android:layout_width="match_parent"
+
+    <Spinner
+        android:id="@+id/spinner_Clientes"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="100dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Folio"
-        android:inputType="number"
-        android:text="0"
-        android:visibility="invisible" />
+        android:prompt="@string/spinner_title"
+        android:layout_marginTop="130dp"
+
+        />
+
+
+
 
     <EditText
         android:id="@+id/editText_Ruc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="200dp"
         android:ems="10"
         android:gravity="center"
         android:hint="RUC"
@@ -69,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="250dp"
         android:ems="10"
         android:gravity="center"
         android:hint="Nombre/Razon Social"
@@ -82,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="300dp"
         android:ems="10"
         android:gravity="center"
         android:hint="Direccion"
@@ -90,11 +90,25 @@
         android:maxLength="60"/>
 
     <EditText
+        android:id="@+id/editText_Correo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="350dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="correo"
+        android:inputType="textEmailAddress"
+        android:maxLength="60"/>
+
+
+
+    <EditText
         android:id="@+id/editText_Moneda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="400dp"
         android:ems="10"
         android:gravity="center"
         android:hint="Direccion"
@@ -103,14 +117,13 @@
         android:maxLength="3"/>
 
 
-
     <Button
         android:id="@+id/button_Agregar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText_Folio"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="340dp"
+        android:layout_marginTop="480dp"
         android:text="Agregar" />
 
 

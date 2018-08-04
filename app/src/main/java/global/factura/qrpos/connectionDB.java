@@ -17,7 +17,7 @@ import java.util.Date;
 public class connectionDB extends SQLiteOpenHelper {
 
 
-
+    // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA CABECERA DE FACTURA  "cabecera"
 
     public static final String TABLE_ID = "_id";
     public static final String SERIE = "serie";
@@ -36,12 +36,16 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String CORREO = "correo";
     public static final String SERIE_REL = "serie_rel";
     public static final String FOLIO_REL = "folio_rel";
+    public static final String ARCHIVADA = "archivada";
+    public static final String ENVIADO_CORREO = "enviado_correo";
+    public static final String ENVIADO_NUBE = "enviado_nube";
 
 
 
 
-//    public static final String TABLE_ID = "_id";
 
+
+    // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA DETALLE DE FACTURA  "detalle"
 
     public static final String CABECERA_ID = "cabecera_id";
     public static final String PRODUCTO = "producto";
@@ -56,7 +60,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
 
-    // variables para table empresas
+    // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA EMPRESAS SERA UN SOLO REGISTRO DONDE IRA LA INFORMACION DE LA COMPAÑIA   "empresa"
 
     public static final String RAZON_SOCIAL_EMPRESA = "razon_social_empresa";
     public static final String RUC_EMPRESA = "ruc_empresa";
@@ -76,6 +80,7 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String BASE02 = "base02";
     public static final String BASE03 = "base03";
     public static final String BASE04 = "base04";
+    public static final String LOGO = "logo";
 
 
     // variables para table clientes
@@ -126,6 +131,8 @@ public class connectionDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
+        // TABLE = "cabecera";
+
         db.execSQL("CREATE TABLE "+ TABLE + " (" +
                 TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
                 SERIE +" TEXT, "+
@@ -143,7 +150,40 @@ public class connectionDB extends SQLiteOpenHelper {
                 INAFECTO+" DOUBLE,"+
                 SUBTOTAL+" DOUBLE,"+
                 IGV+" DOUBLE,"+
-                TOTAL+" DOUBLE)");
+                TOTAL+" DOUBLE,"+
+                ENVIADO_CORREO+" INTEGER DEFAULT 0,"+
+                ENVIADO_NUBE+" INTEGER DEFAULT 0,"+
+                ARCHIVADA+" INTEGER DEFAULT 0)"
+        );
+
+
+
+
+
+        // definicion de indice para controlar la historia
+
+        ///  EJEMPLO db.execSQL("CREATE INDEX idx_contacts_email ON contacts (email)";
+
+         /// CREATE INDEX po_parent ON purchaseorder(parent_po) WHERE parent_po IS NOT NULL;
+
+        db.execSQL("CREATE INDEX "+
+                "idx_cabecera_activos" +
+                " ON "+TABLE+" (" +
+                ARCHIVADA+
+                ") "+
+                " WHERE "+
+                ARCHIVADA+" =0"
+                );
+
+        db.execSQL("CREATE INDEX "+
+                "idx_cabecera_archivados" +
+                " ON "+TABLE+" (" +
+                ARCHIVADA+
+                ") "+
+                " WHERE "+
+                ARCHIVADA+" =1"
+                );
+
 
 
 
@@ -229,6 +269,7 @@ public class connectionDB extends SQLiteOpenHelper {
                 DIRECCION_EMPRESA_2 + " TEXT,"+
                 CORREO_EMPRESA + " TEXT,"+
                 TELEFONO_EMPRESA + " TEXT,"+
+                LOGO + " BLOB,"+
                 LICENCIA + " TEXT, "+
                 LINEA01 + " TEXT, "+
                 LINEA02 + " TEXT, "+
@@ -243,6 +284,9 @@ public class connectionDB extends SQLiteOpenHelper {
         );
 
 
+
+
+
         db.beginTransaction();
         try {
             ContentValues valuesEmpresa = new ContentValues();
@@ -254,16 +298,17 @@ public class connectionDB extends SQLiteOpenHelper {
                 valuesEmpresa.put(CORREO_EMPRESA, "mcorreo@miempresa.com");
                 valuesEmpresa.put(TELEFONO_EMPRESA, "(+) 01 111-222-333");
                 valuesEmpresa.put(LICENCIA, "PUBLICA");
-                valuesEmpresa.put(LINEA01, "");
-                valuesEmpresa.put(LINEA02, "");
-                valuesEmpresa.put(LINEA03, "");
-                valuesEmpresa.put(LINEA04, "");
-                valuesEmpresa.put(LINEA05, "");
-                valuesEmpresa.put(LINEA06, "");
-                valuesEmpresa.put(BASE01, "");
-                valuesEmpresa.put(BASE02, "");
-                valuesEmpresa.put(BASE03, "");
-                valuesEmpresa.put(BASE04, "");
+                valuesEmpresa.put(LINEA01, "       LA GRAN EMPRESA          ");
+//                                          ================================
+                valuesEmpresa.put(LINEA02, "      RUC: 0000000000");
+                valuesEmpresa.put(LINEA03, "   DIR1: AV. PRINCIPAL 00000");
+                valuesEmpresa.put(LINEA04, "  ventas@lagranempresa.com.pe");
+                valuesEmpresa.put(LINEA05, "     TEL: 111-111-111");
+                valuesEmpresa.put(LINEA06, "   www.lagranempresa.com-mx");
+                valuesEmpresa.put(BASE01, "  consulte su comprobante fiscal");
+                valuesEmpresa.put(BASE02, "   en www.factura.elect.com.pe");
+                valuesEmpresa.put(BASE03, "     para ventas al mayoreo");
+                valuesEmpresa.put(BASE04, "     ventas@superventas.com");
 
 
                 db.insert(TABLE_EMPRESA, null, valuesEmpresa);
@@ -558,13 +603,37 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getNotes() {
-
-
-        String columnas[] = {TABLE_ID, SERIE, FOLIO, RUC,  RAZON_SOCIAL, FECHA, SERIE_REL, FOLIO_REL};
+        String columnas[] = {TABLE_ID, SERIE, FOLIO, RUC,  RAZON_SOCIAL, FECHA, SERIE_REL, FOLIO_REL, ARCHIVADA};
         Cursor c = this.getReadableDatabase().query(TABLE, columnas, null, null, null, null, " _id DESC ");
         return c;
-
     }
+
+
+    public Cursor getNotes_Activas() {
+
+        int _criterio=0; // activas
+
+        String columnas[] = {TABLE_ID, SERIE, FOLIO, RUC,  RAZON_SOCIAL, FECHA, SERIE_REL, FOLIO_REL, ARCHIVADA};
+        Cursor c = this.getReadableDatabase().query(TABLE, columnas,
+                ARCHIVADA + "=?",  new String[] { String.valueOf(_criterio) },
+                null, null, " _id DESC ");
+        return c;
+    }
+
+
+    public Cursor getNotes_Archivadas() {
+
+        int _criterio=1; // activas
+
+        String columnas[] = {TABLE_ID, SERIE, FOLIO, RUC,  RAZON_SOCIAL, FECHA, SERIE_REL, FOLIO_REL, ARCHIVADA};
+        Cursor c = this.getReadableDatabase().query(TABLE, columnas,
+                ARCHIVADA + "=?",  new String[] { String.valueOf(_criterio) },
+                null, null, " _id DESC ");
+        return c;
+    }
+
+
+
 
     public Cursor getNotes_detalle(int _id) {
         String columnas[] = {TABLE_ID, PRODUCTO, DESCRIPCION, UNIDAD, CANTIDAD, PRECIO_PRODUCTO,  DET_IGV};
@@ -600,8 +669,10 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
 
+
+
     public Cursor getNotes_clientes() {
-        String columnas[] = {"_id", "ruc_cliente", "razon_social_cliente"};
+        String columnas[] = {"_id", "ruc_cliente", "razon_social_cliente", "direccion_cliente", "correo_cliente", "telefono_cliente"};
         Cursor c = this.getReadableDatabase().query("clientes", columnas, null, null, null, null, null);
         return c;
     }
@@ -638,8 +709,9 @@ public class connectionDB extends SQLiteOpenHelper {
     public Cursor getReg(int _id) {
         String columnas[] = {TABLE_ID, SERIE, FOLIO, RUC, RAZON_SOCIAL, DIRECCION, MONEDA, FECHA, CORREO};
 
-        Cursor c = this.getReadableDatabase().query(TABLE, columnas, TABLE_ID + "=?",
-                new String[] { String.valueOf(_id) },  null, null, null, null);
+        Cursor c = this.getReadableDatabase().query(TABLE, columnas,
+                TABLE_ID + "=?",  new String[] { String.valueOf(_id) },
+                null, null, null, null);
         return c;
 
 
@@ -781,6 +853,15 @@ public class connectionDB extends SQLiteOpenHelper {
         this.getWritableDatabase().insert("series",null, valoresSeries);
 
     }
+
+
+    public Cursor getReg_Image(int _id) {
+        String columnas[] = {"_id","logo"};
+
+        Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
+        return c;
+    }
+
 
 
 

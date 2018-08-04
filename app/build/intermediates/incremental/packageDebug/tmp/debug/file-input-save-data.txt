@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu Aug 02 10:36:37 PET 2018
+#Sat Aug 04 13:13:39 PET 2018
 1.base=/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/assets/debug
 0.baseType=DIRECTORY
 1.baseType=DIRECTORY
@@ -7,5 +7,5 @@ count=2
 1.set=ASSET
 0.path=classes.dex
 0.set=DEX
-0.base=/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/transforms/dexMerger/debug/0
+0.base=/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/transforms/dexMerger/debug/17
 1.path=demo.bmp

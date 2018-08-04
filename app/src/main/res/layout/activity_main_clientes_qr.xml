@@ -21,19 +21,27 @@
     <TextView android:id="@+id/title_paired_devices"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Detalle de Documentos"
+        android:text="@string/title_paired_devices"
         android:visibility="gone"
         android:background="#666"
         android:textColor="#fff"
         android:paddingLeft="5dp"
     />
-    <ListView android:id="@+id/listView_Lista_Detalle"
+    <ListView android:id="@+id/listView_Clientes"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:stackFromBottom="true"
         android:layout_weight="1"
     />
-
+    <TextView android:id="@+id/title_new_devices"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title_other_devices"
+        android:visibility="gone"
+        android:background="#666"
+        android:textColor="#fff"
+        android:paddingLeft="5dp"
+    />
 
 
     <ScrollView
@@ -56,12 +64,12 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/Button_Agregar_Detalle"
+                android:id="@+id/Button_Agregar_Clientes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1.0"
-                android:text="Agregar Detalle..."
+                android:text="Agregar Cliente"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 >
@@ -69,23 +77,31 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/Button_Ir_a_Documentos"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1.0"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:text="Ir a Documentos"></Button>
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/Button_Salir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:text="Salir"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    >
+                </Button>
+
+            </LinearLayout>
+
+
+
+
+
 
 
 

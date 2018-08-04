@@ -16,11 +16,11 @@ import java.util.List;
 
 import zj.com.cn.bluetooth.sdk.R;
 
-public class init_alfilPOS  extends Activity {
+public class init_alfilPOS_archivadas extends Activity {
 
     ListView lista;
 
-    Button Agragar_Documento, Mnt_Empresas, Mnt_Prdductos, Mnt_Series, Mnt_Clientes, Salir, Archivados;
+    Button Agragar_Documento, Mnt_Empresas, Mnt_Prdductos, Mnt_Series, Mnt_Clientes, Salir;
 
     connectionDB db;
     List<String> item = null;
@@ -31,7 +31,7 @@ public class init_alfilPOS  extends Activity {
 
         // Set up the window layout
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-        setContentView(R.layout.device_list_doctos);
+        setContentView(R.layout.device_list_doctos_archivadas);
        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                 R.layout.custom_title);
 
@@ -49,14 +49,14 @@ public class init_alfilPOS  extends Activity {
 
 
                 if (_naturaleza.equals("01")) {
-                    Intent intent = new Intent(init_alfilPOS.this,Modificar2.class);
+                    Intent intent = new Intent(init_alfilPOS_archivadas.this,Modificar2_archivadas.class);
                     intent.putExtra("id",_id);
                     startActivity(intent);
                 }
 
 
                 if (_naturaleza.equals("03")) {
-                    Intent intent = new Intent(init_alfilPOS.this,Modificar2.class);
+                    Intent intent = new Intent(init_alfilPOS_archivadas.this,Modificar2_archivadas.class);
                     intent.putExtra("id",_id);
                     startActivity(intent);
                 }
@@ -85,80 +85,25 @@ public class init_alfilPOS  extends Activity {
         Mnt_Prdductos= (Button) findViewById(R.id.Button_Productos);
         Mnt_Clientes= (Button) findViewById(R.id.Button_Clientes);
         Mnt_Series= (Button) findViewById(R.id.Button_Series);
-        Archivados= (Button) findViewById(R.id.Button_Archivados);
-
         Salir= (Button) findViewById(R.id.Button_Salir);
 
 
-
-        Agragar_Documento.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, addDatos.class);
-                startActivity(intent);
-              //  return true;
-            }
-        });
-
-
-        Mnt_Empresas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, Empresas.class);
-                startActivity(intent);
-                //  return true;
-            }
-        });
-
-
-        Mnt_Prdductos.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, MainActivity_Productos.class);
-                startActivity(intent);
-                //  return true;
-            }
-        });
-
-
-        Mnt_Clientes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, MainActivity_Clientes.class);
-                startActivity(intent);
-                //  return true;
-            }
-        });
 
 
         Salir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                moveTaskToBack(true);
-                android.os.Process.killProcess(android.os.Process.myPid());
-                System.exit(1);
+                _Salir();
+
+
             }
         });
 
 
 
-        Mnt_Series.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, MainActivity_Series.class);
-                startActivity(intent);
-                //  return true;
-            }
-        });
 
-        Archivados.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, init_alfilPOS_archivadas.class);
-                startActivity(intent);
-                //  return true;
-            }
-        });
+
+
 
 
 
@@ -168,12 +113,18 @@ public class init_alfilPOS  extends Activity {
     }
 
 
+    private void _Salir() {
+        Intent intent = new Intent(this, init_alfilPOS.class);
+        startActivity(intent);
+    }
+
+
 
     private void showNotes() {
 
 
         db = new connectionDB(this);
-        Cursor c = db.getNotes_Activas();
+        Cursor c = db.getNotes_Archivadas();
         item = new ArrayList<String>();
         String serie = "",  ruc="", razon_social = "", fecha="", naturaleza ="", serie_rel;
         int id, folio, folio_rel, archivada;

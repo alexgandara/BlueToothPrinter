@@ -231,6 +231,26 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/button_Archivar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Archivar Documento"></Button>
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
                     android:id="@+id/button_Eliminar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -278,7 +298,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:visibility="invisible"
+
             android:text="@string/btn_scqr"></Button>
         
         <Button
@@ -288,10 +308,12 @@
             android:layout_weight="1.0"
             android:gravity="center"
             android:text="@string/btn_dyca"
-            android:visibility="invisible"></Button>
-       
+            ></Button>
+
+
+
     </LinearLayout>
-    
+
     <Button
         android:id="@+id/btn_close"
         android:layout_width="match_parent"
@@ -305,8 +327,8 @@
                 android:contentDescription="@string/contentdescription"
                 android:maxHeight="1920dp"
                 android:maxWidth="1080dp"
-                android:visibility="invisible" />
-            
+                 />
+
              </LinearLayout>
     </ScrollView>
 

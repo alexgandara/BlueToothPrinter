@@ -62,7 +62,7 @@ import zj.com.customize.sdk.Other;
 import static global.factura.qrpos.DbBitmapUtility.getBytes;
 import static global.factura.qrpos.DbBitmapUtility.getImage;
 
-public class Modificar2 extends Activity implements OnClickListener{
+public class Modificar2_archivadas extends Activity implements OnClickListener{
 /******************************************************************************************************/
 	// Debugging
 	private static final String TAG = "Main_Activity";
@@ -238,7 +238,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
     int _myId;
     connectionDB db;
-    Button Modificar, Eliminar, Salir, Detalle, Imprimir, Documentos, Archivar;
+    Button Modificar, Eliminar, Salir, Detalle, Imprimir, Documentos, DesArchivar;
 
 	// alex
 
@@ -250,13 +250,13 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		// Set up the window layout
 		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
-		setContentView(R.layout.main2);
+		setContentView(R.layout.main2_archivadas);
 
 
 		Bundle b = getIntent().getExtras();
 		if (b!=null) {
 			_myId = b.getInt("id");
-			Toast.makeText(Modificar2.this,"ID a Modifcar :"+_myId, Toast.LENGTH_SHORT ).show();
+			Toast.makeText(Modificar2_archivadas.this,"ID a Modifcar :"+_myId, Toast.LENGTH_SHORT ).show();
 
 		}
 
@@ -307,6 +307,7 @@ public class Modificar2 extends Activity implements OnClickListener{
                 razon_social.setText(Mrazon_social);
                 direccion.setText(Mdireccion);
                 moneda.setText(Mmoneda);
+
        //         fecha.setText(Mfecha);
        //         correo.setText(Mcorreo);
 
@@ -378,7 +379,7 @@ public class Modificar2 extends Activity implements OnClickListener{
         Detalle = (Button) findViewById(R.id.button_Detalle);
 //        Imprimir = (Button) findViewById(R.id.button_Imprimir);
         Documentos = (Button) findViewById(R.id.button_Documentos);
-		Archivar = (Button) findViewById(R.id.button_Archivar);
+		DesArchivar = (Button) findViewById(R.id.button_Activar);
 
         Salir = (Button) findViewById(R.id.button_Salir);
 
@@ -395,7 +396,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
 
-        Modificar.setOnClickListener(new View.OnClickListener() {
+        Modificar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Modificar(_myId,
@@ -410,30 +411,31 @@ public class Modificar2 extends Activity implements OnClickListener{
         });
 
 
-		Archivar.setOnClickListener(new View.OnClickListener() {
+		DesArchivar.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Archivar(_myId);
+				DesArchivar(_myId);
 			}
 		});
 
 
 
 
-		Detalle.setOnClickListener(new View.OnClickListener() {
+
+		Detalle.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Modificar2.this,MainActivity_Detalle.class );
+                Intent intent = new Intent(Modificar2_archivadas.this,MainActivity_Detalle.class );
                 intent.putExtra("id",_myId);
                 startActivity(intent);
             }
         });
 
 
-        Documentos.setOnClickListener(new View.OnClickListener() {
+        Documentos.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Modificar2.this,init_alfilPOS.class );
+                Intent intent = new Intent(Modificar2_archivadas.this,init_alfilPOS.class );
                 startActivity(intent);
             }
         });
@@ -443,7 +445,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
 
-        Eliminar.setOnClickListener(new View.OnClickListener() {
+        Eliminar.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 Eliminar(_myId);
@@ -594,7 +596,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.button_scan:{
-			Intent serverIntent = new Intent(Modificar2.this, DeviceListActivity.class);
+			Intent serverIntent = new Intent(Modificar2_archivadas.this, DeviceListActivity.class);
 			startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 			break;
 		}
@@ -635,7 +637,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 					byte[] buf = Other.HexStringToBytes(str);
 					SendDataByte(buf);
 				}else{
-					Toast.makeText(Modificar2.this, getText(R.string.empty), Toast.LENGTH_SHORT).show();
+					Toast.makeText(Modificar2_archivadas.this, getText(R.string.empty), Toast.LENGTH_SHORT).show();
 				}
 			} else {
 				// manda Imprimir el Ticket POS con QR
@@ -718,7 +720,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		}
 
 			case R.id.btn_alfilPOS:{
-				Intent serverIntent = new Intent(Modificar2.this, init_alfilPOS.class);
+				Intent serverIntent = new Intent(Modificar2_archivadas.this, init_alfilPOS.class);
 				startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
 				break;
             }
@@ -726,19 +728,19 @@ public class Modificar2 extends Activity implements OnClickListener{
 			break;
 		}
 	}
-		
+
 /*****************************************************************************************************/
 	/*
 	 * SendDataString
 	 */
 	private void SendDataString(String data) {
-		
+
 		if (mService.getState() != BluetoothService.STATE_CONNECTED) {
 			Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT)
 					.show();
 			return;
 		}
-		if (data.length() > 0) {				
+		if (data.length() > 0) {
 			try {
 				mService.write(data.getBytes("GBK"));
 			} catch (UnsupportedEncodingException e) {
@@ -747,22 +749,22 @@ public class Modificar2 extends Activity implements OnClickListener{
 			}
 		}
 	}
-	
+
 	/*
-	 *SendDataByte 
+	 *SendDataByte
 	 */
 	private void SendDataByte(byte[] data) {
-		
+
 		if (mService.getState() != BluetoothService.STATE_CONNECTED) {
 			Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT)
 					.show();
 			return;
-		}			
+		}
 		mService.write(data);
 	}
 
 	/****************************************************************************************************/
-	@SuppressLint("HandlerLeak") 
+	@SuppressLint("HandlerLeak")
 	private final Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
@@ -802,10 +804,10 @@ public class Modificar2 extends Activity implements OnClickListener{
 				}
 				break;
 			case MESSAGE_WRITE:
-				
+
 				break;
 			case MESSAGE_READ:
-				
+
 				break;
 			case MESSAGE_DEVICE_NAME:
 				// save the connected device's name
@@ -885,15 +887,15 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 					Uri selectedImage = data.getData();
 					String[] filePathColumn = { MediaColumns.DATA };
-		
+
 					Cursor cursor = getContentResolver().query(selectedImage,
 							filePathColumn, null, null, null);
 					cursor.moveToFirst();
-		
+
 					int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
 					String picturePath = cursor.getString(columnIndex);
 					cursor.close();
-		
+
 					BitmapFactory.Options opts = new BitmapFactory.Options();
 					opts.inJustDecodeBounds = true;
 					BitmapFactory.decodeFile(picturePath, opts);
@@ -951,7 +953,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 			SendDataByte(PrinterCommand.POS_Set_PrtInit());
 		}
   	}
-	
+
 	/**
 	 * 打印测试页
 	// * @param mPrinter
@@ -964,7 +966,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 			SendDataString(msg);
 		}
 	}
-	
+
 	/*
 	 * 打印图片
 	 */
@@ -1002,13 +1004,13 @@ public class Modificar2 extends Activity implements OnClickListener{
 			SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
 			SendDataByte(PrinterCommand.POS_Set_Cut(1));
 			SendDataByte(PrinterCommand.POS_Set_PrtInit());
-		}		
+		}
 	}
 
 	/**
 	 * 打印自定义表格
 	 */
-	@SuppressLint("SimpleDateFormat") 
+	@SuppressLint("SimpleDateFormat")
 	private void PrintTable(){
 
 		String lang = getString(R.string.strLang);
@@ -1016,7 +1018,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
 		Date curDate = new Date(System.currentTimeMillis());//获取当前时间
 		String str = formatter.format(curDate);
-		String date = str + "\n\n\n\n\n\n";	
+		String date = str + "\n\n\n\n\n\n";
 		if(is58mm){
 
 			Command.ESC_Align[2] = 0x02;
@@ -1076,7 +1078,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 			SimpleDateFormat formatter = new SimpleDateFormat ("yyyy/MM/dd/ HH:mm:ss ");
 			Date curDate = new Date(System.currentTimeMillis());//获取当前时间
 			String str = formatter.format(curDate);
-			String date = str + "\n\n\n\n\n\n";	
+			String date = str + "\n\n\n\n\n\n";
 			if(is58mm){
 
 				Command.ESC_Align[2] = 0x02;
@@ -1138,7 +1140,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 	/**
 	 * 打印自定义小票
 	 */
-	@SuppressLint("SimpleDateFormat") 
+	@SuppressLint("SimpleDateFormat")
 	private void Print_Ex(){
 
 		String lang = getString(R.string.strLang);
@@ -1146,7 +1148,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy年MM月dd日 HH:mm:ss ");
 		Date curDate = new Date(System.currentTimeMillis());//获取当前时间
 		String str = formatter.format(curDate);
-		String date = str + "\n\n\n\n\n\n";	
+		String date = str + "\n\n\n\n\n\n";
 		if (is58mm) {
 
 			try {
@@ -1176,7 +1178,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				SendDataByte(Command.ESC_Align);
 				Command.GS_ExclamationMark[2] = 0x00;
 				SendDataByte(Command.GS_ExclamationMark);
-				
+
 				SendDataByte("(以上信息为测试模板,如有苟同，纯属巧合!)\n".getBytes("GBK"));
 				Command.ESC_Align[2] = 0x02;
 				SendDataByte(Command.ESC_Align);
@@ -1231,7 +1233,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 			SimpleDateFormat formatter = new SimpleDateFormat ("yyyy/MM/dd/ HH:mm:ss ");
 			Date curDate = new Date(System.currentTimeMillis());//获取当前时间
 			String str = formatter.format(curDate);
-			String date = str + "\n\n\n\n\n\n";	
+			String date = str + "\n\n\n\n\n\n";
 			if (is58mm) {
 
 				try {
@@ -1261,7 +1263,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 					SendDataByte(Command.ESC_Align);
 					Command.GS_ExclamationMark[2] = 0x00;
 					SendDataByte(Command.GS_ExclamationMark);
-					
+
 					SendDataByte("(The above information is for testing template, if agree, is purely coincidental!)\n".getBytes("GBK"));
 					Command.ESC_Align[2] = 0x02;
 					SendDataByte(Command.ESC_Align);
@@ -1319,8 +1321,8 @@ public class Modificar2 extends Activity implements OnClickListener{
 	 * 打印条码、二维码
 	 */
 	private void printBarCode() {
-		
-		new AlertDialog.Builder(Modificar2.this).setTitle(getText(R.string.btn_prtcode))
+
+		new AlertDialog.Builder(Modificar2_archivadas.this).setTitle(getText(R.string.btn_prtcode))
 		.setItems(codebar, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				SendDataByte(byteCodebar[which]);
@@ -1334,7 +1336,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 						SendDataString("UPC_A\n");
 						SendDataByte(code);
 					}else {
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}
@@ -1347,7 +1349,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 						SendDataString("UPC_E\n");
 						SendDataByte(code);
 					}else {
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}
@@ -1360,7 +1362,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 						SendDataString("JAN13(EAN13)\n");
 						SendDataByte(code);
 					}else {
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}
@@ -1373,7 +1375,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 						SendDataString("JAN8(EAN8)\n");
 						SendDataByte(code);
 					}else {
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 				}
@@ -1381,7 +1383,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				{
 					if(str.length() == 0)
 					{
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 					else
@@ -1396,7 +1398,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				{
 					if(str.length() == 0)
 					{
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 					else
@@ -1411,7 +1413,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				{
 					if(str.length() == 0)
 					{
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 					else
@@ -1426,7 +1428,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				{
 					if(str.length() == 0)
 					{
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 					else
@@ -1441,7 +1443,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				{
 					if(str.length() == 0)
 					{
-						Toast.makeText(Modificar2.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.msg_error), Toast.LENGTH_SHORT).show();
 						return;
 					}
 					else
@@ -1456,7 +1458,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				{
 					if(str.length() == 0)
 					{
-						Toast.makeText(Modificar2.this, getText(R.string.empty1), Toast.LENGTH_SHORT).show();
+						Toast.makeText(Modificar2_archivadas.this, getText(R.string.empty1), Toast.LENGTH_SHORT).show();
 						return;
 					}
 					else
@@ -1468,13 +1470,13 @@ public class Modificar2 extends Activity implements OnClickListener{
 					}
 				}
 			}
-		}).create().show();	
+		}).create().show();
 	}
 
 	/**
 	 * public static Bitmap createAppIconText(Bitmap icon, String txt, boolean is58mm, int hight)
 	 * Bitmap  icon     源图
-	 * String txt       要转换的字符串  
+	 * String txt       要转换的字符串
 	 * boolean is58mm   打印宽度(58和80)
 	 * int hight        转换后的图片高度
 	 */
@@ -1482,16 +1484,16 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		String txt_msg = " dfg sdf df g";
 		if(txt_msg.length() == 0){
-			Toast.makeText(Modificar2.this, getText(R.string.empty1), Toast.LENGTH_SHORT).show();
+			Toast.makeText(Modificar2_archivadas.this, getText(R.string.empty1), Toast.LENGTH_SHORT).show();
 			return;
 		}else{
 			Bitmap bm1 = getImageFromAssetsFile(".\\demo.bmp");
 			if(true){
-				
+
 				Bitmap bmp = Other.createAppIconText(bm1,txt_msg,25,is58mm,200);
 				int nMode = 0;
 				int nPaperWidth = 384;
-				
+
 				if(bmp != null)
 				{
 					byte[] data = PrintPicture.POS_PrintBMP(bmp, nPaperWidth, nMode);
@@ -1506,7 +1508,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 			else if (false){
 				Bitmap bmp = Other.createAppIconText(bm1,txt_msg,25,false,200);
 				int nMode = 0;
-				
+
 				int nPaperWidth = 576;
 				if(bmp != null)
 				{
@@ -1521,7 +1523,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 			}
 		}
 	}
-	
+
 	/**
 	 * 打印指令测试
 	 */
@@ -1529,7 +1531,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		String lang = getString(R.string.strLang);
 		if((lang.compareTo("cn")) == 0){
-		new AlertDialog.Builder(Modificar2.this).setTitle(getText(R.string.chosecommand))
+		new AlertDialog.Builder(Modificar2_archivadas.this).setTitle(getText(R.string.chosecommand))
 		.setItems(items, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				SendDataByte(byteCommands[which]);
@@ -1540,15 +1542,15 @@ public class Modificar2 extends Activity implements OnClickListener{
 					}else {
 						SendDataByte("热敏票据打印机ABCDEFGabcdefg123456,.;'/[{}]!\n热敏票据打印机ABCDEFGabcdefg123456,.;'/[{}]!\n热敏票据打印机ABCDEFGabcdefg123456,.;'/[{}]!\n热敏票据打印机ABCDEFGabcdefg123456,.;'/[{}]!\n热敏票据打印机ABCDEFGabcdefg123456,.;'/[{}]!\n热敏票据打印机ABCDEFGabcdefg123456,.;'/[{}]!\n".getBytes("GBK"));
 					}
-					
+
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-		}).create().show();	
+		}).create().show();
 		}else if((lang.compareTo("en")) == 0){
-			new AlertDialog.Builder(Modificar2.this).setTitle(getText(R.string.chosecommand))
+			new AlertDialog.Builder(Modificar2_archivadas.this).setTitle(getText(R.string.chosecommand))
 			.setItems(itemsen, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int which) {
 					SendDataByte(byteCommands[which]);
@@ -1559,18 +1561,18 @@ public class Modificar2 extends Activity implements OnClickListener{
 						}else {
 							SendDataByte("Thermal Receipt Printer ABCDEFGabcdefg123456,.;'/[{}]!\nThermal Receipt PrinterABCDEFGabcdefg123456,.;'/[{}]!\nThermal Receipt PrinterABCDEFGabcdefg123456,.;'/[{}]!\nThermal Receipt PrinterABCDEFGabcdefg123456,.;'/[{}]!\nThermal Receipt PrinterABCDEFGabcdefg123456,.;'/[{}]!\nThermal Receipt PrinterABCDEFGabcdefg123456,.;'/[{}]!\n".getBytes("GBK"));
 						}
-						
+
 					} catch (UnsupportedEncodingException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
-			}).create().show();	
+			}).create().show();
 			}
 	}
-/************************************************************************************************/	
-	/* 
-	 * 生成QR图 
+/************************************************************************************************/
+	/*
+	 * 生成QR图
 	 */
     private void createImage(String _codigo_qr) {
 	        try {
@@ -1612,7 +1614,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 	                    Bitmap.Config.ARGB_8888);
 
 	            bitmap.setPixels(pixels, 0, QR_WIDTH, 0, 0, QR_WIDTH, QR_HEIGHT);
-	            
+
 	            byte[] data = PrintPicture.POS_PrintBMP(bitmap, 384, 0);
 	            SendDataByte(data);
 	            SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
@@ -1630,7 +1632,7 @@ public class Modificar2 extends Activity implements OnClickListener{
   	    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
   	    startActivityForResult(takePictureIntent, actionCode);
   	}
-  	
+
   	private void handleSmallCameraPhoto(Intent intent) {
   	    Bundle extras = intent.getExtras();
   	    Bitmap mImageBitmap = (Bitmap) extras.get("data");
@@ -1716,7 +1718,7 @@ public class Modificar2 extends Activity implements OnClickListener{
         String _alcance = "WHERE _id="+_id;
 
         db.getWritableDatabase().update(TABLE, valoresCabecera, TABLE_ID + "=?",new String[] { String.valueOf(_id) });
-        Toast.makeText(Modificar2.this,"Se Modifico el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
+        Toast.makeText(Modificar2_archivadas.this,"Se Modifico el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
 
         Intent intent = new Intent(this,init_alfilPOS.class );
         startActivity(intent);
@@ -1737,7 +1739,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		String _alcance = "WHERE _id="+_id;
 
 		db.getWritableDatabase().update(TABLE, valoresCabecera, TABLE_ID + "=?",new String[] { String.valueOf(_id) });
-		Toast.makeText(Modificar2.this,"Se Archivo el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
+		Toast.makeText(Modificar2_archivadas.this,"Se Archivo el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
 
 		Intent intent = new Intent(this,init_alfilPOS.class );
 		startActivity(intent);
@@ -1764,7 +1766,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
         db.getWritableDatabase().delete(TABLE,TABLE_ID + "=?",new String[] { String.valueOf(_id) });
-        Toast.makeText(Modificar2.this,"Se Elimino el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
+        Toast.makeText(Modificar2_archivadas.this,"Se Elimino el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
 
         Intent intent = new Intent(this,init_alfilPOS.class );
         startActivity(intent);
@@ -1834,7 +1836,7 @@ public class Modificar2 extends Activity implements OnClickListener{
         String _alcance = "WHERE _id="+_id;
 
         db.getWritableDatabase().update(TABLE, valoresCabecera, TABLE_ID + "=?",new String[] { String.valueOf(_id) });
-        Toast.makeText(Modificar2.this,"Se Modifico el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
+        Toast.makeText(Modificar2_archivadas.this,"Se Modifico el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
 
         Intent intent = new Intent(this,init_alfilPOS.class );
         startActivity(intent);
@@ -2034,12 +2036,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
 		ClipboardManager clipboard = null;
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
 		}
 		ClipData clip = ClipData.newPlainText("recibo", _salida+_buttom_temp);
 		clipboard.setPrimaryClip(clip);
-		Toast.makeText(Modificar2.this,"Es Registro fue enviado a Memoria"+_salida, Toast.LENGTH_LONG ).show();
+		Toast.makeText(Modificar2_archivadas.this,"Es Registro fue enviado a Memoria"+_salida, Toast.LENGTH_LONG ).show();
 
 		String _tipo_documento_adquiriente="1";
 		if (Mruc.length()>8) {
@@ -2117,6 +2119,26 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		return getImage(image);
 	}
+
+	private void DesArchivar(int _id) {
+
+		ContentValues valoresCabecera = new ContentValues();
+		valoresCabecera.put("archivada", 0);
+
+
+		db = new connectionDB(this);
+
+		String _alcance = "WHERE _id="+_id;
+
+		db.getWritableDatabase().update(TABLE, valoresCabecera, TABLE_ID + "=?",new String[] { String.valueOf(_id) });
+		Toast.makeText(Modificar2_archivadas.this,"Se Des-Archivo el Reg: :"+_id, Toast.LENGTH_SHORT ).show();
+
+		Intent intent = new Intent(this,init_alfilPOS.class );
+		startActivity(intent);
+
+	}
+
+
 
 
 }

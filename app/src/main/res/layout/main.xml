@@ -160,7 +160,7 @@
             android:text="@string/chosecommand"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:visibility="invisible">
+            >
         </Button>
         
         <Button
@@ -170,7 +170,7 @@
             android:text="@string/btn_prttable"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:visibility="invisible">
+            >
 
         </Button>
        
@@ -189,7 +189,7 @@
             android:text="@string/Smallticketprinting"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:visibility="invisible">
+            >
         </Button>
         
         <Button
@@ -199,7 +199,7 @@
             android:text="@string/btn_prtcode"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:visibility="invisible">
+            >
         </Button>
        
     </LinearLayout>
@@ -227,7 +227,7 @@
             android:text="@string/btn_dyca"
             android:layout_weight="1.0"
             android:gravity="center"
-            android:visibility="invisible">
+            >
         </Button>
        
     </LinearLayout>
@@ -251,7 +251,7 @@
         android:maxHeight="1920dp"
         android:maxWidth="1080dp"
         android:contentDescription="@string/contentdescription"
-        android:visibility="invisible"/>
+        />
             
              </LinearLayout>                      
     </ScrollView>

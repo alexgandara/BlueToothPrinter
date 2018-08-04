@@ -107,5 +107,36 @@
             android:configChanges="orientation|keyboardHidden" />
 
 
+        <activity android:name="global.factura.qrpos.MainActivity_Clientes"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+        <activity android:name="global.factura.qrpos.addDatos_Clientes"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+
+        <activity android:name="global.factura.qrpos.Clientes"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+
+        <activity android:name="global.factura.qrpos.init_alfilPOS_archivadas"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+        <activity android:name="global.factura.qrpos.Modificar2_archivadas"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+
+
+
+
     </application>
 </manifest>

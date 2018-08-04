@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -40,12 +41,23 @@ public class MainActivity_Detalle extends Activity {
         lista = (ListView) findViewById(R.id.listView_Lista_Detalle);
         showNotes_detalle(_myId);
 
+        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int _id= Integer.parseInt(item.get(i).split(" ")[0]);
+
+                Intent intent = new Intent(MainActivity_Detalle.this,Detalle.class);
+                intent.putExtra("id",_id);
+                startActivity(intent);
+            }
+        });
+
+
+
+
 
         Agregar_Detalle = (Button) findViewById(R.id.Button_Agregar_Detalle);
         Ir_a_Documentos = (Button) findViewById(R.id.Button_Ir_a_Documentos);
-
-
-
 
 
 
