@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">alfilPOS</string>
-    <string name="app_title">alfilPOS</string>
+    <string name="app_name">alfilPOS3</string>
+    <string name="app_title">alfilPOS3</string>
     
 	<!--main_activity-->
 	<string name="connect">Buscar la Impresora  Bluetooth</string>
