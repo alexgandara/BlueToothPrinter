@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Alejandro on 3/12/2018.
+ * Created by Alejandro on 3/12/2018.  Alex Gandara
  */
 
 public class connectionDB extends SQLiteOpenHelper {
@@ -76,10 +76,19 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String LINEA04 = "linea04";
     public static final String LINEA05 = "linea05";
     public static final String LINEA06 = "linea06";
+    public static final String LINEA07 = "linea07";
+    public static final String LINEA08 = "linea08";
+    public static final String LINEA09 = "linea09";
+
     public static final String BASE01 = "base01";
     public static final String BASE02 = "base02";
     public static final String BASE03 = "base03";
     public static final String BASE04 = "base04";
+    public static final String BASE05 = "base05";
+    public static final String BASE06 = "base06";
+
+
+
     public static final String LOGO = "logo";
 
 
@@ -90,6 +99,7 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String DIRECCION_CLIENTE = "direccion_cliente";
     public static final String CORREO_CLIENTE = "correo_cliente";
     public static final String TELEFONO_CLIENTE = "telefono_cliente";
+    public static final String TIPO_INDENTIDAD = "tipo_identidad";
 
 
     // variables para table unidades de medida
@@ -277,12 +287,16 @@ public class connectionDB extends SQLiteOpenHelper {
                 LINEA04 + " TEXT, "+
                 LINEA05 + " TEXT, "+
                 LINEA06 + " TEXT, "+
+                LINEA07 + " TEXT, "+
+                LINEA08 + " TEXT, "+
+                LINEA09 + " TEXT, "+
                 BASE01 + " TEXT, "+
                 BASE02 + " TEXT, "+
                 BASE03 + " TEXT, "+
-                BASE04 + " TEXT)"
+                BASE04 + " TEXT, "+
+                BASE05 + " TEXT, "+
+                BASE06 + " TEXT)"
         );
-
 
 
 
@@ -291,24 +305,25 @@ public class connectionDB extends SQLiteOpenHelper {
         try {
             ContentValues valuesEmpresa = new ContentValues();
             for (int i = 0; i < 1; i++) {
+
                 valuesEmpresa.put(RAZON_SOCIAL_EMPRESA, "MI EMPRESA SAC");
-                valuesEmpresa.put(RUC_EMPRESA, "12345678901");
+                valuesEmpresa.put(RUC_EMPRESA,    "12345678901");
                 valuesEmpresa.put(DIRECCION_EMPRESA_1, "DIRECCION 1");
                 valuesEmpresa.put(DIRECCION_EMPRESA_2, "DIRECCION 2");
                 valuesEmpresa.put(CORREO_EMPRESA, "mcorreo@miempresa.com");
                 valuesEmpresa.put(TELEFONO_EMPRESA, "(+) 01 111-222-333");
                 valuesEmpresa.put(LICENCIA, "PUBLICA");
-                valuesEmpresa.put(LINEA01, "       LA GRAN EMPRESA          ");
-//                                          ================================
-                valuesEmpresa.put(LINEA02, "      RUC: 0000000000");
-                valuesEmpresa.put(LINEA03, "   DIR1: AV. PRINCIPAL 00000");
-                valuesEmpresa.put(LINEA04, "  ventas@lagranempresa.com.pe");
-                valuesEmpresa.put(LINEA05, "     TEL: 111-111-111");
-                valuesEmpresa.put(LINEA06, "   www.lagranempresa.com-mx");
-                valuesEmpresa.put(BASE01, "  consulte su comprobante fiscal");
-                valuesEmpresa.put(BASE02, "   en www.factura.elect.com.pe");
-                valuesEmpresa.put(BASE03, "     para ventas al mayoreo");
-                valuesEmpresa.put(BASE04, "     ventas@superventas.com");
+                valuesEmpresa.put(LINEA01, " L A  G R A N  E M P R E S A   ");
+//                                          ===============================
+                valuesEmpresa.put(LINEA02, "   DIR1: AV. PRINCIPAL 00000   ");
+                valuesEmpresa.put(LINEA03, "  DIR1:  AV. SECUNDARIA 00000  ");
+                valuesEmpresa.put(LINEA04, "  ventas@lagranempresa.com.pe  ");
+                valuesEmpresa.put(LINEA05, "TEL: 111-111-111   123-125-452 ");
+                valuesEmpresa.put(LINEA06, "   www.lagranempresa.com-mx    ");
+                valuesEmpresa.put(BASE01, " consulte su comprobante fiscal ");
+                valuesEmpresa.put(BASE02, "  en www.factura.elect.com.pe   ");
+                valuesEmpresa.put(BASE03, "     para ventas al mayoreo     ");
+                valuesEmpresa.put(BASE04, "     ventas@superventas.com     ");
 
 
                 db.insert(TABLE_EMPRESA, null, valuesEmpresa);
@@ -321,11 +336,12 @@ public class connectionDB extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE "+ TABLE_CLIENTES + " (" +
                 TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                RAZON_SOCIAL_CLIENTE +" TEXT,"+
-                RUC_CLIENTE +" TEXT,"+
-                DIRECCION_CLIENTE + " TEXT,"+
-                CORREO_CLIENTE + " TEXT,"+
-                TELEFONO_CLIENTE + " TEXT)");
+                RAZON_SOCIAL_CLIENTE +" TEXT DEFAULT '',"+
+                RUC_CLIENTE +" TEXT DEFAULT '00000000',"+
+                DIRECCION_CLIENTE + " TEXT DEFAULT '',"+
+                CORREO_CLIENTE + " TEXT DEFAULT '',"+
+                TIPO_INDENTIDAD + " TEXT DEFAULT '1',"+
+                TELEFONO_CLIENTE + " TEXT DEFAULT '')");
 
 
         db.beginTransaction();
@@ -337,6 +353,7 @@ public class connectionDB extends SQLiteOpenHelper {
                 valuesClientes.put(DIRECCION_CLIENTE, "SIN DIRECCION");
                 valuesClientes.put(CORREO_CLIENTE, "SIN CORREO-");
                 valuesClientes.put(TELEFONO_CLIENTE, "SIN TELEFONO");
+                valuesClientes.put(TIPO_INDENTIDAD, "1");
 
                 db.insert(TABLE_CLIENTES, null, valuesClientes);
             }
@@ -761,9 +778,9 @@ public class connectionDB extends SQLiteOpenHelper {
     }
 
     public Cursor getReg_TicketPos(int _id) {
-        String columnas[] = {"_id","linea01", "linea02", "linea03", "linea04", "linea05", "linea06",
+        String columnas[] = {"_id","linea01", "linea02", "linea03", "linea04", "linea05", "linea06","linea07", "linea08", "linea09",
                 "ruc_empresa",
-                "base01", "base02", "base03", "base04"};
+                "base01", "base02", "base03", "base04", "base05", "base06"};
 
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
         return c;
