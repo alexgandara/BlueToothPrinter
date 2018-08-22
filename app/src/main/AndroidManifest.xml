@@ -8,16 +8,15 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8"/>
 
     <application android:label="@string/app_name"
-                 android:icon="@drawable/ic_launcher"
-                 android:debuggable="false"
-        tools:ignore="HardcodedDebugMode">
+                 android:icon="@drawable/logo" >
         <activity android:name="global.factura.qrpos.Main_Activity"
                   android:label="@string/app_name"
                   android:configChanges="orientation|keyboardHidden">
@@ -136,6 +135,31 @@
             android:theme="@android:style/Theme.Dialog"
             android:configChanges="orientation|keyboardHidden" />
 
+        <activity android:name="global.factura.qrpos.addDatos_Notas"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+        <activity android:name="global.factura.qrpos.MainActivity_Unidades"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+
+        <activity android:name="global.factura.qrpos.Unidades"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+        <activity android:name="global.factura.qrpos.addDatos_Unidades"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
+
+        <activity android:name="global.factura.qrpos.TicketPos_Base"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog"
+            android:configChanges="orientation|keyboardHidden" />
 
 
 

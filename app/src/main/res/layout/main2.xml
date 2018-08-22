@@ -205,6 +205,25 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button_Correo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Enviar Correo"></Button>
+            </LinearLayout>
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

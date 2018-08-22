@@ -48,6 +48,9 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static global.factura.qrpos.DbBitmapUtility.getBytes;
+import static global.factura.qrpos.DbBitmapUtility.getImage;
+
 public class Main_Activity extends Activity implements OnClickListener{
 /******************************************************************************************************/
 	// Debugging
@@ -85,7 +88,7 @@ public class Main_Activity extends Activity implements OnClickListener{
 /*********************************************************************************/	
 	private TextView mTitle;
 	EditText editText;
-	ImageView imageViewPicture;
+	ImageView imageViewPicture, imageViewPictureLogo;
 	private static boolean is58mm = true;
 	private RadioButton width_58mm, width_80;
 	private RadioButton thai, big5, Simplified, Korean;
@@ -170,6 +173,11 @@ public class Main_Activity extends Activity implements OnClickListener{
 			{ 0x1b, 0x40 },// 复位打印机
 	};
 /******************************************************************************************************/
+
+
+	int _myId;
+	connectionDB db;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -177,27 +185,20 @@ public class Main_Activity extends Activity implements OnClickListener{
 			Log.e(TAG, "+++ ON CREATE +++");
 
 		// Set up the window layout
-		requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+	//	requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 		setContentView(R.layout.main);
-		getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
-				R.layout.custom_title);
+	//	getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+	//			R.layout.custom_title);
 
 		// Set up the custom title
-		mTitle = (TextView) findViewById(R.id.title_left_text);
-		mTitle.setText(R.string.app_title);
-		mTitle = (TextView) findViewById(R.id.title_right_text);
+	//	mTitle = (TextView) findViewById(R.id.title_left_text);
+	//	mTitle.setText(R.string.app_title);
+	//	mTitle = (TextView) findViewById(R.id.title_right_text);
 
 		// Get local Bluetooth adapter
 		mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
-		Intent serverIntent = new Intent(Main_Activity.this, init_alfilPOS.class);
-		startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
-		// If the adapter is null, then Bluetooth is not supported
-	//	if (mBluetoothAdapter == null) {
-	//		Toast.makeText(this, "El Puerto Bluetooth no esta disponible...",
-	//				Toast.LENGTH_LONG).show();
-	//		finish();
-	//	}
+
 	}
 
 	@Override
@@ -281,6 +282,8 @@ public class Main_Activity extends Activity implements OnClickListener{
 		
 		imageViewPicture = (ImageView) findViewById(R.id.imageViewPictureUSB);
 		imageViewPicture.setOnClickListener(this);
+
+		imageViewPictureLogo = (ImageView) findViewById(R.id.imageAlfilPos);
 	
 		btnClose = (Button)findViewById(R.id.btn_close);
 		btnClose.setOnClickListener(this);
@@ -318,12 +321,29 @@ public class Main_Activity extends Activity implements OnClickListener{
 		thai.setOnClickListener(this);
 		Korean = (RadioButton)findViewById(R.id.kor);
 		Korean.setOnClickListener(this);
-		
-		Bitmap bm = getImageFromAssetsFile("demo.bmp");
-		if (null != bm) {
-			imageViewPicture.setImageBitmap(bm);
+
+		Bitmap mBitmap = null;
+
+
+
+		mBitmap = _get_logo(1);
+
+
+		if (null == mBitmap) {
+			Bitmap bm = getImageFromAssetsFile("aquiLogo.png");
+			if (null != bm) {
+				imageViewPicture.setImageBitmap(bm);
+			}
+
+		} else {
+			imageViewPicture.setImageBitmap(mBitmap);
 		}
-		
+
+
+		Bitmap bmLogo = getImageFromAssetsFile("logoFG.png");
+		if (null != bmLogo) {
+			imageViewPictureLogo.setImageBitmap(bmLogo);
+		}
 		editText.setEnabled(false);
 		imageViewPicture.setEnabled(false);
 		width_58mm.setEnabled(false);
@@ -563,7 +583,7 @@ public class Main_Activity extends Activity implements OnClickListener{
 					break;
 				case BluetoothService.STATE_LISTEN:
 				case BluetoothService.STATE_NONE:
-					mTitle.setText(R.string.title_not_connected);
+//					mTitle.setText(R.string.title_not_connected);
 					break;
 				}
 				break;
@@ -676,7 +696,13 @@ public class Main_Activity extends Activity implements OnClickListener{
 					if (null != bitmap) {
 						imageViewPicture.setImageBitmap(bitmap);
 					}
-	        	}else{
+
+					Bitmap bitmapLogo = BitmapFactory.decodeFile(picturePath, opts);
+					if (null != bitmapLogo) {
+						imageViewPictureLogo.setImageBitmap(bitmapLogo);
+					}
+
+				}else{
 					Toast.makeText(this, getString(R.string.msg_statev1), Toast.LENGTH_SHORT).show();
 				}
 				break;
@@ -1446,5 +1472,27 @@ public class Main_Activity extends Activity implements OnClickListener{
 			return image;
 
 		}
+
+	private Bitmap _get_logo(int _id) {
+
+		byte[] image=null;
+
+		db = new connectionDB(this);
+		Cursor cursor =  db.getReg_Image(_id);
+		if (cursor.moveToFirst()) {
+			do {
+				image = cursor.getBlob(1);
+			} while (cursor.moveToNext());
+		}
+
+
+		if (null == image ) {
+			image = getBytes(getImageFromAssetsFile("aquiLogo.png"));
+		}
+
+
+
+		return getImage(image);
+	}
 
 }

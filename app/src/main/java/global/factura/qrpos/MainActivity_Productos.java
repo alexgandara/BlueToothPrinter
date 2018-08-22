@@ -32,6 +32,7 @@ public class MainActivity_Productos extends Activity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +104,7 @@ public class MainActivity_Productos extends Activity {
         db = new connectionDB(this);
         Cursor c = db.getNotes_productos();
         item = new ArrayList<String>();
-        String _producto="",  _descripcion_producto="";
+        String _producto="",  _descripcion_producto="", _unidad="";
 
         int _id, folio;
 
@@ -112,9 +113,10 @@ public class MainActivity_Productos extends Activity {
                 _id = c.getInt(0);
                 _producto = c.getString(1);
                 _descripcion_producto = c.getString(2);
+                _unidad = c.getString(3);
 
 
-                item.add(_id+" - "+_producto+" - "+_descripcion_producto);
+                item.add(_id+" - "+_producto+" - "+_descripcion_producto+" - "+_unidad);
             } while (c.moveToNext());
 
         }

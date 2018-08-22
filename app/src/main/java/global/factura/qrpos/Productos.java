@@ -8,7 +8,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import zj.com.cn.bluetooth.sdk.R;
 
@@ -23,6 +27,7 @@ public class Productos extends Activity {
     public static final String PRECIO_PRODUCTO = "precio";
     public static final String PRECIO_PRODUCTO_MAYOREO = "precio_mayoreo";
     public static final String IGV_PRODUCTO = "igv";
+    public static final String UNIDAD_PRODUCTO = "unidad";
 
 
     private static final String TABLE_PRODUCTOS = "productos";
@@ -30,12 +35,19 @@ public class Productos extends Activity {
     public  int _cabecera_id;
     public String Mproducto;
     public String Mdescripcion_producto;
+    public String Munidad;
     public Double Mprecio;
     public Double Mprecio_Mayoreo;
     public Double Migv;
 
 
-    EditText editText_Producto, editText_Descripcion_Producto, editText_Precio, editText_Precio_Mayoreo, editText_igv;
+    EditText editText_Producto, editText_Descripcion_Producto, editText_Precio, editText_Precio_Mayoreo, editText_igv, editText_Unidad;
+
+    Spinner spinner_Unidedes;
+
+    List<String> _lista_unidades = null;
+
+
 
     int _myId;
     connectionDB db;
@@ -63,21 +75,23 @@ public class Productos extends Activity {
                 editText_Precio = (EditText) findViewById(R.id.editText_Precio);
                 editText_Precio_Mayoreo = (EditText) findViewById(R.id.editText_Precio_Mayoreo);
                 editText_igv = (EditText) findViewById(R.id.editText_igv);
+                editText_Unidad = (EditText) findViewById(R.id.editText_Unidad);
 
+                spinner_Unidedes = (Spinner) findViewById(R.id.spinner_Unidades);
 
                 Mproducto = cursor.getString(1);
                 Mdescripcion_producto = cursor.getString(2);
                 Mprecio = cursor.getDouble (3);
                 Mprecio_Mayoreo = cursor.getDouble (4);
                 Migv = cursor.getDouble(5);
-
+                Munidad = cursor.getString(6);
 
                 editText_Producto.setText(Mproducto);
                 editText_Descripcion_Producto.setText(Mdescripcion_producto);
                 editText_Precio.setText(Mprecio.toString());
                 editText_Precio_Mayoreo.setText(Mprecio_Mayoreo.toString());
                 editText_igv.setText(Migv.toString());
-
+                editText_Unidad.setText(Munidad.toString());
 
                 //  Toast.makeText(Modificar.this,"Razon Social :"+Mrazon_social, Toast.LENGTH_SHORT ).show();
 
@@ -96,6 +110,25 @@ public class Productos extends Activity {
         editText_Precio_Mayoreo = (EditText) findViewById(R.id.editText_Precio_Mayoreo);
         editText_igv = (EditText) findViewById(R.id.editText_igv);
 
+
+    /*    // llenar datos del spiner de precios
+        showNotes_unidades();
+        ArrayAdapter<String> adapter_unidad = new ArrayAdapter <String>(this, android.R.layout.simple_spinner_dropdown_item, _lista_unidades);
+        spinner_Unidedes.setAdapter(adapter_unidad);
+        spinner_Unidedes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView <?> adapterView, View view, int i, long l) {
+                String _unidad = _lista_unidades.get(i).split("/")[0];
+                editText_Unidad.setText(_unidad);
+            }
+            @Override
+            public void onNothingSelected(AdapterView <?> adapterView) {
+            }
+        });
+
+
+*/
+
         Modificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +137,10 @@ public class Productos extends Activity {
                         editText_Descripcion_Producto.getText().toString(),
                         editText_Precio.getText().toString(),
                         editText_Precio_Mayoreo.getText().toString(),
-                        editText_igv.getText().toString());
+                        editText_igv.getText().toString(),
+                        editText_Unidad.getText().toString()
+                        );
+
 
 
             }
@@ -142,7 +178,9 @@ public class Productos extends Activity {
                            String _editText_Descripcion_Producto,
                            String _editText_Precio,
                            String _editText_Precio_Mayoreo,
-                           String _editText_igv) {
+                           String _editText_igv,
+                           String _editText_unidad
+                           ) {
 
         ContentValues valoresProductos = new ContentValues();
         valoresProductos.put(ID_PRODUCTO, _editText_Producto);
@@ -150,7 +188,7 @@ public class Productos extends Activity {
         valoresProductos.put(PRECIO_PRODUCTO, _editText_Precio);
         valoresProductos.put(PRECIO_PRODUCTO_MAYOREO, _editText_Precio_Mayoreo);
         valoresProductos.put(IGV_PRODUCTO, _editText_igv);
-
+        valoresProductos.put(UNIDAD_PRODUCTO, _editText_unidad);
 
 
         db = new connectionDB(this);
@@ -180,6 +218,47 @@ public class Productos extends Activity {
         startActivity(intent);
 
     }
+
+
+
+
+    private void showNotes_unidades() {
+
+
+        db = new connectionDB(this);
+        Cursor c = db.getNotes_unidades();
+        _lista_unidades = new ArrayList<String>();
+        String _unidad="",  _descripcion_unidad="";
+
+
+        // {TABLE_ID,ID_PRODUCTO, DESCRIPCION_PRODUCTO, UNIDAD, PRECIO_PRODUCTO, IGV_PRODUCTO};
+
+        int _id;
+
+        if (c.moveToFirst()) {
+            do {
+                _id = c.getInt(0);
+                _unidad = c.getString(1);
+                _descripcion_unidad = c.getString(2);
+                _lista_unidades.add(_unidad+"/"+
+                        _descripcion_unidad);
+
+            } while (c.moveToNext());
+
+        }
+
+        Salir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _Salir();
+
+
+            }
+        });
+
+
+    }
+
 
 
 

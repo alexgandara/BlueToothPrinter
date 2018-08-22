@@ -20,7 +20,7 @@ public class init_alfilPOS  extends Activity {
 
     ListView lista;
 
-    Button Agragar_Documento, Mnt_Empresas, Mnt_Prdductos, Mnt_Series, Mnt_Clientes, Salir, Archivados;
+    Button Agragar_Documento, Mnt_Empresas, Mnt_Prdductos, Mnt_Series, Mnt_Clientes, Mnt_Unidades, Salir, Archivados, Agregar_Documento_notas;
 
     connectionDB db;
     List<String> item = null;
@@ -61,17 +61,17 @@ public class init_alfilPOS  extends Activity {
                     startActivity(intent);
                 }
 
-     /*           if (_naturaleza.equals("07")) {
-                    Intent intent = new Intent(init_alfilPOS.this,Modificar_Notas.class);
+                if (_naturaleza.equals("07")) {
+                    Intent intent = new Intent(init_alfilPOS.this,Modificar2.class);
                     intent.putExtra("id",_id);
                     startActivity(intent);
                 }
 
                 if (_naturaleza.equals("08")) {
-                    Intent intent = new Intent(init_alfilPOS.this,Modificar_Notas.class);
+                    Intent intent = new Intent(init_alfilPOS.this,Modificar2.class);
                     intent.putExtra("id",_id);
                     startActivity(intent);
-                }*/
+                }
 
 
 
@@ -80,11 +80,15 @@ public class init_alfilPOS  extends Activity {
 
 
         Agragar_Documento = (Button) findViewById(R.id.Button_Agregar_Documento);
+        Agregar_Documento_notas = (Button) findViewById(R.id.Button_Agregar_Documento_notas);
+
+
 
         Mnt_Empresas = (Button) findViewById(R.id.Button_Empresas);
         Mnt_Prdductos= (Button) findViewById(R.id.Button_Productos);
         Mnt_Clientes= (Button) findViewById(R.id.Button_Clientes);
         Mnt_Series= (Button) findViewById(R.id.Button_Series);
+        Mnt_Unidades = (Button) findViewById(R.id.Button_Unidades_Medida);
         Archivados= (Button) findViewById(R.id.Button_Archivados);
 
         Salir= (Button) findViewById(R.id.Button_Salir);
@@ -97,6 +101,17 @@ public class init_alfilPOS  extends Activity {
                 Intent intent = new Intent(init_alfilPOS.this, addDatos.class);
                 startActivity(intent);
               //  return true;
+            }
+        });
+
+
+
+        Agregar_Documento_notas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(init_alfilPOS.this, addDatos_Notas.class);
+                startActivity(intent);
+                //  return true;
             }
         });
 
@@ -129,6 +144,21 @@ public class init_alfilPOS  extends Activity {
                 //  return true;
             }
         });
+
+
+        Mnt_Unidades.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(init_alfilPOS.this, MainActivity_Unidades.class);
+                startActivity(intent);
+                //  return true;
+            }
+        });
+
+
+
+
+
 
 
         Salir.setOnClickListener(new View.OnClickListener() {

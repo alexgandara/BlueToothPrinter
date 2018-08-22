@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:text="@string/title_paired_devices"
         android:visibility="gone"
-        android:background="#666"
-        android:textColor="#fff"
+        android:background="#2b36c9"
+        android:textColor="#ecd615"
         android:paddingLeft="5dp"
     />
     <ListView android:id="@+id/listView_Lista"
@@ -38,8 +38,8 @@
         android:layout_height="wrap_content"
         android:text="@string/title_other_devices"
         android:visibility="gone"
-        android:background="#666"
-        android:textColor="#fff"
+        android:background="#3820c1"
+        android:textColor="#82f2e5"
         android:paddingLeft="5dp"
     />
 
@@ -91,7 +91,7 @@
                 android:layout_weight="1.0"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:text="Agregar  Nota Credito/Debito"></Button>
+                android:text="Agregar  Nota Crédito/Débito"></Button>
 
         </LinearLayout>
 
@@ -110,7 +110,7 @@
                     android:layout_weight="1.0"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="Mantenimiento Clientes"></Button>
+                    android:text="Clientes"></Button>
 
             </LinearLayout>
 
@@ -128,7 +128,7 @@
                     android:layout_weight="1.0"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="Mantenimiento Productos"></Button>
+                    android:text="Productos"></Button>
 
             </LinearLayout>
 
@@ -146,7 +146,7 @@
                     android:layout_weight="1.0"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="Mantenimiento Series"></Button>
+                    android:text="Series"></Button>
 
             </LinearLayout>
 
@@ -164,7 +164,7 @@
                     android:layout_weight="1.0"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="Mantenimiento Empresas"></Button>
+                    android:text="Configuración de Empresa"></Button>
 
             </LinearLayout>
 
@@ -183,7 +183,7 @@
                     android:layout_weight="1.0"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="Mantenimiento Unidades de Medica"></Button>
+                    android:text="Unidades de Medida"></Button>
 
             </LinearLayout>
 

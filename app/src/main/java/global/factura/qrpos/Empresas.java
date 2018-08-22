@@ -21,7 +21,7 @@ public class Empresas extends Activity {
 
     int _myId = 1;
     connectionDB db;
-    Button Modificar, Salir, TicketPos;
+    Button Modificar, Salir, TicketPos, TicketPos_base;
 
 
     @Override
@@ -78,6 +78,7 @@ public class Empresas extends Activity {
         Modificar = (Button) findViewById(R.id.button_Modificar);
         Salir = (Button) findViewById(R.id.button_Salir);
         TicketPos = (Button) findViewById(R.id.button_TicketPos);
+        TicketPos_base = (Button) findViewById(R.id.button_TicketPos_Buttom);
 
         razon_social = (EditText) findViewById(R.id.editText_Razon_Social);
         ruc = (EditText) findViewById(R.id.editText_Ruc);
@@ -117,6 +118,16 @@ public class Empresas extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Empresas.this,TicketPos.class );
+                startActivity(intent);
+
+            }
+        });
+
+
+        TicketPos_base.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Empresas.this,TicketPos_Base.class );
                 startActivity(intent);
 
             }

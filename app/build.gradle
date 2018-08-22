@@ -10,14 +10,14 @@ android {
 
     }
 
-    compileSdkVersion 26
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId 'global.factura.alfilpos'
-        minSdkVersion 8
-        targetSdkVersion 8
-        versionCode 23
-        versionName '23.0'
+        minSdkVersion 9
+        targetSdkVersion 28
+        versionCode 26
+        versionName '26.0'
     }
     buildTypes {
         release {
@@ -26,7 +26,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         debug {
-            debuggable true
+            debuggable false
         }
     }
     productFlavors {

@@ -230,6 +230,8 @@ public class Modificar2 extends Activity implements OnClickListener{
 	public String _base02="";
 	public String _base03="";
 	public String _base04="";
+	public String _base05="";
+	public String _base06="";
 
 
 	EditText serie, folio, ruc, razon_social, direccion, moneda, fecha, correo;
@@ -238,7 +240,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
     int _myId;
     connectionDB db;
-    Button Modificar, Eliminar, Salir, Detalle, Imprimir, Documentos, Archivar;
+    Button Modificar, Eliminar, Salir, Detalle, Imprimir, Documentos, Archivar, Enviar_Correo;
 
 	// alex
 
@@ -379,6 +381,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 //        Imprimir = (Button) findViewById(R.id.button_Imprimir);
         Documentos = (Button) findViewById(R.id.button_Documentos);
 		Archivar = (Button) findViewById(R.id.button_Archivar);
+		Enviar_Correo = (Button) findViewById(R.id.button_Correo);
 
         Salir = (Button) findViewById(R.id.button_Salir);
 
@@ -450,6 +453,36 @@ public class Modificar2 extends Activity implements OnClickListener{
 
             }
         });
+
+
+
+/*
+		Enviar_Correo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Log.i("Send email", "");
+				String[] TO = {"alejandro.gandara33@gmail.com"};
+				String[] CC = {""};
+				Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+				emailIntent.setData(Uri.parse("mailto:"));
+				emailIntent.setType("text/plain");
+				emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+				emailIntent.putExtra(Intent.EXTRA_CC, CC);
+				emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+				emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+				try {
+					startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+					finish();
+			//		Log.i("Finished sending email...", "");
+				} catch (android.content.ActivityNotFoundException ex) {
+					Toast.makeText(Modificar2.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+				}
+			}
+
+
+		});*/
 
 
 
@@ -571,7 +604,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 			}
 
 
-		imageViewPicture.setEnabled(false);
+		imageViewPicture.setEnabled(true);
 	//	width_58mm.setEnabled(false);
 //		width_80.setEnabled(false);
 	//	hexBox.setEnabled(false);
@@ -601,7 +634,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		case R.id.btn_close:{
 			mService.stop();
 
-			imageViewPicture.setEnabled(false);
+			imageViewPicture.setEnabled(true);
 		//	width_58mm.setEnabled(false);
 		//	width_80.setEnabled(false);
 		//	hexBox.setEnabled(false);
@@ -662,6 +695,9 @@ public class Modificar2 extends Activity implements OnClickListener{
                     _buttom=_buttom+_base02+_salto;
                     _buttom=_buttom+_base03+_salto;
                     _buttom=_buttom+_base04+_salto;
+					_buttom=_buttom+_base05+_salto;
+					_buttom=_buttom+_base06+_salto;
+
 
 					_buttom=_buttom+_salto;
 					_buttom=_buttom+"Representacion    Impresa     de"+_salto;
@@ -911,10 +947,17 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 					int _myId = 1;
 
-					Escribir_bmp(_myId, bitmap);
 
-					if (null != bitmap) {
-						imageViewPicture.setImageBitmap(bitmap);
+
+					if (null == bitmap) {
+						Toast.makeText(this, " << NO SE PUDO ESCRIBIR >> de Permisos de Acceso a Memoria del Dispositivo, valla a configuracion de Aplicaciones y a alfiPOS para derle Permisos de Acceso", Toast.LENGTH_LONG).show();
+						Toast.makeText(this, " << NO SE PUDO ESCRIBIR >> de Permisos de Acceso a Memoria del Dispositivo, valla a configuracion de Aplicaciones y a alfiPOS para derle Permisos de Acceso", Toast.LENGTH_LONG).show();
+
+					//	imageViewPicture.setImageBitmap(bitmap);
+
+
+					} else {
+						Escribir_bmp(_myId, bitmap);
 					}
 
 	        	}else{
@@ -942,11 +985,11 @@ public class Modificar2 extends Activity implements OnClickListener{
   		if((lang.compareTo("en")) == 0){
 			String msg = "ok\n\n";
 
-			String data = "    Conexion Esteblacida...  \n";
-			String data2 = "<<<   www.factura.global  >>>\n\n\n";
+			String data = "...\n";
+		//	String data2 = "<<<   www.factura.global  >>>\n\n\n";
 
 		//	SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 1, 1, 0));
-			SendDataByte(PrinterCommand.POS_Print_Text(data+data2, CHINESE, 0, 0, 0, 0));
+			SendDataByte(PrinterCommand.POS_Print_Text(data, CHINESE, 0, 0, 0, 0));
 		//	SendDataByte(PrinterCommand.POS_Set_Cut(1));
 			SendDataByte(PrinterCommand.POS_Set_PrtInit());
 		}
@@ -983,6 +1026,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		int nPaperWidth = 384;
 		if(true)
 			nPaperWidth = 384;
+
 		else if (false)
 			nPaperWidth = 576;
 		if(mBitmap != null)
@@ -999,7 +1043,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 			SendDataByte(Command.ESC_Init);
 			SendDataByte(Command.LF);
 			SendDataByte(data);
-			SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
+			SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(10));
 			SendDataByte(PrinterCommand.POS_Set_Cut(1));
 			SendDataByte(PrinterCommand.POS_Set_PrtInit());
 		}		
@@ -1615,7 +1659,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 	            
 	            byte[] data = PrintPicture.POS_PrintBMP(bitmap, 384, 0);
 	            SendDataByte(data);
-	            SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(30));
+	            SendDataByte(PrinterCommand.POS_Set_PrtAndFeedPaper(15));
 				SendDataByte(PrinterCommand.POS_Set_Cut(1));
 				SendDataByte(PrinterCommand.POS_Set_PrtInit());
 	        } catch (WriterException e) {
@@ -1898,7 +1942,11 @@ public class Modificar2 extends Activity implements OnClickListener{
         String _linea04="";
         String _linea05="";
         String _linea06="";
-        String _ruc_empresa="";
+		String _linea07="";
+		String _linea08="";
+		String _linea09="";
+
+		String _ruc_empresa="";
 
 
         //∫ db = new connectionDB(this);
@@ -1914,11 +1962,18 @@ public class Modificar2 extends Activity implements OnClickListener{
                 _linea04 = cursor.getString(4);
                 _linea05 = cursor.getString(5);
                 _linea06 = cursor.getString(6);
-                _ruc_empresa = cursor.getString(7);
-                _base01 = cursor.getString(8);
-				_base02 = cursor.getString(9);
-				_base03 = cursor.getString(10);
-				_base04 = cursor.getString(11);
+				_linea07 = cursor.getString(7);
+				_linea08 = cursor.getString(8);
+				_linea09 = cursor.getString(9);
+
+				_ruc_empresa = cursor.getString(10);
+                _base01 = cursor.getString(11);
+				_base02 = cursor.getString(12);
+				_base03 = cursor.getString(13);
+				_base04 = cursor.getString(14);
+				_base05 = cursor.getString(15);
+				_base06 = cursor.getString(16);
+
 
             } while (cursor.moveToNext());
 
@@ -1959,9 +2014,22 @@ public class Modificar2 extends Activity implements OnClickListener{
             _salida=_salida+_linea06+_salto;
         }
 
+		if (_linea07.trim().length()>0) {
+			_salida=_salida+_linea07+_salto;
+		}
+
+		if (_linea08.trim().length()>0) {
+			_salida=_salida+_linea08+_salto;
+		}
+
+		if (_linea09.trim().length()>0) {
+			_salida=_salida+_linea09+_salto;
+		}
 
 
-        _salida=_salida+_linea+_salto;
+
+
+		_salida=_salida+_linea+_salto;
 
         String _naturaleza =  db.get_Naturaleza(Mserie);
 
@@ -2001,24 +2069,39 @@ public class Modificar2 extends Activity implements OnClickListener{
         _salida=_salida+"CANT.  UNI    PRECIO     IMPORTE"+_salto;
         _salida=_salida+_linea+_salto;
         _salida=_salida+_detalle;
-        _salida=_salida+_salto;
-        _salida=_salida+_salto;
+       // _salida=_salida+_salto;
+       // _salida=_salida+_salto;
 
         _salida=_salida+_linea+_salto;
         _salida=_salida+"                SUBTOTAL:"+_cantidad(_subtotal)+_salto;
         _salida=_salida+"              IGV "+_igv_global+" %:"+_cantidad(_igv)+_salto;
         _salida=_salida+"                   TOTAL:"+_cantidad(_total)+_salto;
-        _salida=_salida+_salto;
-        _salida=_salida+_salto;
+    //    _salida=_salida+_salto;
+     //   _salida=_salida+_salto;
         _salida=_salida+"TIPO DE PAGO:"+"CONTADO"+_salto;
-        _salida=_salida+_salto;
+      //  _salida=_salida+_salto;
 
 
         String _buttom_temp="";
 		_buttom_temp=_buttom_temp+_base01+_salto;
 		_buttom_temp=_buttom_temp+_base02+_salto;
-		_buttom_temp=_buttom_temp+_base03+_salto;
-		_buttom_temp=_buttom_temp+_base04+_salto;
+
+		if (_base03.trim().length()>0) {
+			_buttom_temp=_buttom_temp+_base03+_salto;
+		}
+
+		if (_base04.trim().length()>0) {
+			_buttom_temp=_buttom_temp+_base04+_salto;
+		}
+
+		if (_base05.trim().length()>0) {
+			_buttom_temp=_buttom_temp+_base05+_salto;
+		}
+
+		if (_base06.trim().length()>0) {
+			_buttom_temp=_buttom_temp+_base06+_salto;
+		}
+
 
 		_buttom_temp=_buttom_temp+_salto;
 		_buttom_temp=_buttom_temp+"Representacion    Impresa     de"+_salto;

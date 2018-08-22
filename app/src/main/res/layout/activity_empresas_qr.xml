@@ -104,16 +104,23 @@
         android:inputType="textPersonName"
         android:maxLength="60" />
 
-
-
     <Button
         android:id="@+id/button_TicketPos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="138dp"
+        android:text="Ticket POS Cabecera" />
+
+    <Button
+        android:id="@+id/button_TicketPos_Buttom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="95dp"
-        android:text="Ticket POS" />
+        android:text="Ticket POS Base" />
 
 
     <Button

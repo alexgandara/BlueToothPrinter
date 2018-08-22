@@ -39,12 +39,37 @@
         android:inputType="textPersonName"
         android:maxLength="80" />
 
+    <Spinner
+        android:id="@+id/spinner_Unidades"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:prompt="@string/spinner_title"
+        android:layout_below="@+id/editText_Descripcion_Producto"
+
+        />
+
+    <EditText
+        android:id="@+id/editText_Unidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/spinner_Unidades"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Unidad"
+        android:inputType="textPersonName"
+        android:maxLength="3" />
+
+
+
+
+
     <EditText
         android:id="@+id/editText_Precio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText_Descripcion_Producto"
+        android:layout_below="@+id/editText_Unidad"
         android:ems="10"
         android:gravity="center"
         android:hint="Precio"
