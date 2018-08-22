@@ -240,6 +240,24 @@ public class addDatos extends Activity {
 
                // _naturaleza = c.getString(3);
 
+                if (_razon_social.trim().equals("")) {
+                    _razon_social="---";
+
+                }
+
+
+                if (_direccion.trim().equals("")) {
+                    _direccion="---";
+
+                }
+
+
+                if (_correo.trim().equals("")) {
+                    _correo="---";
+
+                }
+
+
 
                     _lista_clientes.add(_ruc+"/"+
                     _razon_social+"/"+
