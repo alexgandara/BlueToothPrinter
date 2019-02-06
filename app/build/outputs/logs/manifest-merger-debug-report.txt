@@ -1,18 +1,19 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-168:12
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-168:12
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-168:12
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-168:12
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-168:12
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-168:12
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-168:12
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-183:12
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-183:12
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-183:12
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-183:12
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/gandara/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/6ac74848ebb92125c08a3c1f49046fe5/AndroidManifest.xml:2:1-11:12
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-183:12
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-183:12
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:1-183:12
 	package
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:4:5-38
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
 	android:versionName
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:6:7-32
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:6:5-30
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
 	xmlns:tools
@@ -20,334 +21,356 @@ INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/A
 	xmlns:android
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:2:11-69
 	android:versionCode
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:5:7-30
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:5:5-28
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
-uses-permission#android.permission.BLUETOOTH_ADMIN
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:7:5-74
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:7:22-71
-uses-permission#android.permission.BLUETOOTH
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:8:5-68
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:8:22-65
-uses-permission#android.permission.MOUNT_UNMOUNT_FILESYSTEMS
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:9:5-10:47
-	tools:ignore
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:10:9-44
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:9:22-81
-uses-permission#android.permission.CAMERA
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:11:5-65
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:11:22-62
-uses-permission#android.permission.RECORD_AUDIO
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:12:5-71
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:12:22-68
-uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:13:5-80
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:13:22-78
-uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:14:5-79
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:14:22-77
 uses-sdk
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:16:5-71
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:16:5-71
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:16:5-71
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:16:5-71
-INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:16:5-71
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:8:5-10:40
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:8:5-10:40
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:8:5-10:40
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/gandara/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/6ac74848ebb92125c08a3c1f49046fe5/AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/gandara/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/6ac74848ebb92125c08a3c1f49046fe5/AndroidManifest.xml:5:5-7:41
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:8:5-10:40
+INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:8:5-10:40
 	android:targetSdkVersion
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:16:41-69
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:10:9-37
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
 	android:minSdkVersion
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:16:15-40
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:9:9-34
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
 		INJECTED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:12:5-79
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:12:22-76
+uses-permission#android.permission.BLUETOOTH_ADMIN
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:13:5-74
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:13:22-71
+uses-permission#android.permission.BLUETOOTH
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:14:5-68
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:14:22-65
+uses-permission#android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:15:5-17:47
+	tools:ignore
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:17:9-44
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:16:9-68
+uses-permission#android.permission.CAMERA
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:18:5-65
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:18:22-62
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:19:5-71
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:19:22-68
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:20:5-81
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:20:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:21:5-80
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:21:22-77
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:22:5-75
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:22:22-72
 application
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:18:5-167:19
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:24:5-179:19
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/gandara/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/6ac74848ebb92125c08a3c1f49046fe5/AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.3] /Users/gandara/.gradle/caches/transforms-1/files-1.1/constraint-layout-1.1.3.aar/6ac74848ebb92125c08a3c1f49046fe5/AndroidManifest.xml:9:5-20
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:18:18-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:26:9-41
 	android:icon
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:19:18-47
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:25:9-38
 activity#global.factura.qrpos.Main_Activity
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:20:9-27:20
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:27:9-36:20
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:21:19-51
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:30:13-45
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:22:19-69
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:29:13-63
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:20:19-68
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:28:13-62
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:23:13-26:29
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:31:13-35:29
 action#android.intent.action.MAIN
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:24:17-69
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:32:17-69
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:24:25-66
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:32:25-66
 category#android.intent.category.LAUNCHER
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:25:17-77
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:34:17-77
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:25:27-74
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:34:27-74
 activity#global.factura.qrpos.DeviceListActivity
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:28:9-31:72
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:37:9-41:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:29:19-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:40:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:31:19-69
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:39:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:30:19-62
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:41:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:28:19-73
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:38:13-67
 activity#global.factura.qrpos.init_alfilPOS
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:33:9-36:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:42:9-46:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:34:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:45:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:36:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:44:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:35:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:46:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:33:19-68
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:43:13-62
 activity#global.factura.qrpos.addDatos
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:38:9-41:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:47:9-51:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:39:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:50:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:41:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:49:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:40:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:51:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:38:19-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:48:13-57
 activity#global.factura.qrpos.Modificar
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:43:9-46:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:52:9-56:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:44:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:55:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:46:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:54:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:45:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:56:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:43:19-64
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:53:13-58
 activity#global.factura.qrpos.Modificar2
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:48:9-51:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:57:9-61:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:49:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:60:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:51:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:59:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:50:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:61:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:48:19-65
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:58:13-59
 activity#global.factura.qrpos.MainActivity_Detalle
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:53:9-56:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:62:9-66:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:54:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:65:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:56:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:64:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:55:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:66:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:53:19-75
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:63:13-69
 activity#global.factura.qrpos.Detalle
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:58:9-61:66
-	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:59:13-50
-	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:61:13-63
-	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:60:13-56
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:58:19-62
-activity#global.factura.qrpos.addDatos_Detalle
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:63:9-66:66
-	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:64:13-50
-	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:66:13-63
-	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:65:13-56
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:63:19-71
-activity#global.factura.qrpos.Empresas
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:69:9-72:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:67:9-71:59
 	android:label
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:70:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:72:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:69:13-63
 	android:theme
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:71:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:69:19-63
-activity#global.factura.qrpos.TicketPos
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:74:9-77:66
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:68:13-56
+activity#global.factura.qrpos.addDatos_Detalle
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:72:9-76:59
 	android:label
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:75:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:77:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:74:13-63
 	android:theme
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:76:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:74:19-64
-activity#global.factura.qrpos.MainActivity_Productos
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:79:9-82:66
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:73:13-65
+activity#global.factura.qrpos.Empresas
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:77:9-81:59
 	android:label
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:80:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:82:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:79:13-63
 	android:theme
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:81:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:79:19-77
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:78:13-57
+activity#global.factura.qrpos.TicketPos
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:82:9-86:59
+	android:label
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:85:13-50
+	android:configChanges
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:84:13-63
+	android:theme
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:86:13-56
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:83:13-58
+activity#global.factura.qrpos.MainActivity_Productos
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:87:9-91:59
+	android:label
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:90:13-50
+	android:configChanges
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:89:13-63
+	android:theme
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:91:13-56
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:88:13-71
 activity#global.factura.qrpos.addDatos_Productos
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:85:9-88:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:92:9-96:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:86:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:95:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:88:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:94:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:87:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:96:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:85:19-73
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:93:13-67
 activity#global.factura.qrpos.Productos
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:90:9-93:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:97:9-101:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:91:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:100:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:93:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:99:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:92:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:101:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:90:19-64
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:98:13-58
 activity#global.factura.qrpos.MainActivity_Series
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:95:9-98:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:102:9-106:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:96:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:105:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:98:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:104:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:97:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:106:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:95:19-74
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:103:13-68
 activity#global.factura.qrpos.Series
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:100:9-103:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:107:9-111:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:101:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:110:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:103:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:109:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:102:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:111:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:100:19-61
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:108:13-55
 activity#global.factura.qrpos.addDatos_Series
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:105:9-108:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:112:9-116:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:106:13-50
-	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:108:13-63
-	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:107:13-56
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:105:19-70
-activity#global.factura.qrpos.MainActivity_Clientes
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:111:9-114:66
-	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:112:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:115:13-50
 	android:configChanges
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:114:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:113:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:116:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:111:19-76
-activity#global.factura.qrpos.addDatos_Clientes
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:116:9-119:66
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:113:13-64
+activity#global.factura.qrpos.MainActivity_Clientes
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:117:9-121:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:117:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:120:13-50
 	android:configChanges
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:119:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:118:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:121:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:116:19-72
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:118:13-70
+activity#global.factura.qrpos.addDatos_Clientes
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:122:9-126:59
+	android:label
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:125:13-50
+	android:configChanges
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:124:13-63
+	android:theme
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:126:13-56
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:123:13-66
 activity#global.factura.qrpos.Clientes
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:122:9-125:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:127:9-131:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:123:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:130:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:125:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:129:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:124:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:131:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:122:19-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:128:13-57
 activity#global.factura.qrpos.init_alfilPOS_archivadas
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:128:9-131:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:132:9-136:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:129:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:135:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:131:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:134:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:130:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:136:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:128:19-79
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:133:13-73
 activity#global.factura.qrpos.Modificar2_archivadas
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:133:9-136:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:137:9-141:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:134:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:140:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:136:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:139:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:135:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:141:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:133:19-76
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:138:13-70
 activity#global.factura.qrpos.addDatos_Notas
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:138:9-141:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:142:9-146:59
 	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:139:13-50
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:145:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:141:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:144:13-63
 	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:140:13-56
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:146:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:138:19-69
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:143:13-63
 activity#global.factura.qrpos.MainActivity_Unidades
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:143:9-146:66
-	android:label
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:144:13-50
-	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:146:13-63
-	android:theme
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:145:13-56
-	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:143:19-76
-activity#global.factura.qrpos.Unidades
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:149:9-152:66
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:147:9-151:59
 	android:label
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:150:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:152:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:149:13-63
 	android:theme
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:151:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:149:19-63
-activity#global.factura.qrpos.addDatos_Unidades
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:154:9-157:66
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:148:13-70
+activity#global.factura.qrpos.Unidades
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:152:9-156:59
 	android:label
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:155:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:157:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:154:13-63
 	android:theme
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:156:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:154:19-72
-activity#global.factura.qrpos.TicketPos_Base
-ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:159:9-162:66
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:153:13-57
+activity#global.factura.qrpos.addDatos_Unidades
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:157:9-161:59
 	android:label
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:160:13-50
 	android:configChanges
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:162:13-63
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:159:13-63
 	android:theme
 		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:161:13-56
 	android:name
-		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:159:19-69
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:158:13-66
+activity#global.factura.qrpos.TicketPos_Base
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:162:9-166:59
+	android:label
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:165:13-50
+	android:configChanges
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:164:13-63
+	android:theme
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:166:13-56
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:163:13-63
+activity#global.factura.qrpos.Sincronizar
+ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:167:9-171:59
+	android:label
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:170:13-50
+	android:configChanges
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:169:13-63
+	android:theme
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:171:13-56
+	android:name
+		ADDED from /Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/AndroidManifest.xml:168:13-60

@@ -16,8 +16,9 @@ android {
         applicationId 'global.factura.alfilpos'
         minSdkVersion 9
         targetSdkVersion 28
-        versionCode 26
-        versionName '26.0'
+        versionCode 35
+        versionName '35.0'
+
     }
     buildTypes {
         release {
@@ -26,7 +27,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         debug {
-            debuggable false
+            debuggable true
         }
     }
     productFlavors {
@@ -36,7 +37,5 @@ android {
 dependencies {
     implementation files('lib/btsdk.jar')
     implementation files('lib/zixng.jar')
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 }
-
-
-

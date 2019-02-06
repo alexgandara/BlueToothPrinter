@@ -207,6 +207,7 @@ public class Main_Activity extends Activity implements OnClickListener{
 		
 		// If Bluetooth is not on, request that it be enabled.
 		// setupChat() will then be called during onActivityResult
+	// aqui modifico alex
 		if (!mBluetoothAdapter.isEnabled()) {
 			Intent enableIntent = new Intent(
 					BluetoothAdapter.ACTION_REQUEST_ENABLE);
@@ -766,7 +767,7 @@ public class Main_Activity extends Activity implements OnClickListener{
 	
 	/**
 	 * 打印测试页
-	 * @param mPrinter
+//	 * @param mPrinter
 	 */
 	private void BluetoothPrintTest() {
 		String msg = "";

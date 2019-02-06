@@ -7,6 +7,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.nio.channels.AlreadyBoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -14,7 +15,49 @@ import java.util.Date;
  * Created by Alejandro on 3/12/2018.  Alex Gandara
  */
 
+
 public class connectionDB extends SQLiteOpenHelper {
+
+
+
+
+    // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA cierre de caja  "cierre_caja"
+
+    public static final String CIERRE_TABLE_ID = "_id";
+    public static final String CIERRE_SERIE = "cierre_serie";
+    public static final String CIERRE_DEL_FOLIO = "cierre_del_folio";
+    public static final String CIERRE_AL_FOLIO = "cierre_al_folio";
+    public static final String CIERRE_FECHA = "cierre_fecha";
+    public static final String CIERRE_GRAVADO = "cierre_gravado";
+    public static final String CIERRE_EXCENTO = "cierre_excento";
+    public static final String CIERRE_INAFECTO = "cierre_inafecto";
+    public static final String CIERRE_SUBTOTAL = "cierre_subtotal";
+    public static final String CIERRE_IGV = "cierre_igv";
+    public static final String CIERRE_TOTAL = "cierre_total";
+
+
+
+
+
+
+
+    // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA historial de sincronizacion "sycro"
+
+
+    public static final String SYNCRO_FECHA = "syncro_fecha";
+    public static final String SYNCRO_DOCTOS = "syncro_doctos";
+    public static final String SYNCRO_GRAVADO = "syncro_gravado";
+    public static final String SYNCRO_EXCENTO = "syncro_excento";
+    public static final String SYNCRO_INAFECTO = "syncro_inafecto";
+    public static final String SYNCRO_SUBTOTAL = "syncro_subtotal";
+    public static final String SYNCRO_IGV = "syncro_igv";
+    public static final String SYNCRO_TOTAL = "syncro_total";
+    public static final String SYNCRO_ARCHIVADA = "syncro_archivada";
+    public static final String SYNCRO_ENVIADO_NUBE = "syncro_enviado_nube";
+    public static final String SYNCRO_REVISADA = "syncro_revisada";
+
+
+
 
 
     // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA CABECERA DE FACTURA  "cabecera"
@@ -117,7 +160,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
 
-    private static final String DATABASE = "miniPOS";
+    private static final String DATABASE = "miniPOS2";
     private static final String TABLE = "cabecera";
 
     // tablas
@@ -126,7 +169,8 @@ public class connectionDB extends SQLiteOpenHelper {
     private static final String TABLE_CLIENTES = "clientes";
     private static final String TABLE_UNIDADES = "unidades";
     private static final String TABLE_PRODUCTOS = "productos";
-
+    private static final String TABLE_SYNCRO = "syncro";
+    private static final String TABLE_CIERRE = "cierre";
 
 
     public connectionDB(Context context) {
@@ -281,21 +325,21 @@ public class connectionDB extends SQLiteOpenHelper {
                 TELEFONO_EMPRESA + " TEXT,"+
                 LOGO + " BLOB,"+
                 LICENCIA + " TEXT, "+
-                LINEA01 + " TEXT, "+
-                LINEA02 + " TEXT, "+
-                LINEA03 + " TEXT, "+
-                LINEA04 + " TEXT, "+
-                LINEA05 + " TEXT, "+
-                LINEA06 + " TEXT, "+
-                LINEA07 + " TEXT, "+
-                LINEA08 + " TEXT, "+
-                LINEA09 + " TEXT, "+
-                BASE01 + " TEXT, "+
-                BASE02 + " TEXT, "+
-                BASE03 + " TEXT, "+
-                BASE04 + " TEXT, "+
-                BASE05 + " TEXT, "+
-                BASE06 + " TEXT)"
+                LINEA01 + " TEXT NOT NULL, "+
+                LINEA02 + " TEXT NOT NULL, "+
+                LINEA03 + " TEXT NOT NULL, "+
+                LINEA04 + " TEXT NOT NULL, "+
+                LINEA05 + " TEXT NOT NULL, "+
+                LINEA06 + " TEXT NOT NULL, "+
+                LINEA07 + " TEXT NOT NULL, "+
+                LINEA08 + " TEXT NOT NULL, "+
+                LINEA09 + " TEXT NOT NULL, "+
+                BASE01 + " TEXT NOT NULL, "+
+                BASE02 + " TEXT NOT NULL, "+
+                BASE03 + " TEXT NOT NULL, "+
+                BASE04 + " TEXT NOT NULL, "+
+                BASE05 + " TEXT NOT NULL, "+
+                BASE06 + " TEXT NOT NULL)"
         );
 
 
@@ -320,10 +364,15 @@ public class connectionDB extends SQLiteOpenHelper {
                 valuesEmpresa.put(LINEA04, "  ventas@lagranempresa.com.pe  ");
                 valuesEmpresa.put(LINEA05, "TEL: 111-111-111   123-125-452 ");
                 valuesEmpresa.put(LINEA06, "   www.lagranempresa.com-mx    ");
+                valuesEmpresa.put(LINEA07, "");
+                valuesEmpresa.put(LINEA08, "");
+                valuesEmpresa.put(LINEA09, "");
                 valuesEmpresa.put(BASE01, " consulte su comprobante fiscal ");
                 valuesEmpresa.put(BASE02, "  en www.factura.elect.com.pe   ");
                 valuesEmpresa.put(BASE03, "     para ventas al mayoreo     ");
-                valuesEmpresa.put(BASE04, "     ventas@superventas.com     ");
+                valuesEmpresa.put(BASE04, "");
+                valuesEmpresa.put(BASE05, "");
+                valuesEmpresa.put(BASE06, "");
 
 
                 db.insert(TABLE_EMPRESA, null, valuesEmpresa);
@@ -432,6 +481,57 @@ public class connectionDB extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+
+
+        // TABLE = "sycro";
+
+        db.execSQL("CREATE TABLE "+ TABLE_SYNCRO + " (" +
+                SYNCRO_FECHA +" DATE PRIMARY KEY,"+
+                SYNCRO_DOCTOS +" DOUBLE,"+
+                SYNCRO_GRAVADO +" DOUBLE,"+
+                SYNCRO_EXCENTO +" DOUBLE,"+
+                SYNCRO_INAFECTO+" DOUBLE,"+
+                SYNCRO_SUBTOTAL+" DOUBLE,"+
+                SYNCRO_IGV+" DOUBLE,"+
+                SYNCRO_TOTAL+" DOUBLE,"+
+                SYNCRO_ENVIADO_NUBE+" INTEGER DEFAULT 0,"+
+                SYNCRO_REVISADA+" INTEGER DEFAULT 0,"+
+                SYNCRO_ARCHIVADA+" INTEGER DEFAULT 0)"
+        );
+
+
+        // TABLE = "cierre";
+
+
+        db.execSQL("CREATE TABLE "+ TABLE_CIERRE + " (" +
+                CIERRE_TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                CIERRE_SERIE +" TEXT, "+
+                CIERRE_DEL_FOLIO +" INT DEFAULT 0,"+
+                CIERRE_AL_FOLIO +" INT DEFAULT 0,"+
+                CIERRE_FECHA +" DATE,"+
+                CIERRE_GRAVADO +" DOUBLE,"+
+                CIERRE_EXCENTO +" DOUBLE,"+
+                CIERRE_INAFECTO+" DOUBLE,"+
+                CIERRE_SUBTOTAL+" DOUBLE,"+
+                CIERRE_IGV+" DOUBLE,"+
+                CIERRE_TOTAL+" DOUBLE)"
+        );
+
+        db.beginTransaction();
+        try {
+            ContentValues valuesCierre = new ContentValues();
+            for (int i = 0; i < 1; i++) {
+                valuesCierre.put(CIERRE_SERIE, "FXXX");
+                valuesCierre.put(CIERRE_DEL_FOLIO, "00000");
+                valuesCierre.put(CIERRE_DEL_FOLIO, "9999");
+
+                db.insert(TABLE_CIERRE, null, valuesCierre);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+
 
 
 
@@ -619,6 +719,25 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
 
+
+    public void addNotes_Cierre (String _serie
+    ) {
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+
+
+        ContentValues valoresCierre = new ContentValues();
+        valoresCierre.put(CIERRE_SERIE, _serie);
+        valoresCierre.put(CIERRE_FECHA, dateFormat.format(date));
+
+        this.getWritableDatabase().insert(TABLE_CIERRE,null, valoresCierre);
+
+    }
+
+
+
+
     public Cursor getNotes() {
         String columnas[] = {TABLE_ID, SERIE, FOLIO, RUC,  RAZON_SOCIAL, FECHA, SERIE_REL, FOLIO_REL, ARCHIVADA};
         Cursor c = this.getReadableDatabase().query(TABLE, columnas, null, null, null, null, " _id DESC ");
@@ -696,13 +815,69 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
 
-//        db.execSQL("CREATE TABLE "+ TABLE_PRODUCTOS + " (" +
-//    TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
-//    ID_PRODUCTO +" TEXT,"+
-//    DESCRIPCION_PRODUCTO +" TEXT,"+
-//    PRECIO_PRODUCTO + " TEXT,"+
-//    PRECIO_PRODUCTO_MAYOREO + " TEXT,"+
-//    IGV_PRODUCTO + " DOUBLE DEFAULT .18)");
+
+
+
+//    public static final String TABLE_ID = "_id";
+//    public static final String SERIE = "serie";
+//    public static final String FOLIO = "folio";
+//    public static final String FECHA = "fecha";
+//    public static final String RUC = "ruc";
+//    public static final String RAZON_SOCIAL = "razon_social";
+//    public static final String DIRECCION = "direccion";
+//    public static final String MONEDA = "moneda";
+//    public static final String GRAVADO = "gravado";
+//    public static final String EXCENTO = "excento";
+//    public static final String INAFECTO = "inafecto";
+//    public static final String SUBTOTAL = "subtotal";
+//    public static final String IGV = "igv";
+//    public static final String TOTAL = "total";
+//    public static final String CORREO = "correo";
+//    public static final String SERIE_REL = "serie_rel";
+//    public static final String FOLIO_REL = "folio_rel";
+//    public static final String ARCHIVADA = "archivada";
+//    public static final String ENVIADO_CORREO = "enviado_correo";
+//    public static final String ENVIADO_NUBE = "enviado_nube";
+
+
+
+
+    public Cursor getNotes_Documentos(String _fecha) {
+        String columnas[] = {TABLE_ID, SERIE, FOLIO, GRAVADO, EXCENTO, INAFECTO, SUBTOTAL, IGV, TOTAL};
+        Cursor c = this.getReadableDatabase().query(TABLE, columnas, FECHA + "=?",
+                new String[] { _fecha },  null, null, "serie,folio", null);
+        //  Cursor c = this.getReadableDatabase().query(TABLE_DET, columnas, null, null, null, null, null);
+        return c;
+    }
+
+
+
+    public Cursor getNotes_Documentos_Nube(String _fecha) {
+        String columnas[] = {TABLE_ID, SERIE, FOLIO, GRAVADO, EXCENTO, INAFECTO, SUBTOTAL, IGV, TOTAL, ENVIADO_NUBE};
+        Cursor c = this.getReadableDatabase().query(TABLE, columnas, FECHA + "=?",
+                new String[] { _fecha },  null, null, "serie,folio", null);
+        //  Cursor c = this.getReadableDatabase().query(TABLE_DET, columnas, null, null, null, null, null);
+        return c;
+    }
+
+
+
+//    public Cursor getNotes_Documentos(String _criterio) {
+
+ //      // int _criterio=0; // activas
+
+   //     _criterio="F001";
+
+
+
+
+     //   String columnas[] = {TABLE_ID, SERIE, FOLIO, GRAVADO, EXCENTO, INAFECTO, SUBTOTAL, IGV, TOTAL};
+      //  Cursor c = this.getReadableDatabase().query(TABLE, columnas,
+        //        SERIE + "=?",  new String[] { _criterio },
+          //      null, null, " _id DESC ");
+      //  return c;
+  //  }
+
 
 
 
@@ -717,6 +892,29 @@ public class connectionDB extends SQLiteOpenHelper {
     public Cursor getNotes_unidades() {
         String columnas[] = {TABLE_ID,ID_UNIDAD, DESCRIPCION_UNIDAD};
         Cursor c = this.getReadableDatabase().query("unidades", columnas, null, null, null, null, null);
+        return c;
+    }
+
+
+//        db.execSQL("CREATE TABLE "+ TABLE_CIERRE + " (" +
+//    CIERRE_TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+//    CIERRE_SERIE +" TEXT, "+
+//    CIERRE_DEL_FOLIO +" INT DEFAULT 0,"+
+//    CIERRE_AL_FOLIO +" INT DEFAULT 0,"+
+//    CIERRE_FECHA +" DATE,"+
+//    CIERRE_GRAVADO +" DOUBLE,"+
+//    CIERRE_EXCENTO +" DOUBLE,"+
+//    CIERRE_INAFECTO+" DOUBLE,"+
+//    CIERRE_SUBTOTAL+" DOUBLE,"+
+//    CIERRE_IGV+" DOUBLE,"+
+//    CIERRE_TOTAL+" DOUBLE)"
+//            );
+
+
+
+    public Cursor getNotes_Cierre() {
+        String columnas[] = {CIERRE_TABLE_ID, CIERRE_SERIE, CIERRE_FECHA, CIERRE_DEL_FOLIO, CIERRE_AL_FOLIO };
+        Cursor c = this.getReadableDatabase().query("cierre", columnas, null, null, null, null, null);
         return c;
     }
 

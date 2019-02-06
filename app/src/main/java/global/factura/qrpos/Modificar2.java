@@ -17,6 +17,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,6 +50,8 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -105,6 +109,8 @@ public class Modificar2 extends Activity implements OnClickListener{
 	private RadioButton thai, big5, Simplified, Korean;
 	private CheckBox hexBox;
 	private Button sendButton = null;
+	private Button sendCierre = null;
+	private Button sendNube = null;
 	private Button testButton = null;
 	private Button printbmpButton = null;
 	private Button btnScanButton = null;
@@ -219,6 +225,8 @@ public class Modificar2 extends Activity implements OnClickListener{
     public String Mdireccion="";
     public String Mmoneda="";
     public String Mfecha="";
+    public String Rfecha=null;
+
     public String _detalle="";
     public String Mcorreo="";
 
@@ -233,6 +241,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 	public String _base05="";
 	public String _base06="";
 
+	public int _recibo_global;
+
+
 
 	EditText serie, folio, ruc, razon_social, direccion, moneda, fecha, correo;
 
@@ -240,7 +251,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
     int _myId;
     connectionDB db;
-    Button Modificar, Eliminar, Salir, Detalle, Imprimir, Documentos, Archivar, Enviar_Correo;
+    Button Modificar, Eliminar, Salir, Detalle, Imprimir, Documentos, Archivar, Enviar_Correo, Reset;
 
 	// alex
 
@@ -257,9 +268,28 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		Bundle b = getIntent().getExtras();
 		if (b!=null) {
-			_myId = b.getInt("id");
-			Toast.makeText(Modificar2.this,"ID a Modifcar :"+_myId, Toast.LENGTH_SHORT ).show();
 
+
+
+
+
+
+
+
+			_myId = b.getInt("id");
+
+		//	_recibo_global=_myId;
+
+			Toast.makeText(Modificar2.this,"ID a Modifcar :"+_recibo_global, Toast.LENGTH_SHORT ).show();
+
+
+
+
+
+		} else {
+			Toast.makeText(Modificar2.this,"tiene nullo :"+_recibo_global, Toast.LENGTH_SHORT ).show();
+
+			_myId=_recibo_global;
 		}
 
 
@@ -279,9 +309,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
         db = new connectionDB(this);
+		Toast.makeText(Modificar2.this,"buscara :"+_myId, Toast.LENGTH_SHORT ).show();
+
         Cursor cursor =  db.getReg(_myId);
         if (cursor.moveToFirst()) {
             do {
+
 
                 serie = (EditText) findViewById(R.id.editText_Serie);
                 folio = (EditText) findViewById(R.id.editText_Folio);
@@ -293,6 +326,8 @@ public class Modificar2 extends Activity implements OnClickListener{
                 correo = (EditText) findViewById(R.id.editText_Correo);
 
                 Mid = cursor.getInt(0);
+				_recibo_global = Mid;
+
                 Mserie = cursor.getString(1);
                 Mfolio = cursor.getInt(2);
                 Mruc = cursor.getString(3);
@@ -300,6 +335,11 @@ public class Modificar2 extends Activity implements OnClickListener{
                 Mdireccion = cursor.getString(5);
                 Mmoneda = cursor.getString(6);
                 Mfecha = cursor.getString(7);
+
+             //   Rfecha = stringToDate(Mfecha);
+
+				Rfecha = Mfecha;
+
                 Mcorreo = cursor.getString(8);
 
                 serie.setText(Mserie);
@@ -323,7 +363,7 @@ public class Modificar2 extends Activity implements OnClickListener{
             item = new ArrayList<String>();
             String producto = "",  descripcion="", unidad="";
             int id, folio;
-            double precio, cantidad, precio_sin_igv, subtotal, total, igv;
+            double precio, cantidad, precio_sin_igv, subtotal, total, igv,_subtotal_con_igv;
             String _salto ="\n";
             _detalle="";
 
@@ -332,6 +372,9 @@ public class Modificar2 extends Activity implements OnClickListener{
             _total=0;
             _subtotal=0;
             _igv=0;
+			_subtotal_con_igv=0;
+
+
 
 
 
@@ -349,9 +392,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
                     precio_sin_igv=precio/(1+igv);
+
                     subtotal=precio_sin_igv*cantidad;
                     _subtotal=_subtotal+subtotal;
                     _total=_total+(cantidad*precio);
+                    _subtotal_con_igv=precio*cantidad;
+
 
 
 
@@ -359,7 +405,7 @@ public class Modificar2 extends Activity implements OnClickListener{
                     item.add(id+" - "+producto+" - "+descripcion+" - "+unidad+" - "+cantidad+" "+precio);
                     //"CANT.  UNI    PRECIO     IMPORTE"+_salto;
                     _detalle=_detalle+descripcion.toUpperCase()+_salto;
-                    _detalle=_detalle+_cantidad(cantidad)+" "+unidad+"    "+_cantidad(precio_sin_igv)+"     "+_cantidad(subtotal)+_salto;
+                    _detalle=_detalle+_cantidad(cantidad)+" "+unidad+"    "+_cantidad(precio)+"     "+_cantidad(_subtotal_con_igv)+_salto;
 
 
                 } while (c.moveToNext());
@@ -369,8 +415,9 @@ public class Modificar2 extends Activity implements OnClickListener{
             }
 
 
+            // actualizar cabecera ALEX
 
-
+			Modificar_Cabecera(_recibo_global,_subtotal,0.00,0.00, _igv,_subtotal,_total);
 
         }
 
@@ -382,6 +429,8 @@ public class Modificar2 extends Activity implements OnClickListener{
         Documentos = (Button) findViewById(R.id.button_Documentos);
 		Archivar = (Button) findViewById(R.id.button_Archivar);
 		Enviar_Correo = (Button) findViewById(R.id.button_Correo);
+		Reset = (Button) findViewById(R.id.button_Reset);
+	//	Cierre = (Button) findViewById(R.id.Button_Cierre);
 
         Salir = (Button) findViewById(R.id.button_Salir);
 
@@ -441,7 +490,16 @@ public class Modificar2 extends Activity implements OnClickListener{
             }
         });
 
+		Reset.setOnClickListener(new View.OnClickListener() {
 
+
+
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(Modificar2.this,init_alfilPOS.class );
+				startActivity(intent);
+			}
+		});
 
 
 
@@ -556,10 +614,15 @@ public class Modificar2 extends Activity implements OnClickListener{
 		sendButton = (Button) findViewById(R.id.Send_Button);
 		sendButton.setOnClickListener(this);
 
+		sendCierre = (Button) findViewById(R.id.Send_Cierre);
+		sendCierre.setOnClickListener(this);
+
+		sendNube = (Button) findViewById(R.id.Send_Nube);
+		sendNube.setOnClickListener(this);
+
 
 		btnScanButton = (Button)findViewById(R.id.button_scan);
 		btnScanButton.setOnClickListener(this);
-
 
 
 
@@ -609,6 +672,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 //		width_80.setEnabled(false);
 	//	hexBox.setEnabled(false);
 		sendButton.setEnabled(false);
+		sendCierre.setEnabled(false);
+		sendNube.setEnabled(false);
+
 
 
 		btnClose.setEnabled(false);
@@ -639,6 +705,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 		//	width_80.setEnabled(false);
 		//	hexBox.setEnabled(false);
 			sendButton.setEnabled(false);
+			sendCierre.setEnabled(false);
+			sendNube.setEnabled(false);
+
 
 
 			btnClose.setEnabled(false);
@@ -654,6 +723,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		}
 
 		case R.id.Send_Button:{
+
 			if (false) {
 				String str = " asd fa sf asf asd ";
 				if(str.length() > 0){
@@ -671,12 +741,20 @@ public class Modificar2 extends Activity implements OnClickListener{
 					Toast.makeText(Modificar2.this, getText(R.string.empty), Toast.LENGTH_SHORT).show();
 				}
 			} else {
+
+
+
+
+
 				// manda Imprimir el Ticket POS con QR
 				String msg = Imprimir_Ticket();
 				if(msg.length()>0){
 
-					Print_BMP();
 
+					// primera impresion
+
+
+					Print_BMP();
 
 					String _buttom="";
 					String _salto ="\n";
@@ -688,16 +766,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 					createImage(_datos_qr);
 
-
-
-
                     _buttom=_buttom+_base01+_salto;
                     _buttom=_buttom+_base02+_salto;
                     _buttom=_buttom+_base03+_salto;
                     _buttom=_buttom+_base04+_salto;
 					_buttom=_buttom+_base05+_salto;
 					_buttom=_buttom+_base06+_salto;
-
 
 					_buttom=_buttom+_salto;
 					_buttom=_buttom+"Representacion    Impresa     de"+_salto;
@@ -710,6 +784,126 @@ public class Modificar2 extends Activity implements OnClickListener{
 					SendDataByte(PrinterCommand.POS_Print_Text(_buttom, CHINESE, 0, 0, 0, 0));
 					SendDataByte(Command.LF);
 
+				//	mService.stop();
+
+				//	imageViewPicture.setEnabled(true);
+					//	width_58mm.setEnabled(false);
+					//	width_80.setEnabled(false);
+					//	hexBox.setEnabled(false);
+				//	sendButton.setEnabled(false);
+
+				//	btnClose.setEnabled(false);
+
+				//	btn_camer.setEnabled(false);
+				//	btn_scqrcode.setEnabled(false);
+				//	btnScanButton.setEnabled(true);
+					//	Simplified.setEnabled(false);
+
+				//	btnScanButton.setText(getText(R.string.connect));
+
+
+					//Intent serverIntent = new Intent(Modificar2.this, Modificar2.class);
+					//startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+
+
+
+					try { Thread.sleep(17000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
+
+
+
+
+
+
+
+		//			Toast.makeText(Modificar2.this,"Espere  3 ", Toast.LENGTH_LONG ).show();
+
+		//			Toast.makeText(Modificar2.this,"Espere  2 ", Toast.LENGTH_LONG ).show();
+
+		//			Toast.makeText(Modificar2.this,"Espere  1 ", Toast.LENGTH_LONG ).show();
+
+		//			Toast.makeText(Modificar2.this,"Espere  0 ", Toast.LENGTH_LONG ).show();
+
+
+
+					///  segunda impresion
+
+
+					// primera impresion
+
+
+					Print_BMP();
+
+					_buttom="";
+
+					// String _linea = "================================";
+
+					SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
+					SendDataByte(Command.LF);
+
+					createImage(_datos_qr);
+
+					_buttom=_buttom+_base01+_salto;
+					_buttom=_buttom+_base02+_salto;
+					_buttom=_buttom+_base03+_salto;
+					_buttom=_buttom+_base04+_salto;
+					_buttom=_buttom+_base05+_salto;
+					_buttom=_buttom+_base06+_salto;
+
+					_buttom=_buttom+_salto;
+					_buttom=_buttom+"Representacion    Impresa     de"+_salto;
+					_buttom=_buttom+"del   Comprobante    de    Venta"+_salto;
+					_buttom=_buttom+"Electronica  autorizado mediante"+_salto;
+					_buttom=_buttom+"la   Resolucion   155-2017/SUNAT"+_salto;
+					_buttom=_buttom+_linea+_salto;
+					_buttom=_buttom+_salto+_salto;
+
+					SendDataByte(PrinterCommand.POS_Print_Text(_buttom, CHINESE, 0, 0, 0, 0));
+					SendDataByte(Command.LF);
+
+					mService.stop();
+
+					imageViewPicture.setEnabled(true);
+					//	width_58mm.setEnabled(false);
+					//	width_80.setEnabled(false);
+					//	hexBox.setEnabled(false);
+					sendButton.setEnabled(false);
+					sendCierre.setEnabled(false);
+					sendNube.setEnabled(false);
+
+
+					btnClose.setEnabled(false);
+
+					btn_camer.setEnabled(false);
+					btn_scqrcode.setEnabled(false);
+					btnScanButton.setEnabled(true);
+					//	Simplified.setEnabled(false);
+
+					btnScanButton.setText(getText(R.string.connect));
+
+
+					//Intent serverIntent = new Intent(Modificar2.this, Modificar2.class);
+					//startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+
+
+
+
+
+
+
+
+
+					Intent intent = new Intent(this, Main_Activity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(intent);
+					finish(); // call this to finish the current activity
+
+
+
+
+					break;
+
+
 
 
 				}
@@ -718,10 +912,103 @@ public class Modificar2 extends Activity implements OnClickListener{
 		}
 
 
-		case R.id.btn_printpicture:{
+
+
+            case R.id.Send_Cierre:{
+
+/////////////////////////////////////////////////////////////////////
+
+				if (false) {
+					String str = " asd fa sf asf asd ";
+					if(str.length() > 0){
+						str = Other.RemoveChar(str, ' ').toString();
+						if (str.length() <= 0)
+							return;
+						if ((str.length() % 2) != 0) {
+							Toast.makeText(getApplicationContext(), getString(R.string.msg_state),
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+						byte[] buf = Other.HexStringToBytes(str);
+						SendDataByte(buf);
+					}else{
+						Toast.makeText(Modificar2.this, getText(R.string.empty), Toast.LENGTH_SHORT).show();
+					}
+				} else {
+
+
+					// manda Imprimir el Ticket POS con QR
+					String msg = _Reporte_cierre(Mfecha);
+					if(msg.length()>0){
+
+
+						// primera impresion
+
+
+					//	Print_BMP();
+
+						String _buttom="";
+						String _salto ="\n";
+
+						String _linea = "================================";
+
+						SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
+						SendDataByte(Command.LF);
+
+						Intent intent = new Intent(this, Main_Activity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+						finish(); // call this to finish the current activity
+
+						break;
+
+					}
+
+				}
+				break;
+
+/////////////////////////////////////////////////////////////////////
+
+        }
+
+
+
+
+            case R.id.btn_printpicture:{
 			GraphicalPrint();
 			break;
 			}
+
+
+			case R.id.button_Reset: {
+				mService.stop();
+
+				imageViewPicture.setEnabled(true);
+				//	width_58mm.setEnabled(false);
+				//	width_80.setEnabled(false);
+				//	hexBox.setEnabled(false);
+				sendButton.setEnabled(false);
+				sendCierre.setEnabled(false);
+				sendNube.setEnabled(false);
+
+
+
+				btnClose.setEnabled(false);
+
+
+				btn_camer.setEnabled(false);
+				btn_scqrcode.setEnabled(false);
+				btnScanButton.setEnabled(true);
+				//	Simplified.setEnabled(false);
+
+				btnScanButton.setText(getText(R.string.connect));
+				break;
+
+			//	Toast.makeText(this, "la impresora fue reseteada", Toast.LENGTH_SHORT).show();
+
+
+			}
+
 		case R.id.imageViewPictureUSB:{
 
 
@@ -741,10 +1028,77 @@ public class Modificar2 extends Activity implements OnClickListener{
 		}
 
 
+			case R.id.Send_Nube:{
 
 
 
-		case R.id.btn_scqr:{
+
+					Toast.makeText(this, "Lista para subir a la nube", Toast.LENGTH_LONG).show();
+
+/////////////////////////////////////////////////////////////////////
+
+				if (false) {
+					String str = " asd fa sf asf asd ";
+					if(str.length() > 0){
+						str = Other.RemoveChar(str, ' ').toString();
+						if (str.length() <= 0)
+							return;
+						if ((str.length() % 2) != 0) {
+							Toast.makeText(getApplicationContext(), getString(R.string.msg_state),
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+						byte[] buf = Other.HexStringToBytes(str);
+						SendDataByte(buf);
+					}else{
+						Toast.makeText(Modificar2.this, getText(R.string.empty), Toast.LENGTH_SHORT).show();
+					}
+				} else {
+
+
+					// manda Imprimir el Ticket POS con QR
+					String msg = _Reporte_Nube(Mfecha);
+					if(msg.length()>0){
+
+
+						// primera impresion
+
+
+						//	Print_BMP();
+
+						String _buttom="";
+						String _salto ="\n";
+
+						String _linea = "================================";
+
+						SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
+						SendDataByte(Command.LF);
+
+						Intent intent = new Intent(this, Main_Activity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
+						finish(); // call this to finish the current activity
+
+						break;
+
+					}
+
+				}
+				break;
+
+/////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+			}
+
+
+
+
+			case R.id.btn_scqr:{
 			createImage("just test");
 			break;
 		}
@@ -817,6 +1171,8 @@ public class Modificar2 extends Activity implements OnClickListener{
 					imageViewPicture.setEnabled(true);
 
 					sendButton.setEnabled(true);
+					sendCierre.setEnabled(true);
+					sendNube.setEnabled(isNetworkAvailable());
 
 
 					btnClose.setEnabled(true);
@@ -859,9 +1215,14 @@ public class Modificar2 extends Activity implements OnClickListener{
                 Toast.makeText(getApplicationContext(), "Device connection was lost",
                                Toast.LENGTH_SHORT).show();
 
+
+
 				imageViewPicture.setEnabled(false);
 
 				sendButton.setEnabled(false);
+				sendCierre.setEnabled(false);
+				sendNube.setEnabled(false);
+
 
 
 				btnClose.setEnabled(false);
@@ -1712,7 +2073,21 @@ public class Modificar2 extends Activity implements OnClickListener{
         // El resultado sería el siguiente: 94.751.890,37
     }
 
+	public static String _folio_str(String _str) {
 
+
+		double d = Double.parseDouble(_str); // returns double primitive
+
+		String _regreso;
+		simb = new DecimalFormatSymbols();
+		simb.setDecimalSeparator('.');
+		simb.setGroupingSeparator(',');
+		df = new DecimalFormat("######0", simb);
+		_regreso=padLeft(df.format(d),6);
+		return _regreso;
+
+		// El resultado sería el siguiente: 94.751.890,37
+	}
 
 
 
@@ -1767,6 +2142,60 @@ public class Modificar2 extends Activity implements OnClickListener{
 
     }
 
+
+	private void Modificar_Cabecera(int _id,
+						   Double _gravado,
+						   Double _exonerada,
+						   Double _inafecta,
+						   Double _igv,
+						   Double _subtotal,
+						   Double _total) {
+		// String _fecha) {
+
+		//    public static final String TABLE_ID = "_id";
+//    public static final String SERIE = "serie";
+//    public static final String FOLIO = "folio";
+//    public static final String FECHA = "fecha";
+//    public static final String RUC = "ruc";
+//    public static final String RAZON_SOCIAL = "razon_social";
+//    public static final String DIRECCION = "direccion";
+//    public static final String MONEDA = "moneda";
+//    public static final String GRAVADO = "gravado";
+//    public static final String EXCENTO = "excento";
+//    public static final String INAFECTO = "inafecto";
+//    public static final String SUBTOTAL = "subtotal";
+//    public static final String IGV = "igv";
+//    public static final String TOTAL = "total";
+//    public static final String CORREO = "correo";
+//    public static final String SERIE_REL = "serie_rel";
+//    public static final String FOLIO_REL = "folio_rel";
+//    public static final String ARCHIVADA = "archivada";
+//    public static final String ENVIADO_CORREO = "enviado_correo";
+//    public static final String ENVIADO_NUBE = "enviado_nube";
+
+
+
+
+		ContentValues valoresCabecera = new ContentValues();
+		valoresCabecera.put(GRAVADO, _gravado);
+		valoresCabecera.put(EXCENTO, _exonerada);
+		valoresCabecera.put(INAFECTO, _inafecta);
+		valoresCabecera.put(IGV, _igv);
+		valoresCabecera.put(SUBTOTAL, _subtotal);
+		valoresCabecera.put(TOTAL, _total);
+
+
+		db = new connectionDB(this);
+
+		String _alcance = "WHERE _id="+_id;
+
+		db.getWritableDatabase().update(TABLE, valoresCabecera, TABLE_ID + "=?",new String[] { String.valueOf(_id) });
+		Toast.makeText(Modificar2.this,"Se Modifico el Reg. Cabecera :"+_id, Toast.LENGTH_SHORT ).show();
+
+		//Intent intent = new Intent(this,init_alfilPOS.class );
+		//startActivity(intent);
+
+	}
 
 
 
@@ -1949,7 +2378,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 		String _ruc_empresa="";
 
 
-        //∫ db = new connectionDB(this);
+
+
+
         Cursor cursor =  db.getReg_TicketPos(_myId);
         if (cursor.moveToFirst()) {
             do {
@@ -1993,37 +2424,63 @@ public class Modificar2 extends Activity implements OnClickListener{
         _salida=_salida+_linea+_salto;
 
 
+		if (_linea01 != null ) {
+			_salida = _salida + _linea01 + _salto;
+		}
 
-        _salida=_salida+_linea01+_salto;
         _salida=_salida+_salto;
-        _salida=_salida+_linea02+_salto;
 
-        if (_linea03.trim().length()>0) {
-            _salida=_salida+_linea03+_salto;
-        }
-
-        if (_linea04.trim().length()>0) {
-            _salida=_salida+_linea04+_salto;
-        }
-
-        if (_linea05.trim().length()>0) {
-            _salida=_salida+_linea05+_salto;
-        }
-
-        if (_linea06.trim().length()>0) {
-            _salida=_salida+_linea06+_salto;
-        }
-
-		if (_linea07.trim().length()>0) {
-			_salida=_salida+_linea07+_salto;
+		if (_linea02 != null ) {
+			_salida = _salida + _linea02 + _salto;
 		}
 
-		if (_linea08.trim().length()>0) {
-			_salida=_salida+_linea08+_salto;
+		if (_linea03 != null ) {
+			if (_linea03.trim().length() > 0) {
+				_salida = _salida + _linea03 + _salto;
+			}
 		}
 
-		if (_linea09.trim().length()>0) {
-			_salida=_salida+_linea09+_salto;
+
+
+		if (_linea04 != null ) {
+			if (_linea04.trim().length() > 0) {
+				_salida = _salida + _linea04 + _salto;
+			}
+		}
+
+
+		if (_linea05 != null ) {
+			if (_linea05.trim().length() > 0) {
+				_salida = _salida + _linea05 + _salto;
+			}
+		}
+
+
+		if (_linea06 != null ) {
+			if (_linea06.trim().length() > 0) {
+				_salida = _salida + _linea06 + _salto;
+			}
+		}
+
+
+		if (_linea07 != null ) {
+			if (_linea07.trim().length() > 0) {
+				_salida = _salida + _linea07 + _salto;
+			}
+		}
+
+
+		if (_linea08 != null ) {
+			if (_linea08.trim().length() > 0) {
+				_salida = _salida + _linea08 + _salto;
+			}
+		}
+
+
+		if (_linea09 != null ) {
+			if (_linea09.trim().length() > 0) {
+				_salida = _salida + _linea09 + _salto;
+			}
 		}
 
 
@@ -2037,7 +2494,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
         if (_naturaleza.equals("03"))  {
-            _cadena="BOLETA ELECTRONICA";
+            _cadena="BOLETA DE VENTA ELECTRONICA";
         }
 
         if (_naturaleza.equals("01"))  {
@@ -2055,6 +2512,8 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
         _salida=_salida+_cadena+_salto;
+
+
 
         _salida=_salida+"FOLIO:"+Mserie+"-"+_folio_nuevo+_salto;
         _salida=_salida+"F. EMISION:"+Mfecha+_salto;
@@ -2083,24 +2542,44 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
         String _buttom_temp="";
-		_buttom_temp=_buttom_temp+_base01+_salto;
-		_buttom_temp=_buttom_temp+_base02+_salto;
 
-		if (_base03.trim().length()>0) {
-			_buttom_temp=_buttom_temp+_base03+_salto;
+		if (_base01 != null ) {
+			_buttom_temp = _buttom_temp + _base01 + _salto;
 		}
 
-		if (_base04.trim().length()>0) {
-			_buttom_temp=_buttom_temp+_base04+_salto;
+		if (_base02 != null ) {
+			_buttom_temp = _buttom_temp + _base02 + _salto;
 		}
 
-		if (_base05.trim().length()>0) {
-			_buttom_temp=_buttom_temp+_base05+_salto;
+
+
+		if (_base03 != null ) {
+			if (_base03.trim().length() > 0) {
+				_buttom_temp = _buttom_temp + _base03 + _salto;
+			}
 		}
 
-		if (_base06.trim().length()>0) {
-			_buttom_temp=_buttom_temp+_base06+_salto;
+
+		if (_base04 != null ) {
+			if (_base04.trim().length() > 0) {
+				_buttom_temp = _buttom_temp + _base04 + _salto;
+			}
 		}
+
+
+		if (_base05 != null ) {
+			if (_base05.trim().length() > 0) {
+				_buttom_temp = _buttom_temp + _base05 + _salto;
+			}
+		}
+
+
+		if (_base06 != null ) {
+			if (_base06.trim().length() > 0) {
+				_buttom_temp = _buttom_temp + _base06 + _salto;
+			}
+		}
+
 
 
 		_buttom_temp=_buttom_temp+_salto;
@@ -2122,7 +2601,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		}
 		ClipData clip = ClipData.newPlainText("recibo", _salida+_buttom_temp);
 		clipboard.setPrimaryClip(clip);
-		Toast.makeText(Modificar2.this,"Es Registro fue enviado a Memoria"+_salida, Toast.LENGTH_LONG ).show();
+	//	Toast.makeText(Modificar2.this,"Es Registro fue enviado a Memoria "+_salida, Toast.LENGTH_LONG ).show();
 
 		String _tipo_documento_adquiriente="1";
 		if (Mruc.length()>8) {
@@ -2200,6 +2679,410 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		return getImage(image);
 	}
+
+
+
+	//////////////////////////////
+
+
+	private String _Reporte_cierre (String _fecha) {
+
+
+		int _folio_nuevo=0;
+		String _licencia="";
+
+
+		String _linea01="";
+		String _linea02="";
+		String _linea03="";
+		String _linea04="";
+
+		String _ruc_empresa="";
+
+
+
+		Cursor cursor =  db.getReg_TicketPos(_myId);
+
+
+		if (cursor.moveToFirst()) {
+			do {
+
+
+				_linea01 = cursor.getString(1);
+				_linea02 = cursor.getString(2);
+				_linea03 = cursor.getString(3);
+				_linea04 = cursor.getString(4);
+
+
+				_ruc_empresa = cursor.getString(10);
+				_base01 = cursor.getString(11);
+				_base02 = cursor.getString(12);
+				_base03 = cursor.getString(13);
+				_base04 = cursor.getString(14);
+				_base05 = cursor.getString(15);
+				_base06 = cursor.getString(16);
+
+
+			} while (cursor.moveToNext());
+
+		}
+
+		// me traigo la cabecera
+
+
+		String _salida = "";
+		String _cadena = "";
+		String _salto ="\n";
+
+		String _linea =  "================================";
+		String _titulo = "== REPORTE  DE CIERRE DE CAJA ==";
+
+
+		// _salida=_salida+_salto;
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_titulo+_salto+_salto;
+
+
+		if (_linea01 != null ) {
+			_salida = _salida + _linea01 + _salto;
+		}
+
+		_salida=_salida+_salto;
+
+		if (_linea02 != null ) {
+			_salida = _salida + _linea02 + _salto;
+		}
+
+		if (_linea03 != null ) {
+			if (_linea03.trim().length() > 0) {
+				_salida = _salida + _linea03 + _salto;
+			}
+		}
+
+		if (_linea04 != null ) {
+			if (_linea04.trim().length() > 0) {
+				_salida = _salida + _linea04 + _salto;
+			}
+		}
+
+
+
+
+
+
+		_salida=_salida+_linea+_salto;
+
+        Cursor c = db.getNotes_Documentos(Mfecha);
+
+        int id=0;
+        String _serie="";
+        String _folio="";
+        String _del_folio="";
+        String _al_folio="";
+        String _detalle_corte;
+        double _gravado=0;
+        double _excento=0;
+        double _exonerado=0;
+        double _inafecto=0;
+        double _subtotal=0;
+        double _igv=0;
+        double _total=0;
+
+
+
+
+		_detalle_corte="SERIE FOLIO       IGV      TOTAL "+_salto;
+
+        if (c.moveToFirst()) {
+            do {
+// TABLE_ID 0, SERIE 1, FOLIO 2, GRAVADO 3, EXCENTO 4, INAFECTO 5, SUBTOTAL 6, IGV 7, TOTAL 8
+
+
+
+
+				id = c.getInt(0);
+
+				_serie = c.getString(1);
+                _folio = c.getString(2);
+
+           //     if (_serie==Mserie) {
+                    _gravado  = _gravado+c.getDouble(3);
+                    _excento  = _excento+c.getDouble(4);
+                    _inafecto = _inafecto+c.getDouble(5);
+                    _subtotal = _subtotal+c.getDouble(6);
+                    _igv      = _igv+c.getDouble(7);
+                    _total    = _total+c.getDouble(8);
+
+
+           //     }2
+
+
+
+				_detalle_corte=_detalle_corte+_serie+_folio_str(_folio)+_dinero(c.getDouble(7))+_dinero(c.getDouble(8))+_salto;
+
+				//	Toast.makeText(Modificar2.this,"ID a Modifcar :   "+id+"   "+_gravado, Toast.LENGTH_SHORT ).show();
+
+
+
+
+
+
+            } while (c.moveToNext());
+
+
+
+		//	_detalle_corte=_detalle_corte+_salto+"Serie           :"+Mserie+_salto;
+			//_detalle_corte=_detalle_corte+"Del Folio       :"+_del_folio+_salto;
+			//_detalle_corte=_detalle_corte+"Al Folio        :"+_al_folio+_salto+_salto;
+			_detalle_corte=_detalle_corte+_linea+_salto+_salto;
+			_detalle_corte=_detalle_corte+"Monto Gravado   :"+_dinero(_gravado)+_salto;
+			_detalle_corte=_detalle_corte+"Monto Excento   :"+_dinero(_excento)+_salto;
+			_detalle_corte=_detalle_corte+"Monto Inafecto  :"+_dinero(_inafecto)+_salto;
+			_detalle_corte=_detalle_corte+"Sub Total       :"+_dinero(_subtotal)+_salto;
+			_detalle_corte=_detalle_corte+"IGV             :"+_dinero(_igv)+_salto;
+			_detalle_corte=_detalle_corte+"TOTAL           :"+_dinero(_total)+_salto;
+
+
+
+
+        }
+
+
+
+     //   _salida=_salida+"SERIE         : "+Mserie+_salto;
+		_salida=_salida+"FECHA DE CORTE: "+Mfecha+_salto;
+		_salida=_salida+"MONEDA        : "+"SOLES"+_salto;
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_detalle_corte;
+		_salida=_salida+_salto;
+		_salida=_salida+_salto;
+		// _salida=_salida+_salto;
+		// _salida=_salida+_salto;
+
+
+
+		return _salida;
+
+
+	}
+
+
+
+
+	private boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager
+				= (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+
+	}
+
+
+
+	private String _Reporte_Nube (String _fecha) {
+
+
+		int _folio_nuevo=0;
+		String _licencia="";
+
+
+		String _linea01="";
+		String _linea02="";
+		String _linea03="";
+		String _linea04="";
+
+		String _ruc_empresa="";
+
+
+
+		Cursor cursor =  db.getReg_TicketPos(_myId);
+
+
+		if (cursor.moveToFirst()) {
+			do {
+
+
+				_linea01 = cursor.getString(1);
+				_linea02 = cursor.getString(2);
+				_linea03 = cursor.getString(3);
+				_linea04 = cursor.getString(4);
+
+
+				_ruc_empresa = cursor.getString(10);
+				_base01 = cursor.getString(11);
+				_base02 = cursor.getString(12);
+				_base03 = cursor.getString(13);
+				_base04 = cursor.getString(14);
+				_base05 = cursor.getString(15);
+				_base06 = cursor.getString(16);
+
+
+			} while (cursor.moveToNext());
+
+		}
+
+		// me traigo la cabecera
+
+
+		String _salida = "";
+		String _cadena = "";
+		String _salto ="\n";
+
+
+
+
+
+
+
+
+
+
+		String _linea = "================================";
+		String _titulo ="=  REPORTE DE ENVIO A LA NUBE  =";
+
+
+		// _salida=_salida+_salto;
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_titulo+_salto+_salto;
+
+
+		if (_linea01 != null ) {
+			_salida = _salida + _linea01 + _salto;
+		}
+
+		_salida=_salida+_salto;
+
+		if (_linea02 != null ) {
+			_salida = _salida + _linea02 + _salto;
+		}
+
+		if (_linea03 != null ) {
+			if (_linea03.trim().length() > 0) {
+				_salida = _salida + _linea03 + _salto;
+			}
+		}
+
+		if (_linea04 != null ) {
+			if (_linea04.trim().length() > 0) {
+				_salida = _salida + _linea04 + _salto;
+			}
+		}
+
+
+
+
+
+
+		_salida=_salida+_linea+_salto;
+
+		Cursor c = db.getNotes_Documentos_Nube(Mfecha);
+
+		int id=0;
+		String _serie="";
+		String _folio="";
+		String _del_folio="";
+		String _al_folio="";
+		String _detalle_corte;
+		double _gravado=0;
+		double _excento=0;
+		double _exonerado=0;
+		double _inafecto=0;
+		double _subtotal=0;
+		double _igv=0;
+		double _total=0;
+		int _nube;
+		String _texto_nube="";
+
+
+
+
+
+
+		_detalle_corte="SERIE FOLIO      TOTAL    NUBE   "+_salto;
+
+		if (c.moveToFirst()) {
+			do {
+// TABLE_ID 0, SERIE 1, FOLIO 2, GRAVADO 3, EXCENTO 4, INAFECTO 5, SUBTOTAL 6, IGV 7, TOTAL 8
+
+
+
+
+				id = c.getInt(0);
+
+				_serie = c.getString(1);
+				_folio = c.getString(2);
+
+				//     if (_serie==Mserie) {
+				_gravado  = _gravado+c.getDouble(3);
+				_excento  = _excento+c.getDouble(4);
+				_inafecto = _inafecto+c.getDouble(5);
+				_subtotal = _subtotal+c.getDouble(6);
+				_igv      = _igv+c.getDouble(7);
+				_total    = _total+c.getDouble(8);
+				_nube    = c.getInt(8);
+
+				if (_nube==1) {
+					_texto_nube="Si";
+				} else {
+					_texto_nube="No";
+				}
+				//     }2
+
+
+
+				_detalle_corte=_detalle_corte+_serie+_folio_str(_folio)+_dinero(c.getDouble(8))+"      "+_texto_nube+_salto;
+
+				//	Toast.makeText(Modificar2.this,"ID a Modifcar :   "+id+"   "+_gravado, Toast.LENGTH_SHORT ).show();
+
+
+
+
+
+
+			} while (c.moveToNext());
+
+
+
+			//	_detalle_corte=_detalle_corte+_salto+"Serie           :"+Mserie+_salto;
+			//_detalle_corte=_detalle_corte+"Del Folio       :"+_del_folio+_salto;
+			//_detalle_corte=_detalle_corte+"Al Folio        :"+_al_folio+_salto+_salto;
+			_detalle_corte=_detalle_corte+_linea+_salto+_salto;
+		//	_detalle_corte=_detalle_corte+"Monto Gravado   :"+_dinero(_gravado)+_salto;
+		//	_detalle_corte=_detalle_corte+"Monto Excento   :"+_dinero(_excento)+_salto;
+		//	_detalle_corte=_detalle_corte+"Monto Inafecto  :"+_dinero(_inafecto)+_salto;
+			_detalle_corte=_detalle_corte+"Sub Total       :"+_dinero(_subtotal)+_salto;
+			_detalle_corte=_detalle_corte+"IGV             :"+_dinero(_igv)+_salto;
+			_detalle_corte=_detalle_corte+"TOTAL           :"+_dinero(_total)+_salto;
+
+
+
+
+		}
+
+
+
+		//   _salida=_salida+"SERIE         : "+Mserie+_salto;
+		_salida=_salida+"FECHA DE CORTE: "+Mfecha+_salto;
+		_salida=_salida+"MONEDA        : "+"SOLES"+_salto;
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_detalle_corte;
+		_salida=_salida+_salto;
+		_salida=_salida+_salto;
+		// _salida=_salida+_salto;
+		// _salida=_salida+_salto;
+
+
+
+		return _salida;
+
+
+	}
+
+
+
+
 
 
 }

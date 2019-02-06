@@ -149,6 +149,7 @@ public class addDatos extends Activity {
         db.addNotes(_serie,_folio, _ruc,_razon_social,_direccion,_moneda);
         //    db.close();
         Intent intent = new Intent(this,init_alfilPOS.class );
+     //   Intent intent = new Intent(this,Modificar2.class );
         startActivity(intent);
 
     }

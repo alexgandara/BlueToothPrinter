@@ -250,6 +250,65 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/Send_Cierre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="IMPRIMIR CIERRE DE CAJA"></Button>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/Send_Nube"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Enviar Doctos a la Nube"></Button>
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button_Reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="Resetear Impresora"></Button>
+            </LinearLayout>
+
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
                     android:id="@+id/button_Archivar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

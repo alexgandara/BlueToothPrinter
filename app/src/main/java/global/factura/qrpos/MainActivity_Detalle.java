@@ -23,7 +23,7 @@ public class MainActivity_Detalle extends Activity {
     connectionDB db;
     List<String> item = null;
 
-    Button Agregar_Detalle, Ir_a_Documentos;
+    Button Agregar_Detalle, Ir_a_Documentos, Cierre_Caja, Sincronizar;
 
     int _myId;
 
@@ -58,6 +58,9 @@ public class MainActivity_Detalle extends Activity {
 
         Agregar_Detalle = (Button) findViewById(R.id.Button_Agregar_Detalle);
         Ir_a_Documentos = (Button) findViewById(R.id.Button_Ir_a_Documentos);
+    //    Cierre_Caja = (Button) findViewById(R.id.Button_Cierre  );
+        Sincronizar = (Button) findViewById(R.id.Button_Sincronizar);
+
 
 
 
@@ -84,6 +87,11 @@ public class MainActivity_Detalle extends Activity {
 
             }
         });
+
+
+        //
+
+    
 
 
 /*

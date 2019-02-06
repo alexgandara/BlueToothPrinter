@@ -1,4 +1,4 @@
-#Wed Aug 15 15:51:50 PET 2018
-base.0=/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/transforms/dexMerger/debug/110
+#Fri Feb 01 09:05:52 PET 2019
+base.0=/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/transforms/dexMerger/debug/161
 path.0=classes.dex
 renamed.0=classes.dex
