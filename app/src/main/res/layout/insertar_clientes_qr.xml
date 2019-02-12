@@ -52,7 +52,7 @@
         android:gravity="center"
         android:hint="Direccion"
         android:inputType="textPersonName"
-        android:maxLength="50" />
+        android:maxLength="120" />
 
 
 

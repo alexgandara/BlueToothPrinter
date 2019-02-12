@@ -129,6 +129,9 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String BASE04 = "base04";
     public static final String BASE05 = "base05";
     public static final String BASE06 = "base06";
+    public static final String API_KEY = "api_key";
+
+
 
 
 
@@ -197,8 +200,8 @@ public class connectionDB extends SQLiteOpenHelper {
                 DIRECCION + " TEXT,"+
                 MONEDA +" TEXT,"+
                 CORREO +" TEXT DEFAULT 'usuario@dominio.com',"+
-                SERIE_REL +" TEXT,"+
-                FOLIO_REL +" TEXT,"+
+                SERIE_REL +" TEXT DEFAULT '',"+
+                FOLIO_REL +" TEXT DEFAULT '',"+
                 GRAVADO +" DOUBLE,"+
                 EXCENTO +" DOUBLE,"+
                 INAFECTO+" DOUBLE,"+
@@ -339,7 +342,8 @@ public class connectionDB extends SQLiteOpenHelper {
                 BASE03 + " TEXT NOT NULL, "+
                 BASE04 + " TEXT NOT NULL, "+
                 BASE05 + " TEXT NOT NULL, "+
-                BASE06 + " TEXT NOT NULL)"
+                BASE06 + " TEXT NOT NULL, "+
+                API_KEY + " TEXT NOT NULL)"
         );
 
 
@@ -373,6 +377,7 @@ public class connectionDB extends SQLiteOpenHelper {
                 valuesEmpresa.put(BASE04, "");
                 valuesEmpresa.put(BASE05, "");
                 valuesEmpresa.put(BASE06, "");
+                valuesEmpresa.put(API_KEY, "-");
 
 
                 db.insert(TABLE_EMPRESA, null, valuesEmpresa);
@@ -560,7 +565,8 @@ public class connectionDB extends SQLiteOpenHelper {
                               String _ruc,
                               String _razon_social,
                               String _direccion,
-                              String _moneda) {
+                              String _moneda,
+                               String _correo) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date();
@@ -574,6 +580,7 @@ public class connectionDB extends SQLiteOpenHelper {
         valoresCabecera.put(RAZON_SOCIAL, _razon_social);
         valoresCabecera.put(DIRECCION, _direccion);
         valoresCabecera.put(MONEDA, _moneda);
+        valoresCabecera.put(CORREO, _correo);
    //     valoresCabecera.put(GRAVADO, _gravado);
    //     valoresCabecera.put(EXCENTO, _excento);
    //     valoresCabecera.put(INAFECTO, _inafecto);
@@ -850,10 +857,31 @@ public class connectionDB extends SQLiteOpenHelper {
         return c;
     }
 
+  //  TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+  //  SERIE +" TEXT, "+
+  //  FOLIO +" INT DEFAULT 0,"+
+  //  FECHA +" DATE,"+
+  //  RUC +" TEXT,"+
+  //  RAZON_SOCIAL +" TEXT,"+
+  //  DIRECCION + " TEXT,"+
+  //  MONEDA +" TEXT,"+
+  //  CORREO +" TEXT DEFAULT 'usuario@dominio.com',"+
+  //  SERIE_REL +" TEXT,"+
+  //  FOLIO_REL +" TEXT,"+
+  //  GRAVADO +" DOUBLE,"+
+   // EXCENTO +" DOUBLE,"+
+  //  INAFECTO+" DOUBLE,"+
+  //  SUBTOTAL+" DOUBLE,"+
+  //  IGV+" DOUBLE,"+
+  //  TOTAL+" DOUBLE,"+
+  //  ENVIADO_CORREO+" INTEGER DEFAULT 0,"+
+  //  ENVIADO_NUBE+" INTEGER DEFAULT 0,"+
+  //  ARCHIVADA+" INTEGER DEFAULT 0)"
 
 
     public Cursor getNotes_Documentos_Nube(String _fecha) {
-        String columnas[] = {TABLE_ID, SERIE, FOLIO, GRAVADO, EXCENTO, INAFECTO, SUBTOTAL, IGV, TOTAL, ENVIADO_NUBE};
+        String columnas[] = {TABLE_ID, SERIE, FOLIO, GRAVADO, EXCENTO, INAFECTO, SUBTOTAL, IGV, TOTAL, ENVIADO_NUBE,
+                RAZON_SOCIAL, FECHA, RUC, DIRECCION, MONEDA, CORREO, SERIE_REL, FOLIO_REL};
         Cursor c = this.getReadableDatabase().query(TABLE, columnas, FECHA + "=?",
                 new String[] { _fecha },  null, null, "serie,folio", null);
         //  Cursor c = this.getReadableDatabase().query(TABLE_DET, columnas, null, null, null, null, null);
@@ -969,7 +997,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getReg_Empresas(int _id) {
-        String columnas[] = {"_id","razon_social_empresa", "ruc_empresa", "direccion_empresa_1", "direccion_empresa_2", "correo_empresa", "telefono_empresa", "licencia"};
+        String columnas[] = {"_id","razon_social_empresa", "ruc_empresa", "direccion_empresa_1", "api_key", "correo_empresa", "telefono_empresa", "licencia"};
 
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
                 return c;
@@ -978,7 +1006,7 @@ public class connectionDB extends SQLiteOpenHelper {
     public Cursor getReg_TicketPos(int _id) {
         String columnas[] = {"_id","linea01", "linea02", "linea03", "linea04", "linea05", "linea06","linea07", "linea08", "linea09",
                 "ruc_empresa",
-                "base01", "base02", "base03", "base04", "base05", "base06"};
+                "base01", "base02", "base03", "base04", "base05", "base06","api_key"};
 
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
         return c;

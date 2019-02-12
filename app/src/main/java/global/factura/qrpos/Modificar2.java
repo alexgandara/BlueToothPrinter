@@ -38,11 +38,19 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,8 +62,10 @@ import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import zj.com.cn.bluetooth.sdk.R;
 import zj.com.command.sdk.Command;
@@ -100,6 +110,8 @@ public class Modificar2 extends Activity implements OnClickListener{
 	private static final String KOREAN = "EUC-KR";
 	private static final String BIG5 = "BIG5";
 
+	private static String _texto_nube="";
+
 /*********************************************************************************/
 	private TextView mTitle;
 	EditText editText;
@@ -123,6 +135,8 @@ public class Modificar2 extends Activity implements OnClickListener{
 	private Button btn_scqrcode = null;
 	private Button btn_camer = null;
 	private Button btn_alfilPOS = null;
+
+
 
 
 /******************************************************************************************************/
@@ -2891,6 +2905,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		String _linea02="";
 		String _linea03="";
 		String _linea04="";
+		String _api_key="";
 
 		String _ruc_empresa="";
 
@@ -2916,6 +2931,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				_base04 = cursor.getString(14);
 				_base05 = cursor.getString(15);
 				_base06 = cursor.getString(16);
+				_api_key = cursor.getString(17);
 
 
 			} while (cursor.moveToNext());
@@ -2983,6 +2999,21 @@ public class Modificar2 extends Activity implements OnClickListener{
 		String _folio="";
 		String _del_folio="";
 		String _al_folio="";
+		String _razon_social_nube="";
+		String _fecha_nube="";
+		String _ruc_nube="";
+		String _direccion_nube="";
+		String _moneda_nube="";
+		String _correo_nube="";
+		String _serie_rel_nube="";
+		String _folio_rel_nube="";
+		String _serie_completa="";
+		String _tipo_doc="";
+
+
+
+
+
 		String _detalle_corte;
 		double _gravado=0;
 		double _excento=0;
@@ -2992,10 +3023,13 @@ public class Modificar2 extends Activity implements OnClickListener{
 		double _igv=0;
 		double _total=0;
 		int _nube;
-		String _texto_nube="";
 
 
+		// prepara la direccion de la nube
 
+		RequestQueue queue = Volley.newRequestQueue(this);
+
+		String url = _api_key;
 
 
 
@@ -3021,20 +3055,165 @@ public class Modificar2 extends Activity implements OnClickListener{
 				_igv      = _igv+c.getDouble(7);
 				_total    = _total+c.getDouble(8);
 				_nube    = c.getInt(8);
+				_razon_social_nube = c.getString(10);
+				_fecha_nube = c.getString(11);
+				_ruc_nube = c.getString(12);
+				_direccion_nube = c.getString(13);
+				_moneda_nube = c.getString(14);
+				_correo_nube = c.getString(15);
+				_folio_rel_nube = c.getString(16);
+				_serie_rel_nube = c.getString(17);
 
-				if (_nube==1) {
-					_texto_nube="Si";
-				} else {
-					_texto_nube="No";
-				}
+
+				int _folio_int = Integer.parseInt(_folio);
+
+
+				String _naturaleza =  db.get_Naturaleza(_serie);
+				_folio=lPadZero(_folio_int,7);
+
+
+				_serie_completa=_ruc_empresa+"-"+_naturaleza+"-"+_serie+"-"+_folio;
+
+
+
+
+		//		if (_nube==1) {
+		//			_texto_nube="Si";
+		//		} else {
+		//			_texto_nube="No";
+		//		}
 				//     }2
 
 
 
+
+
+
+
+
+				// esto sube a la nube
+				Map<String, String> params = new HashMap();
+
+				params.put("serie", _serie);
+				params.put("folio", _folio);
+				params.put("fecha", _fecha_nube);
+				params.put("ruc_emisor", _ruc_empresa);
+				params.put("ruc_receptor", _ruc_nube);
+				params.put("razon_social", _razon_social_nube);
+				params.put("direccion", _direccion_nube);
+				params.put("moneda", _moneda_nube);
+				params.put("correo", _correo_nube);
+				params.put("serie_rel", _serie_rel_nube);
+				params.put("folio_rel", _folio_rel_nube);
+				params.put("gravado", ""+_gravado);
+				params.put("excento", ""+_excento);
+				params.put("inafecto", ""+_inafecto);
+				params.put("subtotal", ""+_subtotal);
+				params.put("igv", ""+_igv);
+				params.put("total", ""+_total);
+
+				params.put("serie_completa", _serie_completa);
+
+				params.put("enviado_nube", "1");
+
+
+
+//				_gravado  = _gravado+c.getDouble(3);
+//				_excento  = _excento+c.getDouble(4);
+//				_inafecto = _inafecto+c.getDouble(5);
+//				_subtotal = _subtotal+c.getDouble(6);
+//				_igv      = _igv+c.getDouble(7);
+//				_total    = _total+c.getDouble(8);
+				_texto_nube="No";
+
+
+				if (_folio_int>0) {
+
+					_texto_nube="Si";
+
+					JSONObject parameters = new JSONObject(params);
+
+					JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
+						@Override
+						public void onResponse(JSONObject response) {
+
+
+						}
+
+						}, new Response.ErrorListener() {
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								error.printStackTrace();
+								Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+
+							_texto_nube="No";
+							//TODO: handle failure
+						}
+					});
+
+				Volley.newRequestQueue(this).add(jsonRequest);
+				}
+
 				_detalle_corte=_detalle_corte+_serie+_folio_str(_folio)+_dinero(c.getDouble(8))+"      "+_texto_nube+_salto;
 
-				//	Toast.makeText(Modificar2.this,"ID a Modifcar :   "+id+"   "+_gravado, Toast.LENGTH_SHORT ).show();
+				// Toast.makeText(getApplicationContext(), "Se logro escibir en la nube", Toast.LENGTH_SHORT).show();
 
+/*
+
+				// subir el detalle
+
+				Cursor detalle = db.getNotes_detalle(Mid);
+				String producto = "",  descripcion="", unidad="";
+				int  folio;
+				double precio, cantidad, precio_sin_igv, subtotal, total, igv,_subtotal_con_igv;
+
+
+
+				total=0;
+				subtotal=0;
+				_total=0;
+				_subtotal=0;
+				_igv=0;
+				_subtotal_con_igv=0;
+
+
+
+
+
+				if (detalle.moveToFirst()) {
+					do {
+						id = detalle.getInt(0);
+						producto = detalle.getString(1);
+						descripcion = detalle.getString(2);
+						unidad = detalle.getString(3);
+						cantidad = detalle.getDouble(4);
+						precio = detalle.getDouble(5);
+						igv = detalle.getDouble(6);
+						_igv_global=igv;
+
+
+
+						precio_sin_igv=precio/(1+igv);
+
+						subtotal=precio_sin_igv*cantidad;
+						_subtotal=_subtotal+subtotal;
+						_total=_total+(cantidad*precio);
+						_subtotal_con_igv=precio*cantidad;
+
+
+
+
+
+
+
+					} while (c.moveToNext());
+					_igv=_total-_subtotal;
+
+
+				}
+
+
+*/
 
 
 
@@ -3081,7 +3260,42 @@ public class Modificar2 extends Activity implements OnClickListener{
 	}
 
 
+	public static String lPadZero(int in, int fill){
 
+		boolean negative = false;
+		int value, len = 0;
+
+		if(in >= 0){
+			value = in;
+		} else {
+			negative = true;
+			value = - in;
+			in = - in;
+			len ++;
+		}
+
+		if(value == 0){
+			len = 1;
+		} else{
+			for(; value != 0; len ++){
+				value /= 10;
+			}
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		if(negative){
+			sb.append('-');
+		}
+
+		for(int i = fill; i > len; i--){
+			sb.append('0');
+		}
+
+		sb.append(in);
+
+		return sb.toString();
+	}
 
 
 

@@ -29,7 +29,6 @@ public class init_alfilPOS  extends Activity {
             Salir,
             Archivados,
             Agregar_Documento_notas,
-            Sincronizar,
             Cierre_Caja;
 
     connectionDB db;
@@ -100,7 +99,6 @@ public class init_alfilPOS  extends Activity {
         Mnt_Series= (Button) findViewById(R.id.Button_Series);
         Mnt_Unidades = (Button) findViewById(R.id.Button_Unidades_Medida);
         Archivados= (Button) findViewById(R.id.Button_Archivados);
-        Sincronizar= (Button) findViewById(R.id.Button_Sincronizar);
     //    Cierre_Caja= (Button) findViewById(R.id.Button_Cierre);
         Salir= (Button) findViewById(R.id.Button_Salir);
 
@@ -202,14 +200,6 @@ public class init_alfilPOS  extends Activity {
         });
 
 
-        Sincronizar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, Sincronizar.class);
-                startActivity(intent);
-                //  return true;
-            }
-        });
 
 
 

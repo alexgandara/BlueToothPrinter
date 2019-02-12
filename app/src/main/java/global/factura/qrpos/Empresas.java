@@ -14,10 +14,10 @@ import zj.com.cn.bluetooth.sdk.R;
 
 public class Empresas extends Activity {
 
-    EditText razon_social, ruc, direccion1, direccion2, telefono, correo, licencia;
+    EditText razon_social, ruc, direccion1,  telefono, correo, licencia, api_key ;
 
 
-    String _razon_social, _ruc, _direccion1, _direccion2, _telefono, _correo, _licencia;
+    String _razon_social, _ruc, _direccion1, _telefono, _correo, _licencia, _api_key;
 
     int _myId = 1;
     connectionDB db;
@@ -39,7 +39,7 @@ public class Empresas extends Activity {
                 razon_social = (EditText) findViewById(R.id.editText_Razon_Social);
                 ruc = (EditText) findViewById(R.id.editText_Ruc);
                 direccion1 = (EditText) findViewById(R.id.editText_Direccion1);
-                direccion2 = (EditText) findViewById(R.id.editText_Direccion2);
+                api_key = (EditText) findViewById(R.id.editText_Api_Key);
                 correo = (EditText) findViewById(R.id.editText_Correo);
                 telefono = (EditText) findViewById(R.id.editText_Telefono);
                 licencia = (EditText) findViewById(R.id.editText_Licencia);
@@ -49,7 +49,7 @@ public class Empresas extends Activity {
                 _razon_social = cursor.getString(1);
                 _ruc = cursor.getString(2);
                 _direccion1 = cursor.getString(3);
-                _direccion2 = cursor.getString(4);
+                _api_key = cursor.getString(4);
                 _correo = cursor.getString(5);
                 _telefono = cursor.getString(6);
                 _licencia = cursor.getString(7);
@@ -59,7 +59,7 @@ public class Empresas extends Activity {
                 razon_social.setText(_razon_social);
                 ruc.setText(_ruc);
                 direccion1.setText(_direccion1);
-                direccion2.setText(_direccion2);
+                api_key.setText(_api_key);
                 correo.setText(_correo);
                 telefono.setText(_telefono);
                 licencia.setText(_licencia);
@@ -83,7 +83,7 @@ public class Empresas extends Activity {
         razon_social = (EditText) findViewById(R.id.editText_Razon_Social);
         ruc = (EditText) findViewById(R.id.editText_Ruc);
         direccion1 = (EditText) findViewById(R.id.editText_Direccion1);
-        direccion2 = (EditText) findViewById(R.id.editText_Direccion2);
+        api_key = (EditText) findViewById(R.id.editText_Api_Key);
         correo = (EditText) findViewById(R.id.editText_Correo);
         telefono = (EditText) findViewById(R.id.editText_Telefono);
         licencia = (EditText) findViewById(R.id.editText_Licencia);
@@ -95,7 +95,7 @@ public class Empresas extends Activity {
                         razon_social.getText().toString(),
                         ruc.getText().toString(),
                         direccion1.getText().toString(),
-                        direccion2.getText().toString(),
+                        api_key.getText().toString(),
                         correo.getText().toString(),
                         telefono.getText().toString(),
                         licencia.getText().toString());}
@@ -142,7 +142,7 @@ public class Empresas extends Activity {
                            String _razon_social,
                            String _ruc,
                            String _direccion1,
-                           String _direccion2,
+                           String _api_key,
                            String _correo,
                            String _telefono,
                            String _licencia
@@ -153,7 +153,7 @@ public class Empresas extends Activity {
         valoresEmpresa.put("razon_social_empresa", _razon_social);
         valoresEmpresa.put("ruc_empresa", _ruc);
         valoresEmpresa.put("direccion_empresa_1", _direccion1);
-        valoresEmpresa.put("direccion_empresa_2", _direccion2);
+        valoresEmpresa.put("api_key", _api_key);
         valoresEmpresa.put("correo_empresa", _correo);
         valoresEmpresa.put("telefono_empresa", _telefono);
         valoresEmpresa.put("licencia", _licencia);
