@@ -50,11 +50,14 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.channels.AlreadyBoundException;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -100,6 +103,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 	private static final int REQUEST_ENABLE_BT = 2;
 	private static final int REQUEST_CHOSE_BMP = 3;
 	private static final int REQUEST_CAMER = 4;
+	private RequestQueue mQueue;
 
 	//QRcode
 	private static final int QR_WIDTH = 350;
@@ -111,8 +115,19 @@ public class Modificar2 extends Activity implements OnClickListener{
 	private static final String BIG5 = "BIG5";
 
 	private static String _texto_nube="";
+    private static String _mensaje_error="";
 
-/*********************************************************************************/
+	private static String _almacen_m="";
+	private static String _razon_social_cliente_m="";
+	private static String _direccion_cliente_m="";
+	private static String _correo_cliente_m="";
+	private static String _telefono_cliente_m="";
+	private static final int numero_registros_por_bajar=0;
+
+
+
+
+	/*********************************************************************************/
 	private TextView mTitle;
 	EditText editText;
 	ImageView imageViewPicture;
@@ -123,6 +138,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 	private Button sendButton = null;
 	private Button sendCierre = null;
 	private Button sendNube = null;
+	private Button sendNube_Clientes = null;
+	private Button recibeNube_Clientes = null;
+    private Button recibeNube_Productos = null;
 	private Button testButton = null;
 	private Button printbmpButton = null;
 	private Button btnScanButton = null;
@@ -135,6 +153,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 	private Button btn_scqrcode = null;
 	private Button btn_camer = null;
 	private Button btn_alfilPOS = null;
+
 
 
 
@@ -229,6 +248,8 @@ public class Modificar2 extends Activity implements OnClickListener{
     private static final String TABLE = "cabecera";
 
     public double _subtotal=0;
+	public double _icbper=0;
+	public double _impuesto_icbper=0;
     public double _total=0;
     public double _igv=0;
     public int    Mid   =0;
@@ -374,6 +395,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
             List<String> item = null;
             Cursor c = db.getNotes_detalle(Mid);
+
             item = new ArrayList<String>();
             String producto = "",  descripcion="", unidad="";
             int id, folio;
@@ -385,15 +407,37 @@ public class Modificar2 extends Activity implements OnClickListener{
             subtotal=0;
             _total=0;
             _subtotal=0;
+            _icbper=0;
             _igv=0;
 			_subtotal_con_igv=0;
 
 
+			Cursor cursor2 =  db.getReg_icbper(_myId);
+
+			if (cursor2.moveToFirst()) {
+				do {
+
+
+
+					_impuesto_icbper = Double.parseDouble(cursor2.getString(1));
+
+				} while (cursor2.moveToNext());
+
+			}
+
+
+
+
+
+
+			int _linea=0;
+			int _id_unico=0;
 
 
 
             if (c.moveToFirst()) {
                 do {
+                	_linea++;
                     id = c.getInt(0);
                     producto = c.getString(1);
                     descripcion = c.getString(2);
@@ -401,9 +445,8 @@ public class Modificar2 extends Activity implements OnClickListener{
                     cantidad = c.getDouble(4);
                     precio = c.getDouble(5);
                     igv = c.getDouble(6);
+					_id_unico = c.getInt(8);
                     _igv_global=igv;
-
-
 
                     precio_sin_igv=precio/(1+igv);
 
@@ -412,18 +455,32 @@ public class Modificar2 extends Activity implements OnClickListener{
                     _total=_total+(cantidad*precio);
                     _subtotal_con_igv=precio*cantidad;
 
+                    if (producto.trim().equals("BOLSA")) {
+                    	_icbper=_icbper+(_impuesto_icbper*cantidad);
+					}
 
 
 
 
-                    item.add(id+" - "+producto+" - "+descripcion+" - "+unidad+" - "+cantidad+" "+precio);
+
+
+                    item.add(id+" - "+producto+" - "+descripcion+" - "+unidad+" - "+cantidad+" "+precio+" "+_linea);
                     //"CANT.  UNI    PRECIO     IMPORTE"+_salto;
                     _detalle=_detalle+descripcion.toUpperCase()+_salto;
                     _detalle=_detalle+_cantidad(cantidad)+" "+unidad+"    "+_cantidad(precio)+"     "+_cantidad(_subtotal_con_igv)+_salto;
 
 
+                    // actualizar numero de linea
+					update_linea_detalle(_id_unico,_linea);
+
+					// gandara
+
                 } while (c.moveToNext());
+
+
                 _igv=_total-_subtotal;
+				_total=_total+_icbper;
+
 
 
             }
@@ -635,6 +692,16 @@ public class Modificar2 extends Activity implements OnClickListener{
 		sendNube.setOnClickListener(this);
 
 
+		sendNube_Clientes = (Button) findViewById(R.id.Send_Nube_Clientes);
+		sendNube_Clientes.setOnClickListener(this);
+
+		recibeNube_Clientes = (Button) findViewById(R.id.Descargar_Nube_Clientes);
+		recibeNube_Clientes.setOnClickListener(this);
+
+		recibeNube_Productos = (Button) findViewById(R.id.Descargar_Nube_Productos);
+		recibeNube_Productos.setOnClickListener(this);
+
+
 		btnScanButton = (Button)findViewById(R.id.button_scan);
 		btnScanButton.setOnClickListener(this);
 
@@ -688,6 +755,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 		sendButton.setEnabled(false);
 		sendCierre.setEnabled(false);
 		sendNube.setEnabled(false);
+		sendNube_Clientes.setEnabled(false);
+		recibeNube_Clientes.setEnabled(false);
+		recibeNube_Productos.setEnabled(false);
 
 
 
@@ -721,7 +791,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 			sendButton.setEnabled(false);
 			sendCierre.setEnabled(false);
 			sendNube.setEnabled(false);
-
+			sendNube_Clientes.setEnabled(false);
+			recibeNube_Clientes.setEnabled(false);
+			recibeNube_Productos.setEnabled(false);
 
 
 			btnClose.setEnabled(false);
@@ -762,13 +834,31 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 				// manda Imprimir el Ticket POS con QR
 				String msg = Imprimir_Ticket();
+				String _impresora="normal";
+
 				if(msg.length()>0){
 
 
 					// primera impresion
+					Cursor cursor =  db.getReg_tickect(_myId);
+
+					if (cursor.moveToFirst()) {
+						do {
 
 
-					Print_BMP();
+
+							_impresora = cursor.getString(1);
+
+						} while (cursor.moveToNext());
+
+					}
+
+
+					if (_impresora.trim().equals("normal")) {
+						Print_BMP();
+					}
+
+
 
 					String _buttom="";
 					String _salto ="\n";
@@ -778,7 +868,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 					SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
 					SendDataByte(Command.LF);
 
-					createImage(_datos_qr);
+
+				//	if (_impresora.trim().equals("normal")) {
+				//		createImage(_datos_qr);
+				//	}
+
+
 
                     _buttom=_buttom+_base01+_salto;
                     _buttom=_buttom+_base02+_salto;
@@ -795,67 +890,71 @@ public class Modificar2 extends Activity implements OnClickListener{
 					_buttom=_buttom+_linea+_salto;
 					_buttom=_buttom+_salto+_salto;
 
+					if (_impresora.trim().equals("normal")) {
+						createImage(_datos_qr);
+					}
+
+
+
+					try { Thread.sleep(1000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
+
 					SendDataByte(PrinterCommand.POS_Print_Text(_buttom, CHINESE, 0, 0, 0, 0));
+
+
+
+					try { Thread.sleep(1000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
+
+					if (_impresora.trim().equals("rapida")) {
+						createImage(_datos_qr);
+						SendDataByte(Command.LF);
+						SendDataByte(Command.LF);
+					}
+
+
 					SendDataByte(Command.LF);
 
-				//	mService.stop();
 
-				//	imageViewPicture.setEnabled(true);
-					//	width_58mm.setEnabled(false);
-					//	width_80.setEnabled(false);
-					//	hexBox.setEnabled(false);
-				//	sendButton.setEnabled(false);
-
-				//	btnClose.setEnabled(false);
-
-				//	btn_camer.setEnabled(false);
-				//	btn_scqrcode.setEnabled(false);
-				//	btnScanButton.setEnabled(true);
-					//	Simplified.setEnabled(false);
-
-				//	btnScanButton.setText(getText(R.string.connect));
-
-
-					//Intent serverIntent = new Intent(Modificar2.this, Modificar2.class);
-					//startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
-
-
-
-					try { Thread.sleep(17000); }
+					try { Thread.sleep(1000); }
 					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
 
 
 
 
 
+					try { Thread.sleep(12000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
 
 
-		//			Toast.makeText(Modificar2.this,"Espere  3 ", Toast.LENGTH_LONG ).show();
-
-		//			Toast.makeText(Modificar2.this,"Espere  2 ", Toast.LENGTH_LONG ).show();
-
-		//			Toast.makeText(Modificar2.this,"Espere  1 ", Toast.LENGTH_LONG ).show();
-
-		//			Toast.makeText(Modificar2.this,"Espere  0 ", Toast.LENGTH_LONG ).show();
+					// segundo envio
 
 
 
-					///  segunda impresion
 
+					// Toast.makeText(this, "tipos de impresion:"+_impresora, Toast.LENGTH_LONG).show();
 
-					// primera impresion
-
-
-					Print_BMP();
+					if (_impresora.trim().equals("normal")) {
+						Print_BMP();
+					}
 
 					_buttom="";
 
 					// String _linea = "================================";
 
 					SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
+
+					try { Thread.sleep(1000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
+
 					SendDataByte(Command.LF);
 
-					createImage(_datos_qr);
+					try { Thread.sleep(1000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
+
+			//		if (_impresora.trim().equals("normal")) {
+			//			createImage(_datos_qr);
+			//		}
 
 					_buttom=_buttom+_base01+_salto;
 					_buttom=_buttom+_base02+_salto;
@@ -872,8 +971,33 @@ public class Modificar2 extends Activity implements OnClickListener{
 					_buttom=_buttom+_linea+_salto;
 					_buttom=_buttom+_salto+_salto;
 
+
+					if (_impresora.trim().equals("normal")) {
+						createImage(_datos_qr);
+					}
+
+
+
+
 					SendDataByte(PrinterCommand.POS_Print_Text(_buttom, CHINESE, 0, 0, 0, 0));
+					try { Thread.sleep(1000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
+
+					if (_impresora.trim().equals("rapida")) {
+						createImage(_datos_qr);
+						SendDataByte(Command.LF);
+						SendDataByte(Command.LF);
+					}
+
+
 					SendDataByte(Command.LF);
+					try { Thread.sleep(1000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
+
+
+					try { Thread.sleep(8000); }
+					catch (InterruptedException ex) { android.util.Log.d("YourApplicationName", ex.toString()); }
+
 
 					mService.stop();
 
@@ -884,6 +1008,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 					sendButton.setEnabled(false);
 					sendCierre.setEnabled(false);
 					sendNube.setEnabled(false);
+					sendNube_Clientes.setEnabled(false);
+					recibeNube_Clientes.setEnabled(false);
+					recibeNube_Productos.setEnabled(false);
 
 
 					btnClose.setEnabled(false);
@@ -1004,6 +1131,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 				sendButton.setEnabled(false);
 				sendCierre.setEnabled(false);
 				sendNube.setEnabled(false);
+				sendNube_Clientes.setEnabled(false);
+				recibeNube_Clientes.setEnabled(false);
+				recibeNube_Productos.setEnabled(false);
 
 
 
@@ -1049,7 +1179,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 					Toast.makeText(this, "Lista para subir a la nube", Toast.LENGTH_LONG).show();
 
-/////////////////////////////////////////////////////////////////////
+
 
 				if (false) {
 					String str = " asd fa sf asf asd ";
@@ -1088,12 +1218,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 						SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
 						SendDataByte(Command.LF);
 
-						Intent intent = new Intent(this, Main_Activity.class);
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
-						finish(); // call this to finish the current activity
+				//		Intent intent = new Intent(this, Main_Activity.class);
+				//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+				//		startActivity(intent);
+				//		finish(); // call this to finish the current activity
 
-						break;
+				//		break;
 
 					}
 
@@ -1108,6 +1238,194 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
 			}
+
+
+			case R.id.Send_Nube_Clientes:{
+
+
+
+
+				Toast.makeText(this, "Lista para subir a la nube", Toast.LENGTH_LONG).show();
+
+
+
+				if (false) {
+					String str = " asd fa sf asf asd ";
+					if(str.length() > 0){
+						str = Other.RemoveChar(str, ' ').toString();
+						if (str.length() <= 0)
+							return;
+						if ((str.length() % 2) != 0) {
+							Toast.makeText(getApplicationContext(), getString(R.string.msg_state),
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+						byte[] buf = Other.HexStringToBytes(str);
+						SendDataByte(buf);
+					}else{
+						Toast.makeText(Modificar2.this, getText(R.string.empty), Toast.LENGTH_SHORT).show();
+					}
+				} else {
+
+
+					// manda Imprimir el Ticket POS con QR
+					String msg = _Reporte_Nube_Clientes(Mfecha);
+					if(msg.length()>0){
+
+
+						// primera impresion
+
+
+						//	Print_BMP();
+
+						String _buttom="";
+						String _salto ="\n";
+
+						String _linea = "================================";
+
+						SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
+						SendDataByte(Command.LF);
+
+						//		Intent intent = new Intent(this, Main_Activity.class);
+						//		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+						//		startActivity(intent);
+						//		finish(); // call this to finish the current activity
+
+						//		break;
+
+					}
+
+				}
+				break;
+
+/////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+			}
+
+
+
+
+			case R.id.Descargar_Nube_Clientes:{
+
+
+
+
+				Toast.makeText(this, "Lista para Descagrar de la nube", Toast.LENGTH_LONG).show();
+
+
+
+				if (false) {
+					String str = " asd fa sf asf asd ";
+					if(str.length() > 0){
+						str = Other.RemoveChar(str, ' ').toString();
+						if (str.length() <= 0)
+							return;
+						if ((str.length() % 2) != 0) {
+							Toast.makeText(getApplicationContext(), getString(R.string.msg_state),
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+						byte[] buf = Other.HexStringToBytes(str);
+						SendDataByte(buf);
+					}else{
+						Toast.makeText(Modificar2.this, getText(R.string.empty), Toast.LENGTH_SHORT).show();
+					}
+				} else {
+
+
+					// manda Imprimir el Ticket POS con QR
+					String msg = _Reporte_Descarga_Nube_Clientes(Mfecha);
+					if(msg.length()>0){
+
+
+						String _buttom="";
+						String _salto ="\n";
+
+						String _linea = "================================";
+
+						SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
+						SendDataByte(Command.LF);
+
+
+					}
+
+				}
+				break;
+
+/////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+			}
+
+
+
+			case R.id.Descargar_Nube_Productos:{
+
+
+
+
+				Toast.makeText(this, "Lista para Descargar de la nube", Toast.LENGTH_LONG).show();
+
+
+
+				if (false) {
+					String str = " asd fa sf asf asd ";
+					if(str.length() > 0){
+						str = Other.RemoveChar(str, ' ').toString();
+						if (str.length() <= 0)
+							return;
+						if ((str.length() % 2) != 0) {
+							Toast.makeText(getApplicationContext(), getString(R.string.msg_state),
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+						byte[] buf = Other.HexStringToBytes(str);
+						SendDataByte(buf);
+					}else{
+						Toast.makeText(Modificar2.this, getText(R.string.empty), Toast.LENGTH_SHORT).show();
+					}
+				} else {
+
+
+					// manda Imprimir el Ticket POS con QR
+					String msg = _Reporte_Descarga_Nube_Productos(Mfecha);
+					if(msg.length()>0){
+
+
+						String _buttom="";
+						String _salto ="\n";
+
+						String _linea = "================================";
+
+						SendDataByte(PrinterCommand.POS_Print_Text(msg, CHINESE, 0, 0, 0, 0));
+						SendDataByte(Command.LF);
+
+
+					}
+
+				}
+				break;
+
+/////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+			}
+
+
+
 
 
 
@@ -1187,6 +1505,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 					sendButton.setEnabled(true);
 					sendCierre.setEnabled(true);
 					sendNube.setEnabled(isNetworkAvailable());
+					sendNube_Clientes.setEnabled(isNetworkAvailable());
+					recibeNube_Clientes.setEnabled(isNetworkAvailable());
+					recibeNube_Productos.setEnabled(isNetworkAvailable());
 
 
 					btnClose.setEnabled(true);
@@ -1236,7 +1557,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 				sendButton.setEnabled(false);
 				sendCierre.setEnabled(false);
 				sendNube.setEnabled(false);
-
+				sendNube_Clientes.setEnabled(false);
+				recibeNube_Clientes.setEnabled(false);
+				recibeNube_Productos.setEnabled(false);
 
 
 				btnClose.setEnabled(false);
@@ -2355,12 +2678,12 @@ public class Modificar2 extends Activity implements OnClickListener{
 
             }
 
-            if (!_licencia.equals("WESQ-WERS-TYVS")) {
-                if (_folio_nuevo>999) {
-                    _folio_nuevo=9999999;
-                    Mrazon_social=_licencia+"  LICENCIA    AGOTADA      llame   a    factura global    954 879 529    sopote@factura.global          - - - - - - - - - - - - - - - ";
-                }
-            }
+//            if (!_licencia.equals("WESQ-WERS-TYVS")) {
+//                if (_folio_nuevo>999) {
+//                    _folio_nuevo=9999999;
+//                    Mrazon_social=_licencia+"  LICENCIA    AGOTADA      llame   a    factura global    954 879 529    sopote@factura.global          - - - - - - - - - - - - - - - ";
+//                }
+//            }
 
 
 
@@ -2548,6 +2871,7 @@ public class Modificar2 extends Activity implements OnClickListener{
         _salida=_salida+_linea+_salto;
         _salida=_salida+"                SUBTOTAL:"+_cantidad(_subtotal)+_salto;
         _salida=_salida+"              IGV "+_igv_global+" %:"+_cantidad(_igv)+_salto;
+		_salida=_salida+"                 ICBPER: "+_cantidad(_icbper)+_salto;
         _salida=_salida+"                   TOTAL:"+_cantidad(_total)+_salto;
     //    _salida=_salida+_salto;
      //   _salida=_salida+_salto;
@@ -2741,6 +3065,49 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		}
 
+
+
+
+		// limpiar todos los ventas de productos
+
+		Cursor c_prod0 = db.getNotes_productos();
+
+		String _prod_a_limpiar="";
+		double _ventas_pro=0.00;
+		double _existencias_pro=0.00;
+
+//
+// {TABLE_ID, 0
+// ID_PRODUCTO, 1
+// DESCRIPCION_PRODUCTO, 2
+// UNIDAD_PRODUCTO, 3
+// PRECIO_PRODUCTO, 4
+// PRECIO_PRODUCTO_MAYOREO, 5
+// IGV_PRODUCTO, 6
+// EXISTENCIA, 7
+// VENTAS_PRO, 8
+// SALDO_PRO   9};
+
+	/*	if (c_prod0.moveToFirst()) {
+			do {
+				_prod_a_limpiar = c_prod0.getString(1);
+				_existencias_pro = c_prod0.getDouble(7);
+				_ventas_pro = c_prod0.getDouble(8);
+				update_existencia(_prod_a_limpiar,_existencias_pro, 0.00);
+
+
+			} while (c_prod0.moveToNext());
+
+
+		}
+
+*/
+
+
+
+
+
+
 		// me traigo la cabecera
 
 
@@ -2834,8 +3201,11 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 				_detalle_corte=_detalle_corte+_serie+_folio_str(_folio)+_dinero(c.getDouble(7))+_dinero(c.getDouble(8))+_salto;
 
+
 				//	Toast.makeText(Modificar2.this,"ID a Modifcar :   "+id+"   "+_gravado, Toast.LENGTH_SHORT ).show();
 
+
+				// ir al documento acumular las ventas
 
 
 
@@ -2862,8 +3232,164 @@ public class Modificar2 extends Activity implements OnClickListener{
         }
 
 
+        // actualizar saldos de ventas
 
-     //   _salida=_salida+"SERIE         : "+Mserie+_salto;
+
+
+
+		// ponerlas ventas en cero
+
+		///////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+		// poner las existencias a cero
+		///////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+
+		Cursor c_prod = db.getNotes_productos();
+
+		_prod_a_limpiar="";
+		_ventas_pro=0.00;
+
+		//
+		// {TABLE_ID, 0
+		// ID_PRODUCTO, 1
+		// DESCRIPCION_PRODUCTO, 2
+		// UNIDAD_PRODUCTO, 3
+		// PRECIO_PRODUCTO, 4
+		// PRECIO_PRODUCTO_MAYOREO, 5
+		// IGV_PRODUCTO, 6
+		// EXISTENCIA, 7
+		// VENTAS_PRO, 8
+		// SALDO_PRO   9};
+
+		if (c_prod.moveToFirst()) {
+			do {
+				_prod_a_limpiar = c_prod.getString(1);
+			//	_ventas_pro = c_prod.getDouble(8);
+				update_ventas(_prod_a_limpiar, 0.00);
+
+
+			} while (c_prod.moveToNext());
+
+
+		}
+
+
+
+
+
+
+
+
+
+		///////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+		// traer todo los documentos de ventas para actualizar los saldos de ventas de los productos
+		///////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+
+		Cursor c_cabecera = db.getNotes_Documentos(Mfecha);
+
+	//	int id=0;
+
+		if (c_cabecera.moveToFirst()) {
+			do {
+				id = c_cabecera.getInt(0);
+
+				Cursor c_detalle = db.getNotes_detalle(id);
+				//  String columnas[] = {TABLE_ID, 0
+				// PRODUCTO, 1
+				// DESCRIPCION, 2
+				// UNIDAD, 3
+				// CANTIDAD, 4
+				// PRECIO_PRODUCTO, 5
+				// DET_IGV   6
+				// };
+
+				int id_detalle=0;
+				String producto="";
+				double _ventas_detalle=0.00;
+
+
+
+				if (c_detalle.moveToFirst()) {
+					do {
+						id_detalle = c_detalle.getInt(0);
+						producto = c_detalle.getString(1);
+						_ventas_detalle = c_detalle.getDouble(4);
+
+						acumular_ventas(producto, _ventas_detalle);
+
+
+					} while (c_detalle.moveToNext());
+
+					c_detalle.close();
+
+				}
+
+			} while (c_cabecera.moveToNext());
+
+		}
+
+
+
+
+
+
+		// DESPLEGAR PRODUCTOS Y SUS SALDOS
+
+		// limpiar todos los saldos de productos
+
+		Cursor c_prod_clean = db.getNotes_productos();
+
+		String _producto="";
+		String _descripcion="";
+		double _existencia=0.00;
+		double _ventas=0.00;
+		double _saldo=0.00;
+		double _mov=0.00;
+
+		if (c_prod_clean.moveToFirst()) {
+			do {
+				_producto="";
+				_descripcion="";
+				_existencia=0.00;
+				_ventas=0.00;
+				_saldo=0.00;
+
+
+				_producto = c_prod_clean.getString(1);
+				_descripcion = c_prod_clean.getString(2);
+				_existencia = c_prod_clean.getDouble(7);
+				_ventas = c_prod_clean.getDouble(8);
+				_saldo = c_prod_clean.getDouble(9);
+
+
+
+				if ((_existencia!=0)  || (_ventas!=0)  || (_saldo!=0)) {
+					_detalle_corte=_detalle_corte+_salto+"Prod.:"+_producto+_salto+"Desc.:"+_descripcion+_salto+
+					"Saldo Inicial  :"+_dinero(_existencia)+_salto+
+					"Ventas         :"+_dinero(_ventas)+_salto+
+					"Saldo FInal    :"+_dinero(_saldo)+_salto;
+				}
+
+
+
+
+
+
+			} while (c_prod_clean.moveToNext());
+
+
+		}
+
+
+
+
+
+
+
+		//   _salida=_salida+"SERIE         : "+Mserie+_salto;
 		_salida=_salida+"FECHA DE CORTE: "+Mfecha+_salto;
 		_salida=_salida+"MONEDA        : "+"SOLES"+_salto;
 		_salida=_salida+_linea+_salto;
@@ -2906,6 +3432,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 		String _linea03="";
 		String _linea04="";
 		String _api_key="";
+		String _api_key2="";
 
 		String _ruc_empresa="";
 
@@ -2931,7 +3458,7 @@ public class Modificar2 extends Activity implements OnClickListener{
 				_base04 = cursor.getString(14);
 				_base05 = cursor.getString(15);
 				_base06 = cursor.getString(16);
-				_api_key = cursor.getString(17);
+
 
 
 			} while (cursor.moveToNext());
@@ -2940,6 +3467,57 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		// me traigo la cabecera
 
+
+		String _api_key_doctos="";
+		String _api_key_movtos="";
+		String _api_key_productos="";
+		String _api_key_clientes="";
+		String _api_key_almacen="";
+		String _api_key_movimientos="";
+		String _api_key_00="";
+		String _api_key_01="";
+		String _api_key_02="";
+
+
+
+
+
+
+
+
+		Cursor cursor2 =  db.getReg_Apiskey(1);
+
+		//   String columnas[] = {"_id","api_key_doctos", "api_key_movtos",
+		// "api_key_productos", "api_key_clientes", "api_key_almacen",
+		// "api_key_movimientos","api_key_00", "api_key_01", "api_key_02" };
+
+
+		if (cursor2.moveToFirst()) {
+			do {
+
+
+				_api_key_doctos = cursor2.getString(1);
+				_api_key_movtos = cursor2.getString(2);
+				_api_key_productos = cursor2.getString(3);
+				_api_key_clientes = cursor2.getString(4);
+				_api_key_almacen = cursor2.getString(5);
+				_api_key_movimientos = cursor2.getString(6);
+				_api_key_00 = cursor2.getString(7);
+				_api_key_01 = cursor2.getString(8);
+				_api_key_02 = cursor2.getString(9);
+
+
+
+
+
+
+
+			} while (cursor2.moveToNext());
+
+		}
+
+
+		String _almacen=_api_key_01;
 
 		String _salida = "";
 		String _cadena = "";
@@ -3008,7 +3586,9 @@ public class Modificar2 extends Activity implements OnClickListener{
 		String _serie_rel_nube="";
 		String _folio_rel_nube="";
 		String _serie_completa="";
+		String _serie_completa_sunat="";
 		String _tipo_doc="";
+
 
 
 
@@ -3022,6 +3602,17 @@ public class Modificar2 extends Activity implements OnClickListener{
 		double _subtotal=0;
 		double _igv=0;
 		double _total=0;
+
+		double _total_gravado=0;
+		double _total_excento=0;
+		double _total_exonerado=0;
+		double _total_inafecto=0;
+		double _total_subtotal=0;
+		double _total_igv=0;
+		double _total_total=0;
+
+
+
 		int _nube;
 
 
@@ -3029,11 +3620,11 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		RequestQueue queue = Volley.newRequestQueue(this);
 
-		String url = _api_key;
+		String url = _api_key_doctos;
 
+        _texto_nube="Si";
 
-
-		_detalle_corte="SERIE FOLIO      TOTAL    NUBE   "+_salto;
+		_detalle_corte="SERIE FOLIO      TOTAL    "+_salto;
 
 		if (c.moveToFirst()) {
 			do {
@@ -3048,21 +3639,33 @@ public class Modificar2 extends Activity implements OnClickListener{
 				_folio = c.getString(2);
 
 				//     if (_serie==Mserie) {
-				_gravado  = _gravado+c.getDouble(3);
-				_excento  = _excento+c.getDouble(4);
-				_inafecto = _inafecto+c.getDouble(5);
-				_subtotal = _subtotal+c.getDouble(6);
-				_igv      = _igv+c.getDouble(7);
-				_total    = _total+c.getDouble(8);
+				_gravado  = c.getDouble(3);
+				_excento  = c.getDouble(4);
+				_inafecto = c.getDouble(5);
+				_subtotal = c.getDouble(6);
+				_igv      = c.getDouble(7);
+				_total    = c.getDouble(8);
 				_nube    = c.getInt(8);
 				_razon_social_nube = c.getString(10);
 				_fecha_nube = c.getString(11);
+
 				_ruc_nube = c.getString(12);
 				_direccion_nube = c.getString(13);
 				_moneda_nube = c.getString(14);
 				_correo_nube = c.getString(15);
 				_folio_rel_nube = c.getString(16);
 				_serie_rel_nube = c.getString(17);
+
+
+				_total_gravado=_total_gravado+_gravado;
+				_total_excento=_total_excento+_excento;
+				_total_exonerado=_total_exonerado+_exonerado;
+				_total_inafecto=_total_inafecto+_inafecto;
+				_total_subtotal=_total_subtotal+_subtotal;
+				_total_igv=_total_igv+_igv;
+				_total_total=_total_total+_total;
+
+
 
 
 				int _folio_int = Integer.parseInt(_folio);
@@ -3072,17 +3675,11 @@ public class Modificar2 extends Activity implements OnClickListener{
 				_folio=lPadZero(_folio_int,7);
 
 
-				_serie_completa=_ruc_empresa+"-"+_naturaleza+"-"+_serie+"-"+_folio;
+				_serie_completa_sunat=_ruc_empresa+"-"+_naturaleza+"-"+_serie+"-"+_folio;
+				_serie_completa=_serie+"/19-"+_folio;
 
 
 
-
-		//		if (_nube==1) {
-		//			_texto_nube="Si";
-		//		} else {
-		//			_texto_nube="No";
-		//		}
-				//     }2
 
 
 
@@ -3094,48 +3691,68 @@ public class Modificar2 extends Activity implements OnClickListener{
 				// esto sube a la nube
 				Map<String, String> params = new HashMap();
 
-				params.put("serie", _serie);
-				params.put("folio", _folio);
-				params.put("fecha", _fecha_nube);
-				params.put("ruc_emisor", _ruc_empresa);
-				params.put("ruc_receptor", _ruc_nube);
-				params.put("razon_social", _razon_social_nube);
-				params.put("direccion", _direccion_nube);
-				params.put("moneda", _moneda_nube);
-				params.put("correo", _correo_nube);
-				params.put("serie_rel", _serie_rel_nube);
-				params.put("folio_rel", _folio_rel_nube);
-				params.put("gravado", ""+_gravado);
-				params.put("excento", ""+_excento);
-				params.put("inafecto", ""+_inafecto);
-				params.put("subtotal", ""+_subtotal);
-				params.put("igv", ""+_igv);
-				params.put("total", ""+_total);
-
-				params.put("serie_completa", _serie_completa);
-
-				params.put("enviado_nube", "1");
-
+//				params.put("serie", _serie);
+//				params.put("folio", _folio);
+//				params.put("fecha", _fecha_nube);
+//				params.put("ruc_emisor", _ruc_empresa);
+//				params.put("ruc_receptor", _ruc_nube);
+//				params.put("razon_social", _razon_social_nube);
+//				params.put("direccion", _direccion_nube);
+//				params.put("moneda", _moneda_nube);
+//				params.put("correo", _correo_nube);
+//				params.put("serie_rel", _serie_rel_nube);
+//				params.put("folio_rel", _folio_rel_nube);
+//				params.put("gravado", ""+_gravado);
+//				params.put("excento", ""+_excento);
+//				params.put("inafecto", ""+_inafecto);
+//				params.put("subtotal", ""+_subtotal);
+//				params.put("igv", ""+_igv);
+//				params.put("icbper", ""+0.00);
+//				params.put("total", ""+_total);
+//				params.put("serie_completa", _serie_completa);
+//				params.put("enviado_nube", "1");
 
 
-//				_gravado  = _gravado+c.getDouble(3);
-//				_excento  = _excento+c.getDouble(4);
-//				_inafecto = _inafecto+c.getDouble(5);
-//				_subtotal = _subtotal+c.getDouble(6);
-//				_igv      = _igv+c.getDouble(7);
-//				_total    = _total+c.getDouble(8);
+		//		params.put("id", );
+				params.put("emp", "1");
+				params.put("id_app", ""+id);
+				params.put("emp_div", "1");
+				params.put("fch", _fecha_nube);
+				params.put("hor", "00:00:00");
+				params.put("eje", "2019");
+				params.put("ser", "4");  // ser 4 = ·F001
+				params.put("num_doc", ""+_folio_int);
+			//	params.put("ser_cnt", ""+_folio_int);
+				params.put("num_fac", _serie_completa);  // "num_fac": "F001/19-000001",": "F001/19-000001",
+				params.put("serie_completa", _serie_completa_sunat);
+				params.put("alm", _almacen);
+				params.put("alm_temp", _almacen);
+				params.put("cli_temp", _ruc_nube);
+				params.put("serie_temp", _serie);
+				params.put("raz_soc_temp", _razon_social_nube);
+				params.put("dir_temp", _direccion_nube);
+				params.put("fha_temp", "12/12/2585");
+				params.put("subido_erp", "0");
+
+
+
+
+
 				_texto_nube="No";
+
+                _mensaje_error="";
 
 
 				if (_folio_int>0) {
 
-					_texto_nube="Si";
+
 
 					JSONObject parameters = new JSONObject(params);
 
 					JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
 						@Override
 						public void onResponse(JSONObject response) {
+                            Toast.makeText(getApplicationContext(), "Actualizacion a la Nube Exitosa de Cabecera! ", Toast.LENGTH_SHORT).show();
 
 
 						}
@@ -3144,38 +3761,233 @@ public class Modificar2 extends Activity implements OnClickListener{
 							@Override
 							public void onErrorResponse(VolleyError error) {
 								error.printStackTrace();
-								Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "HAY UNA ERROR en actualizacion de Cabecera: (Intente de Nuevo) "+error.toString(), Toast.LENGTH_LONG).show();
+                                _mensaje_error="HAY UN ERROR en actualizacion de Cabecera (Intente de Nuevo) :"+error.toString();
 
-							_texto_nube="No";
-							//TODO: handle failure
+								if (_texto_nube.equals("Si"))  {
+									SendDataByte(PrinterCommand.POS_Print_Text(_mensaje_error, CHINESE, 0, 0, 0, 0));
+									SendDataByte(Command.LF);
+									_texto_nube="No";
+
+
+								}
+
+
+
+
 						}
 					});
 
 				Volley.newRequestQueue(this).add(jsonRequest);
 				}
 
-				_detalle_corte=_detalle_corte+_serie+_folio_str(_folio)+_dinero(c.getDouble(8))+"      "+_texto_nube+_salto;
+				if (_texto_nube.equals("No")) {
+					if (_folio_int>0) {
+						_detalle_corte=_detalle_corte+_serie+_folio_str(_folio)+_dinero(c.getDouble(8))+"      "+_salto;
+						//       _detalle_corte=_detalle_corte+_mensaje_error+_salto;
+						_texto_nube="Si";
+
+
+					}
+
+
+
+
+                } else {
+					if (_folio_int>0) {
+						_detalle_corte=_detalle_corte+_serie+_folio_str(_folio)+_dinero(c.getDouble(8))+"      "+_salto;
+					}
+
+                }
+
+
 
 				// Toast.makeText(getApplicationContext(), "Se logro escibir en la nube", Toast.LENGTH_SHORT).show();
 
-/*
+
+				// vamos a taer los datos de nuevo para saber a el id de cada trasaccion y poderle poner detalle
+
+
+
+
+//				String _titulo ="================================"+_salto+
+//						"REP DESCARGA CLIENTES DE LA NUBE"+_salto+
+//						"ALMACEN:"+_almacen+_salto+
+//						"api facturas: "+_api_key_clientes+_salto+
+						//		"api productos"+_api_key_productos+_salto+
+						//		"api almacen"+_api_key_almacen+_salto+
+						//		"api movimientos"+_api_key_movimientos+_salto+
+						//		"api 00"+_api_key_00+_salto+
+						//		"api 01"+_api_key_01+_salto+
+						//		"api 02"+_api_key_02+_salto+
+
+//						"================================"+_salto;
+
+
+				// _salida=_salida+_salto;
+				//	_salida=_salida+_salto;
+				_salida=_salida+_titulo+_salto;
+
+
+				if (_linea01 != null ) {
+					_salida = _salida + _linea01 + _salto;
+				}
+
+				_salida=_salida+_salto;
+
+				if (_linea02 != null ) {
+					_salida = _salida + _linea02 + _salto;
+				}
+
+				if (_linea03 != null ) {
+					if (_linea03.trim().length() > 0) {
+						_salida = _salida + _linea03 + _salto;
+					}
+				}
+
+				if (_linea04 != null ) {
+					if (_linea04.trim().length() > 0) {
+						_salida = _salida + _linea04 + _salto;
+					}
+				}
+
+
+
+
+
+
+				_salida=_salida+_linea+_salto;
+
+
+
+
+
+
+				String _ruc_cliente="";
+		//		String _detalle_corte;
+				final String _id_factura_velneo="";
+
+
+				//	Toast.makeText(getApplicationContext(), " antes al json "+url, Toast.LENGTH_SHORT ).show();
+
+
+				mQueue = Volley.newRequestQueue(this);
+
+
+				JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+						new Response.Listener<JSONObject>() {
+							@Override
+							public void onResponse(JSONObject response) {
+								try {
+									JSONArray jsonArray = response.getJSONArray("vta_fac_g");
+										//	Toast.makeText(getApplicationContext(), response.toString()+",,,"+jsonArray.length() , Toast.LENGTH_LONG ).show();
+										for (int i = 0; i < jsonArray.length(); i++) {
+											JSONObject employee = jsonArray.getJSONObject(i);
+
+
+											String _id_velneo = employee.getString("id");
+											String _id_app = employee.getString("id_app");
+											String _num_fact = employee.getString("num_fac");
+
+
+											int numero_registros_por_bajar=jsonArray.length();
+
+											update_cabecera_ventas(_id_app,_id_velneo);
+
+
+
+											//		if (_almacen_m.trim().equals(_almacen)) {
+//											if (db.exits_Client(_ruc_cliente_m)==0) {//
+//												agrega_Clientes(_ruc_cliente_m,
+//														_razon_social_m,
+//														_direccion_m,
+//														_correo_m,
+//														_telefono_m);
+
+//										}
+									}
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+							}
+						}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						error.printStackTrace();
+					}
+				});
+
+				mQueue.add(request);
+
+
+
+
+			////////////////////////////////////////////////
+
+
+				// traer numero de id de velneo de cada _id_velneo
+
+
+
+				String _factura_velneo = db._id_factura_velneo(Integer.toString(id));
+
+				Toast.makeText(getApplicationContext(), "id factura de velneo:"+_factura_velneo+" id de la app:"+id, Toast.LENGTH_SHORT).show();
+
+
+
 
 				// subir el detalle
 
-				Cursor detalle = db.getNotes_detalle(Mid);
-				String producto = "",  descripcion="", unidad="";
+				Cursor detalle = db.getNotes_detalle(id);
+				String producto = "",  descripcion="", unidad="", _id_velneo;
 				int  folio;
 				double precio, cantidad, precio_sin_igv, subtotal, total, igv,_subtotal_con_igv;
 
 
 
-				total=0;
-				subtotal=0;
-				_total=0;
-				_subtotal=0;
-				_igv=0;
-				_subtotal_con_igv=0;
+				double total_det=0;
+				double subtotal_det=0;
+				double _total_det=0;
+				double _subtotal_det=0;
+				double _igv_det=0;
+				double _subtotal_con_igv_det=0;
+				double precio_sin_igv_det=0;
 
+				double _precio=0;
+				double _cantidad=0;
+
+
+				_icbper=0;
+
+				String _producto="";
+				String _descripcion="";
+				String _unidad="";
+
+
+
+
+				Cursor cursor3 =  db.getReg_icbper(_myId);
+
+				if (cursor3.moveToFirst()) {
+					do {
+
+
+
+						_impuesto_icbper = Double.parseDouble(cursor3.getString(1));
+
+					} while (cursor3.moveToNext());
+
+				}
+
+
+
+
+				RequestQueue queue2 = Volley.newRequestQueue(this);
+				String url2 = _api_key_movtos;
+
+				int _lineas=0;
+				int _linea_detalle=0;
+				String _linea_detalle_string="";
 
 
 
@@ -3183,37 +3995,131 @@ public class Modificar2 extends Activity implements OnClickListener{
 				if (detalle.moveToFirst()) {
 					do {
 						id = detalle.getInt(0);
-						producto = detalle.getString(1);
-						descripcion = detalle.getString(2);
-						unidad = detalle.getString(3);
+						_producto = detalle.getString(1);
+						_descripcion = detalle.getString(2);
+						_unidad = detalle.getString(3);
 						cantidad = detalle.getDouble(4);
-						precio = detalle.getDouble(5);
+						_precio = detalle.getDouble(5);
 						igv = detalle.getDouble(6);
+						_linea_detalle=detalle.getInt(7);
+						_id_velneo=detalle.getString(3);
+
+                        _linea_detalle_string=Integer.toString(_linea_detalle);
+
 						_igv_global=igv;
+						_lineas++;
+
+						// TABLE_ID  0
+						// PRODUCTO  1
+						// DESCRIPCION  2
+						// UNIDAD       3
+						// CANTIDAD     4
+						// PRECIO_PRODUCTO  5
+						// DET_IGV          6
+						// LINEA            7
+						// "_id"            8
+
+						precio_sin_igv_det=_precio/(1+igv);
+
+						subtotal_det=precio_sin_igv_det*cantidad;
+						_subtotal_det=_subtotal_det+subtotal_det;
+						_total_det=_total_det+(cantidad*_precio);
+						_subtotal_con_igv_det=_precio*cantidad;
+
+				//		_detalle_corte=_detalle_corte+_producto+" "+_descripcion+" "+_salto;
+
+
+						if (_producto.trim().equals("BOLSA")) {
+							_icbper=(_impuesto_icbper*cantidad);
+						}
 
 
 
-						precio_sin_igv=precio/(1+igv);
-
-						subtotal=precio_sin_igv*cantidad;
-						_subtotal=_subtotal+subtotal;
-						_total=_total+(cantidad*precio);
-						_subtotal_con_igv=precio*cantidad;
+						// esto sube a la nube
+						Map<String, String> params_det = new HashMap();
 
 
 
 
 
+                        params_det.put("emp", "1");
+                        params_det.put("emp_div", "1");
+						params_det.put("vta_fac_num_lin", _linea_detalle_string);
+						params_det.put("tip_mov", "V");
+						params_det.put("art", ""+37);
+						params_det.put("dsc_edt", _descripcion);
+						params_det.put("can", ""+cantidad);
+						params.put("pre", ""+_precio);
+					//	params.put("imp", ""+_subtotal_det);
+
+						params_det.put("id_temp", ""+_id_velneo);
+						params_det.put("ref_temp", ""+_producto);
+						params_det.put("desc_temp", ""+_descripcion);
+						params_det.put("alm_temp", ""+_almacen);
+						params_det.put("uni_temp", ""+_unidad);
+						params_det.put("can_temp", ""+cantidad);
+						params_det.put("pre_temp", ""+_precio);
+						params_det.put("can_temp", ""+_total_det);
+						params_det.put("serie_completa", _serie_completa_sunat);
+						params_det.put("subido_erp", "0");
+						params_det.put("mov_tip", "3");
+						// det_igv
+						params_det.put("igv_temp", ""+igv);
 
 
-					} while (c.moveToNext());
+
+
+
+						_texto_nube="Si";
+
+						JSONObject parameters2 = new JSONObject(params_det);
+
+						JsonObjectRequest jsonRequest2 = new JsonObjectRequest(Request.Method.POST, url2, parameters2, new Response.Listener<JSONObject>() {
+							@Override
+							public void onResponse(JSONObject response) {
+				//				Toast.makeText(getApplicationContext(), "Actualizacion a la Nube Exitosa del Detalle!", Toast.LENGTH_SHORT).show();
+
+
+							}
+						}, new Response.ErrorListener() {
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								error.printStackTrace();
+								Toast.makeText(getApplicationContext(), "HAY UN ERROR en actualizacion del Detalle:"+error.toString(), Toast.LENGTH_LONG).show();
+                                _mensaje_error="HAY UNA ERROR en actualizacion del DETALLE :"+error.toString();
+
+                                SendDataByte(PrinterCommand.POS_Print_Text(_mensaje_error, CHINESE, 0, 0, 0, 0));
+                                SendDataByte(Command.LF);
+
+
+								//TODO: handle failure
+							}
+						});
+
+						Volley.newRequestQueue(this).add(jsonRequest2);
+
+                        if (_texto_nube.equals("No")) {
+                            _detalle_corte=_detalle_corte+_mensaje_error+_salto;
+                            _texto_nube="Si";
+
+
+
+
+                        } else {
+
+                        }
+
+
+
+
+                    } while (detalle.moveToNext());
 					_igv=_total-_subtotal;
 
 
 				}
 
 
-*/
+
 
 
 
@@ -3223,21 +4129,20 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 
 
-			//	_detalle_corte=_detalle_corte+_salto+"Serie           :"+Mserie+_salto;
-			//_detalle_corte=_detalle_corte+"Del Folio       :"+_del_folio+_salto;
-			//_detalle_corte=_detalle_corte+"Al Folio        :"+_al_folio+_salto+_salto;
-			_detalle_corte=_detalle_corte+_linea+_salto+_salto;
-		//	_detalle_corte=_detalle_corte+"Monto Gravado   :"+_dinero(_gravado)+_salto;
-		//	_detalle_corte=_detalle_corte+"Monto Excento   :"+_dinero(_excento)+_salto;
-		//	_detalle_corte=_detalle_corte+"Monto Inafecto  :"+_dinero(_inafecto)+_salto;
-			_detalle_corte=_detalle_corte+"Sub Total       :"+_dinero(_subtotal)+_salto;
-			_detalle_corte=_detalle_corte+"IGV             :"+_dinero(_igv)+_salto;
-			_detalle_corte=_detalle_corte+"TOTAL           :"+_dinero(_total)+_salto;
 
 
 
 
 		}
+
+		_detalle_corte=_detalle_corte+_linea+_salto+_salto;
+		_detalle_corte=_detalle_corte+"Monto Gravado   :"+_dinero(_total_gravado)+_salto;
+		_detalle_corte=_detalle_corte+"Monto Excento   :"+_dinero(_total_excento)+_salto;
+		_detalle_corte=_detalle_corte+"Monto Inafecto  :"+_dinero(_total_inafecto)+_salto;
+		_detalle_corte=_detalle_corte+"Sub Total       :"+_dinero(_total_subtotal)+_salto;
+		_detalle_corte=_detalle_corte+"IGV             :"+_dinero(_total_igv)+_salto;
+		_detalle_corte=_detalle_corte+"TOTAL           :"+_dinero(_total_total)+_salto;
+
 
 
 
@@ -3296,6 +4201,1094 @@ public class Modificar2 extends Activity implements OnClickListener{
 
 		return sb.toString();
 	}
+
+
+
+	private String _Reporte_Nube_Clientes (String _fecha) {
+
+
+		int _folio_nuevo=0;
+		String _licencia="";
+
+
+		String _linea01="";
+		String _linea02="";
+		String _linea03="";
+		String _linea04="";
+		String _api_key="";
+		String _api_key2="";
+
+		String _ruc_empresa="";
+
+
+
+		Cursor cursor =  db.getReg_TicketPos(_myId);
+
+
+		if (cursor.moveToFirst()) {
+			do {
+
+
+				_linea01 = cursor.getString(1);
+				_linea02 = cursor.getString(2);
+				_linea03 = cursor.getString(3);
+				_linea04 = cursor.getString(4);
+
+
+				_ruc_empresa = cursor.getString(10);
+				_base01 = cursor.getString(11);
+				_base02 = cursor.getString(12);
+				_base03 = cursor.getString(13);
+				_base04 = cursor.getString(14);
+				_base05 = cursor.getString(15);
+				_base06 = cursor.getString(16);
+
+
+
+			} while (cursor.moveToNext());
+
+		}
+
+		// me traigo la cabecera
+
+
+		String _api_key_doctos="";
+		String _api_key_movtos="";
+		String _api_key_productos="";
+		String _api_key_clientes="";
+		String _api_key_almacen="";
+		String _api_key_movimientos="";
+		String _api_key_00="";
+		String _api_key_01="";
+		String _api_key_02="";
+
+
+
+
+		Cursor cursor2 =  db.getReg_Apiskey(1);
+
+		//   String columnas[] = {"_id","api_key_doctos", "api_key_movtos",
+		// "api_key_productos", "api_key_clientes", "api_key_almacen",
+		// "api_key_movimientos","api_key_00", "api_key_01", "api_key_02" };
+
+
+		if (cursor2.moveToFirst()) {
+			do {
+
+
+				_api_key_doctos = cursor2.getString(1);
+				_api_key_movtos = cursor2.getString(2);
+				_api_key_productos = cursor2.getString(3);
+				_api_key_clientes = cursor2.getString(4);
+				_api_key_almacen = cursor2.getString(5);
+				_api_key_movimientos = cursor2.getString(6);
+				_api_key_00 = cursor2.getString(7);
+				_api_key_01 = cursor2.getString(8);
+				_api_key_02 = cursor2.getString(9);
+
+
+
+
+
+
+			} while (cursor2.moveToNext());
+
+		}
+
+
+
+		String _salida = "";
+		String _cadena = "";
+		String _salto ="\n";
+
+
+
+
+
+		String _almacen="";
+
+		_almacen=_api_key_01;
+
+
+
+		String _linea="";
+
+		String _titulo ="================================"+_salto+
+						"REP. ENVIO DE CLIENTES A LA NUBE"+_salto+
+						"ALMACEN:"+_almacen+_salto+
+						"api clientes: "+_api_key_clientes+_salto+
+				//		"api productos"+_api_key_productos+_salto+
+				//		"api almacen"+_api_key_almacen+_salto+
+				//		"api movimientos"+_api_key_movimientos+_salto+
+				//		"api 00"+_api_key_00+_salto+
+				//		"api 01"+_api_key_01+_salto+
+				//		"api 02"+_api_key_02+_salto+
+
+						"================================"+_salto;
+
+
+		// _salida=_salida+_salto;
+	//	_salida=_salida+_salto;
+		_salida=_salida+_titulo+_salto;
+
+
+		if (_linea01 != null ) {
+			_salida = _salida + _linea01 + _salto;
+		}
+
+		_salida=_salida+_salto;
+
+		if (_linea02 != null ) {
+			_salida = _salida + _linea02 + _salto;
+		}
+
+		if (_linea03 != null ) {
+			if (_linea03.trim().length() > 0) {
+				_salida = _salida + _linea03 + _salto;
+			}
+		}
+
+		if (_linea04 != null ) {
+			if (_linea04.trim().length() > 0) {
+				_salida = _salida + _linea04 + _salto;
+			}
+		}
+
+
+
+
+
+
+		_salida=_salida+_linea+_salto;
+
+		Cursor c = db.getNotes_clientes();
+
+		int id=0;
+		String _ruc_cliente="";
+		String _tipo_identificacion_cliente="";
+		String _razon_social_cliente="";
+		String _direccion_cliente="";
+		String _correo_cliente="";
+		String _telefono_cliente="";
+
+
+
+
+
+
+
+		String _detalle_corte;
+
+		int _nube;
+
+
+		// prepara la direccion de la nube
+
+		RequestQueue queue = Volley.newRequestQueue(this);
+
+		String url = _api_key_clientes;
+
+		_texto_nube="Si";
+
+		int _folio_int = 0;
+
+		_detalle_corte="SEC RUC       RAZON SOCIAL"+_salto;
+	//	_detalle_corte=url+_salto;
+
+		if (c.moveToFirst()) {
+			do {
+				// 0 "_id",
+				// 1 "ruc_cliente",
+				// 2 "razon_social_cliente",
+				// 3 "direccion_cliente",
+				// 4 "correo_cliente",
+				// 5 "telefono_cliente",
+				// 6 "tipo_identidad"};
+
+				_folio_int++;
+
+
+
+
+				id = c.getInt(0);
+
+				_ruc_cliente = c.getString(1);
+				_razon_social_cliente = c.getString(2);
+				_direccion_cliente = c.getString(3);
+				_correo_cliente = c.getString(4);
+				_telefono_cliente = c.getString(5);
+				_tipo_identificacion_cliente = c.getString(6);
+
+
+
+
+
+
+				// esto sube a la nube
+				Map<String, String> params = new HashMap();
+
+
+
+			//	params.put("ALMACEN", _almacen);
+				params.put("cif", _ruc_cliente);
+			//	params.put("TIPO_IDENT", _tipo_identificacion_cliente);
+				params.put("nom_fis", _razon_social_cliente);
+				params.put("nom_com", _razon_social_cliente);
+				params.put("dir", _direccion_cliente);
+				params.put("eml", _correo_cliente);
+				params.put("tlf", _telefono_cliente);
+				params.put("key", _almacen);
+				// "es_clt": true,
+				params.put("es_clt", "true");
+				//params.put("serie_completa", _serie_completa_sunat);
+
+
+				_texto_nube="No";
+
+				_mensaje_error="";
+
+
+				JSONObject parameters = new JSONObject(params);
+
+				JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, parameters, new Response.Listener<JSONObject>() {
+						@Override
+						public void onResponse(JSONObject response) {
+							Toast.makeText(getApplicationContext(), "Actualizacion a la Nube Exitosa de Clientes!", Toast.LENGTH_SHORT).show();
+
+
+					}
+
+					}, new Response.ErrorListener() {
+						@Override
+						public void onErrorResponse(VolleyError error) {
+						error.printStackTrace();
+						Toast.makeText(getApplicationContext(), "HAY UNA ERROR en actualizacion de Clientes: (Intente de Nuevo) "+error.toString(), Toast.LENGTH_LONG).show();
+						_mensaje_error="HAY UN ERROR en actualizacion de Clientes (Intente de Nuevo) :"+error.toString();
+
+						if (_texto_nube.equals("Si"))  {
+							SendDataByte(PrinterCommand.POS_Print_Text(_mensaje_error, CHINESE, 0, 0, 0, 0));
+							SendDataByte(Command.LF);
+							_texto_nube="No";
+
+
+						}
+
+
+
+
+					}
+					});
+
+				Volley.newRequestQueue(this).add(jsonRequest);
+
+				if (_texto_nube.equals("No")) {
+					if (_folio_int>0) {
+						_detalle_corte=_detalle_corte+_folio_int+" "+_ruc_cliente+" "+_razon_social_cliente+_salto;
+						//       _detalle_corte=_detalle_corte+_mensaje_error+_salto;
+						_texto_nube="Si";
+
+
+					}
+
+
+
+
+				} else {
+					if (_folio_int>0) {
+						_detalle_corte=_detalle_corte+_folio_int+" "+_ruc_cliente+" "+_razon_social_cliente+_salto;
+					}
+
+				}
+
+			} while (c.moveToNext());
+
+
+		}
+
+		_detalle_corte=_detalle_corte+_linea+_salto+_salto;
+
+
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_detalle_corte;
+		_salida=_salida+_salto;
+
+		return _salida;
+
+
+	}
+
+
+
+
+	private String _Reporte_Descarga_Nube_Clientes (String _fecha) {
+
+
+		int _folio_nuevo=0;
+		String _licencia="";
+
+
+		String _linea01="";
+		String _linea02="";
+		String _linea03="";
+		String _linea04="";
+		String _api_key="";
+		String _api_key2="";
+
+		String _ruc_empresa="";
+
+
+
+		Cursor cursor =  db.getReg_TicketPos(_myId);
+
+
+		if (cursor.moveToFirst()) {
+			do {
+
+
+				_linea01 = cursor.getString(1);
+				_linea02 = cursor.getString(2);
+				_linea03 = cursor.getString(3);
+				_linea04 = cursor.getString(4);
+
+
+				_ruc_empresa = cursor.getString(10);
+				_base01 = cursor.getString(11);
+				_base02 = cursor.getString(12);
+				_base03 = cursor.getString(13);
+				_base04 = cursor.getString(14);
+				_base05 = cursor.getString(15);
+				_base06 = cursor.getString(16);
+
+
+
+			} while (cursor.moveToNext());
+
+		}
+
+		// me traigo la cabecera
+
+
+		String _api_key_doctos="";
+		String _api_key_movtos="";
+		String _api_key_productos="";
+		String _api_key_clientes="";
+		String _api_key_almacen="";
+		String _api_key_movimientos="";
+		String _api_key_00="";
+		String _api_key_01="";
+		String _api_key_02="";
+
+
+
+
+
+
+
+
+		Cursor cursor2 =  db.getReg_Apiskey(1);
+
+		//   String columnas[] = {"_id","api_key_doctos", "api_key_movtos",
+		// "api_key_productos", "api_key_clientes", "api_key_almacen",
+		// "api_key_movimientos","api_key_00", "api_key_01", "api_key_02" };
+
+
+		if (cursor2.moveToFirst()) {
+			do {
+
+
+				_api_key_doctos = cursor2.getString(1);
+				_api_key_movtos = cursor2.getString(2);
+				_api_key_productos = cursor2.getString(3);
+				_api_key_clientes = cursor2.getString(4);
+				_api_key_almacen = cursor2.getString(5);
+				_api_key_movimientos = cursor2.getString(6);
+				_api_key_00 = cursor2.getString(7);
+				_api_key_01 = cursor2.getString(8);
+				_api_key_02 = cursor2.getString(9);
+
+
+
+
+
+
+			} while (cursor2.moveToNext());
+
+		}
+
+
+
+		String _salida = "";
+		String _cadena = "";
+		String _salto ="\n";
+
+
+
+
+
+		final String _almacen=_api_key_01;
+
+
+
+
+		String _linea="";
+
+		String _titulo ="================================"+_salto+
+				        "REP DESCARGA CLIENTES DE LA NUBE"+_salto+
+				"ALMACEN:"+_almacen+_salto+
+				"api clientes: "+_api_key_clientes+_salto+
+				//		"api productos"+_api_key_productos+_salto+
+				//		"api almacen"+_api_key_almacen+_salto+
+				//		"api movimientos"+_api_key_movimientos+_salto+
+				//		"api 00"+_api_key_00+_salto+
+				//		"api 01"+_api_key_01+_salto+
+				//		"api 02"+_api_key_02+_salto+
+
+				"================================"+_salto;
+
+
+		// _salida=_salida+_salto;
+		//	_salida=_salida+_salto;
+		_salida=_salida+_titulo+_salto;
+
+
+		if (_linea01 != null ) {
+			_salida = _salida + _linea01 + _salto;
+		}
+
+		_salida=_salida+_salto;
+
+		if (_linea02 != null ) {
+			_salida = _salida + _linea02 + _salto;
+		}
+
+		if (_linea03 != null ) {
+			if (_linea03.trim().length() > 0) {
+				_salida = _salida + _linea03 + _salto;
+			}
+		}
+
+		if (_linea04 != null ) {
+			if (_linea04.trim().length() > 0) {
+				_salida = _salida + _linea04 + _salto;
+			}
+		}
+
+
+
+
+
+
+		_salida=_salida+_linea+_salto;
+
+
+		String url = _api_key_clientes;
+
+
+
+		String _ruc_cliente="";
+
+		String _detalle_corte;
+
+	//	Toast.makeText(getApplicationContext(), " antes al json "+url, Toast.LENGTH_SHORT ).show();
+
+
+		mQueue = Volley.newRequestQueue(this);
+
+
+		JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+				new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						try {
+							JSONArray jsonArray = response.getJSONArray("ent_m");
+
+					//		Toast.makeText(getApplicationContext(), ",,,"+jsonArray.length() , Toast.LENGTH_LONG ).show();
+
+							for (int i = 0; i < jsonArray.length(); i++) {
+								JSONObject employee = jsonArray.getJSONObject(i);
+
+							//	String _almacen_m = employee.getString("almacen");
+								String _ruc_cliente_m = employee.getString("cif");
+								String _razon_social_m = employee.getString("nom_fis");
+								String _direccion_m = employee.getString("dir");
+								String _correo_m = employee.getString("eml");
+								String _telefono_m = employee.getString("tlf");
+								String _key_m = employee.getString("key");
+							//	String _tipo_identificacion_m = employee.getString("tipo_ident");
+
+
+								//	mTextViewResult.append(_producto + ", " + _descripcion + "\n\n");
+								Toast.makeText(getApplicationContext(), "KEY:"+_key_m , Toast.LENGTH_SHORT ).show();
+
+								int numero_registros_por_bajar=jsonArray.length();
+
+								if (_key_m.contains(_almacen)) {
+									if (db.exits_Client(_ruc_cliente_m)==0) {
+										agrega_Clientes(_ruc_cliente_m,
+												_razon_social_m,
+												_direccion_m,
+												_correo_m,
+												_telefono_m);
+										Toast.makeText(getApplicationContext(), _ruc_cliente_m , Toast.LENGTH_SHORT ).show();
+									}
+
+								}
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				error.printStackTrace();
+			}
+		});
+
+		mQueue.add(request);
+
+
+
+
+
+
+
+
+
+		Cursor c2 = db.getNotes_clientes();
+
+		int id=0;
+		String _ruc_cliente_local="";
+		String _tipo_identificacion_cliente_local="";
+		String _razon_social_cliente_local="";
+		String _direccion_cliente_local="";
+		String _correo_cliente_local="";
+		String _telefono_cliente_local="";
+
+
+
+		int _nube;
+
+
+		// prepara la direccion de la nube
+
+		RequestQueue queue = Volley.newRequestQueue(this);
+
+		url = _api_key_clientes;
+
+		_texto_nube="Si";
+
+		int _folio_int = 0;
+
+		_detalle_corte="SEC RUC       RAZON SOCIAL"+_salto;
+		_detalle_corte="Numero de Reg por Bajar:"+numero_registros_por_bajar+_salto;
+
+		//	_detalle_corte=url+_salto;
+
+		if (c2.moveToFirst()) {
+			do {
+				// 0 "_id",
+				// 1 "ruc_cliente",
+				// 2 "razon_social_cliente",
+				// 3 "direccion_cliente",
+				// 4 "correo_cliente",
+				// 5 "telefono_cliente",
+				// 6 "tipo_identidad"};
+
+				_folio_int++;
+
+
+				id = c2.getInt(0);
+
+				_ruc_cliente_local = c2.getString(1);
+				_razon_social_cliente_local = c2.getString(2);
+				_direccion_cliente_local = c2.getString(3);
+				_correo_cliente_local = c2.getString(4);
+				_telefono_cliente_local = c2.getString(5);
+				_tipo_identificacion_cliente_local = c2.getString(6);
+
+
+				_texto_nube="No";
+
+				_mensaje_error="";
+
+				_detalle_corte=_detalle_corte+_folio_int+" "+_ruc_cliente_local+" "+_razon_social_cliente_local+_salto;
+
+
+			} while (c2.moveToNext());
+
+
+		}
+
+		_detalle_corte=_detalle_corte+_linea+_salto+_salto;
+
+
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_detalle_corte;
+		_salida=_salida+_salto;
+
+		return _salida;
+
+
+	}
+
+
+
+
+		private void agrega_Clientes(
+			String _Ruc,
+			String	_Razon_Social,
+			String	_Direccion,
+			String	_Correo,
+			String	_Telefono) {
+
+
+		db = new connectionDB(this);
+		db.addNotes_Clientes(_Razon_Social, _Ruc, _Direccion,  _Telefono, _Correo);
+		//db.close();
+
+	}
+
+
+	///////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////
+
+	private String _Reporte_Descarga_Nube_Productos (String _fecha) {
+
+
+		int _folio_nuevo=0;
+		String _licencia="";
+
+
+		String _linea01="";
+		String _linea02="";
+		String _linea03="";
+		String _linea04="";
+		String _api_key="";
+		String _api_key2="";
+
+		String _ruc_empresa="";
+
+
+
+		Cursor cursor =  db.getReg_TicketPos(_myId);
+
+
+		if (cursor.moveToFirst()) {
+			do {
+
+
+				_linea01 = cursor.getString(1);
+				_linea02 = cursor.getString(2);
+				_linea03 = cursor.getString(3);
+				_linea04 = cursor.getString(4);
+
+
+				_ruc_empresa = cursor.getString(10);
+				_base01 = cursor.getString(11);
+				_base02 = cursor.getString(12);
+				_base03 = cursor.getString(13);
+				_base04 = cursor.getString(14);
+				_base05 = cursor.getString(15);
+				_base06 = cursor.getString(16);
+
+
+
+			} while (cursor.moveToNext());
+
+		}
+
+		// me traigo la cabecera
+
+
+		String _api_key_doctos="";
+		String _api_key_movtos="";
+		String _api_key_productos="";
+		String _api_key_clientes="";
+		String _api_key_almacen="";
+		String _api_key_movimientos="";
+		String _api_key_00="";
+		String _api_key_01="";
+		String _api_key_02="";
+
+
+		Cursor cursor2 =  db.getReg_Apiskey(1);
+
+		if (cursor2.moveToFirst()) {
+			do {
+
+				_api_key_doctos = cursor2.getString(1);
+				_api_key_movtos = cursor2.getString(2);
+				_api_key_productos = cursor2.getString(3);
+				_api_key_clientes = cursor2.getString(4);
+				_api_key_almacen = cursor2.getString(5);
+				_api_key_movimientos = cursor2.getString(6);
+				_api_key_00 = cursor2.getString(7);
+				_api_key_01 = cursor2.getString(8);
+				_api_key_02 = cursor2.getString(9);
+
+			} while (cursor2.moveToNext());
+
+		}
+
+
+		String _salida = "";
+		String _cadena = "";
+		String _salto ="\n";
+
+		final String _almacen=_api_key_01;
+
+		String _linea="";
+
+		String _titulo ="================================"+_salto+
+				        "REP DESCARGA PROD. DE LA NUBE"+_salto+
+				"ALMACEN:"+_almacen+_salto+
+				"api clientes: "+_api_key_productos+_salto+
+				"api existencias: "+_api_key_almacen+_salto+
+				//		"api productos"+_api_key_productos+_salto+
+				//		"api almacen"+_api_key_almacen+_salto+
+				//		"api movimientos"+_api_key_movimientos+_salto+
+				//		"api 00"+_api_key_00+_salto+
+				//		"api 01"+_api_key_01+_salto+
+				//		"api 02"+_api_key_02+_salto+
+
+				"================================"+_salto;
+
+
+		// _salida=_salida+_salto;
+		//	_salida=_salida+_salto;
+		_salida=_salida+_titulo+_salto;
+
+
+		if (_linea01 != null ) {
+			_salida = _salida + _linea01 + _salto;
+		}
+
+		_salida=_salida+_salto;
+
+		if (_linea02 != null ) {
+			_salida = _salida + _linea02 + _salto;
+		}
+
+		if (_linea03 != null ) {
+			if (_linea03.trim().length() > 0) {
+				_salida = _salida + _linea03 + _salto;
+			}
+		}
+
+		if (_linea04 != null ) {
+			if (_linea04.trim().length() > 0) {
+				_salida = _salida + _linea04 + _salto;
+			}
+		}
+
+		_salida=_salida+_linea+_salto;
+
+		String url = _api_key_productos;
+
+		String _ruc_cliente="";
+
+		String _detalle_corte;
+
+
+		///////////////////////////////////////////////////////////////////////////////////
+		// bajar productos de la nube
+		///////////////////////////////////////////////////////////////////////////////////
+
+		mQueue = Volley.newRequestQueue(this);
+
+		JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+				new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						try {
+							JSONArray jsonArray = response.getJSONArray("art_m");
+//							Toast.makeText(getApplicationContext(), response.toString()+",,,"+jsonArray.length() , Toast.LENGTH_LONG ).show();
+							for (int i = 0; i < jsonArray.length(); i++) {
+								JSONObject employee = jsonArray.getJSONObject(i);
+								String _id = employee.getString("id");
+								String _ref = employee.getString("ref");
+								String _name = employee.getString("name");
+								String _precio = employee.getString("pvp");
+								String _precio_mayoreo = employee.getString("pvp_tpv");
+
+
+
+								int numero_registros_por_bajar=jsonArray.length();
+
+									if (db.exits_Productos(_ref)==0) {
+										agrega_Productos(_ref,_name, _precio, _precio_mayoreo, _id);
+									}
+
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				error.printStackTrace();
+			}
+		});
+
+		mQueue.add(request);
+
+
+		///////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+		// poner las existencias a cero y ventas a cero
+		///////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+
+		Cursor c_prod = db.getNotes_productos();
+
+		String _prod_a_limpiar="";
+		double _ventas_pro=0.00;
+
+		//
+		// {TABLE_ID, 0
+		// ID_PRODUCTO, 1
+		// DESCRIPCION_PRODUCTO, 2
+		// UNIDAD_PRODUCTO, 3
+		// PRECIO_PRODUCTO, 4
+		// PRECIO_PRODUCTO_MAYOREO, 5
+		// IGV_PRODUCTO, 6
+		// EXISTENCIA, 7
+		// VENTAS_PRO, 8
+		// SALDO_PRO   9};
+
+		if (c_prod.moveToFirst()) {
+			do {
+				_prod_a_limpiar = c_prod.getString(1);
+			//	_ventas_pro = c_prod.getDouble(8);
+				update_existencia(_prod_a_limpiar,0.00, 0.00);
+
+
+			} while (c_prod.moveToNext());
+
+
+		}
+
+
+
+
+
+
+		///////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+		// traer las existecias de la nube
+		///////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////
+
+		url=_api_key_almacen;
+
+		JsonObjectRequest request2 = new JsonObjectRequest(Request.Method.GET, url, null,
+				new Response.Listener<JSONObject>() {
+					@Override
+					public void onResponse(JSONObject response) {
+						try {
+							JSONArray jsonArray = response.getJSONArray("exs_g");
+
+						//	Toast.makeText(getApplicationContext(), response.toString()+",,,"+jsonArray.length() , Toast.LENGTH_LONG ).show();
+
+							for (int i = 0; i < jsonArray.length(); i++) {
+								JSONObject employee = jsonArray.getJSONObject(i);
+
+								// "alm": "1SGDA",
+
+								String _ref = employee.getString("ref");
+								String _name = employee.getString("name");
+								double _existencias = employee.getDouble("exs");
+								String _alm = employee.getString("alm");
+								if (_alm.trim().equals(_almacen)) {
+									double total_ventas_Productos=db.total_ventas_Productos(_ref);
+									update_existencia(_ref,_existencias, total_ventas_Productos);
+
+								}
+
+
+
+
+
+							}
+						} catch (JSONException e) {
+							e.printStackTrace();
+						}
+					}
+				}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				error.printStackTrace();
+			}
+		});
+
+		mQueue.add(request2);
+
+
+
+
+
+
+		Cursor c2 = db.getNotes_productos();
+
+	//	int id=0;
+		String _producto="";
+		String _descripcion="";
+
+
+
+		int _nube;
+
+
+		// prepara la direccion de la nube
+
+		RequestQueue queue = Volley.newRequestQueue(this);
+
+		url = _api_key_clientes;
+
+		_texto_nube="Si";
+
+		int _folio_int = 0;
+		int id=0;
+
+	//	_detalle_corte="SEC PROD  DESCRIPCION"+_salto;
+		_detalle_corte="LOS PRODUCTO HAN SIDO DESCARGADOS"+_salto;
+	//	_detalle_corte="Numero de Reg por Bajar:"+numero_registros_por_bajar+_salto;
+
+		//	_detalle_corte=url+_salto;
+
+		double _exs=0;
+
+		if (c2.moveToFirst()) {
+			do {
+
+				_folio_int++;
+				id = c2.getInt(0);
+				_producto = c2.getString(1);
+				_descripcion = c2.getString(2);
+				_exs = c2.getDouble(7);
+				_texto_nube="No";
+				_mensaje_error="";
+			//	_detalle_corte=_detalle_corte+_folio_int+" "+_producto+" saldo "+_exs+_salto;
+
+
+			} while (c2.moveToNext());
+
+
+		}
+
+		_detalle_corte=_detalle_corte+_linea+_salto+_salto;
+
+
+		_salida=_salida+_linea+_salto;
+		_salida=_salida+_detalle_corte;
+		_salida=_salida+_salto;
+
+		return _salida;
+
+
+	}
+
+	private void agrega_Productos(
+			String _ref,
+			String	_name,
+			String _precio,
+			String _precio_mayoreo,
+			String _id_velneo
+			) {
+
+
+		db = new connectionDB(this);
+		db.addNotes_Productos(_ref, _name, "NIU",  _precio, _precio_mayoreo, ".18", _id_velneo);
+
+		//db.close();
+
+	}
+
+
+
+	private void update_existencia (String _prod,  Double _existencias, Double _ventas) {
+
+		ContentValues valoresProductos = new ContentValues();
+		valoresProductos.put("existencia", _existencias);
+		valoresProductos.put("saldo_pro", _existencias-_ventas);
+
+		valoresProductos.put("ventas_pro", _ventas);
+
+
+		db = new connectionDB(this);
+		String _alcance = "WHERE _id="+_prod;
+		db.getWritableDatabase().update("productos", valoresProductos, "producto" + "=?",new String[] { String.valueOf(_prod) });
+
+	}
+
+	private void update_ventas (String _prod,   Double _ventas) {
+
+		ContentValues valoresProductos = new ContentValues();
+	//	valoresProductos.put("existencia", _existencias);
+	//	valoresProductos.put("saldo_pro", _existencias-_ventas);
+
+		valoresProductos.put("ventas_pro", _ventas);
+
+
+		db = new connectionDB(this);
+		String _alcance = "WHERE _id="+_prod;
+		db.getWritableDatabase().update("productos", valoresProductos, "producto" + "=?",new String[] { String.valueOf(_prod) });
+
+	}
+
+
+
+	private void acumular_ventas (String _prod,  Double _ventas) {
+
+
+
+		double total_ventas_Productos=db.total_ventas_Productos(_prod);
+		double total_existencias_Productos=db.total_existecias_Productos(_prod);
+
+		ContentValues valoresProductos = new ContentValues();
+
+		double _ventas_acumuladas_total=_ventas+total_ventas_Productos;
+
+
+//		valoresProductos.put("existencia", total_existencias_Productos);
+		valoresProductos.put("ventas_pro", _ventas_acumuladas_total);
+		valoresProductos.put("saldo_pro", total_existencias_Productos-_ventas_acumuladas_total);
+
+
+		db = new connectionDB(this);
+		String _alcance = "WHERE _id="+_prod;
+		db.getWritableDatabase().update("productos", valoresProductos, "producto" + "=?",new String[] { String.valueOf(_prod) });
+
+	}
+
+
+	private void update_cabecera_ventas (String  _id_app,   String _id_velneo) {
+
+		ContentValues valoresCabecera = new ContentValues();
+		valoresCabecera.put("_id_velneo", _id_velneo);
+
+		db = new connectionDB(this);
+		String _alcance = "WHERE _id="+_id_app;
+		db.getWritableDatabase().update("cabecera", valoresCabecera, "_id" + "=?",new String[] { String.valueOf(_id_app) });
+
+	}
+
+
+
+	private void update_linea_detalle (int  _id, int linea) {
+
+		ContentValues valoresDetalle = new ContentValues();
+		valoresDetalle.put("linea", linea);
+
+		db = new connectionDB(this);
+		//	String _alcance = "WHERE _id="+_id;
+		db.getWritableDatabase().update("detalle", valoresDetalle, "_id" + "=?",new String[] { String.valueOf(_id) });
+
+	}
+
 
 
 

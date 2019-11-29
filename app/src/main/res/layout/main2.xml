@@ -274,9 +274,62 @@
                     android:layout_weight="1.0"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:text="Enviar Doctos a la Nube"></Button>
+                    android:text="SUBIR FACT/BOL A LA NUBE"></Button>
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/Send_Nube_Clientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="SUBIR Clientes a la Nube"></Button>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/Descargar_Nube_Clientes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="BAJAR Clientes de la Nube"></Button>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/Descargar_Nube_Productos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:text="BAJAR Productos de la Nube"></Button>
+            </LinearLayout>
 
 
 
@@ -318,6 +371,7 @@
                     android:textStyle="bold"
                     android:text="Archivar Documento"></Button>
             </LinearLayout>
+
 
 
 

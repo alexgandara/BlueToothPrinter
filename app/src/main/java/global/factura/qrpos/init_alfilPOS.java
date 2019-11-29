@@ -41,7 +41,7 @@ public class init_alfilPOS  extends Activity {
         // Set up the window layout
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.device_list_doctos);
-       getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
+        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE,
                 R.layout.custom_title);
 
 
@@ -128,7 +128,7 @@ public class init_alfilPOS  extends Activity {
         Mnt_Empresas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, Empresas.class);
+                Intent intent = new Intent(init_alfilPOS.this, Get_Pasword_Empresas.class);
                 startActivity(intent);
                 //  return true;
             }
@@ -138,9 +138,63 @@ public class init_alfilPOS  extends Activity {
         Mnt_Prdductos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, MainActivity_Productos.class);
-                startActivity(intent);
-                //  return true;
+
+                String _api_key_doctos="";
+                String _api_key_movtos="";
+                String _api_key_productos="";
+                String _api_key_clientes="";
+                String _api_key_almacen="";
+                String _api_key_movimientos="";
+                String _api_key_00="";
+                String _api_key_01="";
+                String _api_key_02="";
+
+
+
+
+                String _ruc_empresa="";
+
+
+
+                Cursor cursor =  db.getReg_Apiskey(1);
+
+                //   String columnas[] = {"_id","api_key_doctos", "api_key_movtos",
+                // "api_key_productos", "api_key_clientes", "api_key_almacen",
+                // "api_key_movimientos","api_key_00", "api_key_01", "api_key_02" };
+
+
+                if (cursor.moveToFirst()) {
+                    do {
+
+
+                        _api_key_doctos = cursor.getString(1);
+                        _api_key_movtos = cursor.getString(2);
+                        _api_key_productos = cursor.getString(3);
+                        _api_key_clientes = cursor.getString(4);
+                        _api_key_almacen = cursor.getString(5);
+                        _api_key_movimientos = cursor.getString(6);
+                        _api_key_00 = cursor.getString(7);
+                        _api_key_01 = cursor.getString(8);
+                        _api_key_02 = cursor.getString(9);
+
+
+
+
+                    } while (cursor.moveToNext());
+
+                }
+
+                // me traigo la cabecera
+
+
+
+                    Intent intent = new Intent(init_alfilPOS.this, Get_Pasword_Productos.class);
+                    startActivity(intent);
+                    //  return true;
+
+
+
+
             }
         });
 
@@ -184,9 +238,61 @@ public class init_alfilPOS  extends Activity {
         Mnt_Series.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(init_alfilPOS.this, MainActivity_Series.class);
-                startActivity(intent);
-                //  return true;
+
+                String _api_key_doctos="";
+                String _api_key_movtos="";
+                String _api_key_productos="";
+                String _api_key_clientes="";
+                String _api_key_almacen="";
+                String _api_key_movimientos="";
+                String _api_key_00="";
+                String _api_key_01="";
+                String _api_key_02="";
+
+
+
+
+                String _ruc_empresa="";
+
+
+
+                Cursor cursor =  db.getReg_Apiskey(1);
+
+             //   String columnas[] = {"_id","api_key_doctos", "api_key_movtos",
+                // "api_key_productos", "api_key_clientes", "api_key_almacen",
+                // "api_key_movimientos","api_key_00", "api_key_01", "api_key_02" };
+
+
+                if (cursor.moveToFirst()) {
+                    do {
+
+
+                        _api_key_doctos = cursor.getString(1);
+                        _api_key_movtos = cursor.getString(2);
+                        _api_key_productos = cursor.getString(3);
+                        _api_key_clientes = cursor.getString(4);
+                        _api_key_almacen = cursor.getString(5);
+                        _api_key_movimientos = cursor.getString(6);
+                        _api_key_00 = cursor.getString(7);
+                        _api_key_01 = cursor.getString(8);
+                        _api_key_02 = cursor.getString(9);
+
+
+
+
+                    } while (cursor.moveToNext());
+
+                }
+
+                // me traigo la cabecera
+
+
+
+                    Intent intent = new Intent(init_alfilPOS.this, Get_Pasword_Series.class);
+                    startActivity(intent);
+                    //  return true;
+
+
             }
         });
 
@@ -215,7 +321,7 @@ public class init_alfilPOS  extends Activity {
         Cursor c = db.getNotes_Activas();
         item = new ArrayList<String>();
         String serie = "",  ruc="", razon_social = "", fecha="", naturaleza ="", serie_rel;
-        int id, folio, folio_rel, archivada;
+        int id, folio, folio_rel, archivada, id_velneo;
 
         if (c.moveToFirst()) {
             do {
@@ -228,10 +334,11 @@ public class init_alfilPOS  extends Activity {
                 serie_rel = c.getString(6);
                 folio_rel = c.getInt(7);
                 archivada = c.getInt(8);
+                id_velneo = c.getInt(9);
 
 
                 naturaleza =  db.get_Naturaleza(serie);
-                item.add(id+" "+naturaleza+" "+serie+" "+folio+" <"+archivada+"> "+ruc+" "+razon_social+" "+fecha+" "+serie_rel+" "+folio_rel);
+                item.add(id+" "+naturaleza+" "+serie+" "+folio+" <"+archivada+"> "+ruc+" "+razon_social+" "+fecha+" id velneo:"+id_velneo);
 
 
             } while (c.moveToNext());

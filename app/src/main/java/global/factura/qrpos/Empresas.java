@@ -14,14 +14,14 @@ import zj.com.cn.bluetooth.sdk.R;
 
 public class Empresas extends Activity {
 
-    EditText razon_social, ruc, direccion1,  telefono, correo, licencia, api_key ;
+    EditText razon_social, ruc, direccion1,  telefono, correo, licencia, tipo_impresora, icbper;
 
 
-    String _razon_social, _ruc, _direccion1, _telefono, _correo, _licencia, _api_key;
+    String _razon_social, _ruc, _direccion1, _telefono, _correo, _licencia, _tipo_impresora, _ICBPER;
 
     int _myId = 1;
     connectionDB db;
-    Button Modificar, Salir, TicketPos, TicketPos_base;
+    Button Modificar, Salir, TicketPos, TicketPos_base, Apis_key;
 
 
     @Override
@@ -39,30 +39,35 @@ public class Empresas extends Activity {
                 razon_social = (EditText) findViewById(R.id.editText_Razon_Social);
                 ruc = (EditText) findViewById(R.id.editText_Ruc);
                 direccion1 = (EditText) findViewById(R.id.editText_Direccion1);
-                api_key = (EditText) findViewById(R.id.editText_Api_Key);
-                correo = (EditText) findViewById(R.id.editText_Correo);
-                telefono = (EditText) findViewById(R.id.editText_Telefono);
+     //           correo = (EditText) findViewById(R.id.editText_Correo);
+                icbper = (EditText) findViewById(R.id.editText_ICBPER);
+     //           telefono = (EditText) findViewById(R.id.editText_Telefono);
                 licencia = (EditText) findViewById(R.id.editText_Licencia);
-
+                tipo_impresora = (EditText) findViewById(R.id.editText_Tipo_Impresora);
 
 
                 _razon_social = cursor.getString(1);
                 _ruc = cursor.getString(2);
                 _direccion1 = cursor.getString(3);
-                _api_key = cursor.getString(4);
-                _correo = cursor.getString(5);
-                _telefono = cursor.getString(6);
-                _licencia = cursor.getString(7);
+      //          _correo = cursor.getString(4);
+                _ICBPER = cursor.getString(4);
+      //          _telefono = cursor.getString(5);
+                _licencia = cursor.getString(6);
+                _tipo_impresora = cursor.getString(7);
 
 
 
                 razon_social.setText(_razon_social);
                 ruc.setText(_ruc);
                 direccion1.setText(_direccion1);
-                api_key.setText(_api_key);
-                correo.setText(_correo);
-                telefono.setText(_telefono);
+        //        correo.setText(_correo);
+                icbper.setText(_ICBPER);
+       //         telefono.setText(_telefono);
+
+                tipo_impresora.setText(_tipo_impresora);
                 licencia.setText(_licencia);
+
+
 
 
 
@@ -79,14 +84,17 @@ public class Empresas extends Activity {
         Salir = (Button) findViewById(R.id.button_Salir);
         TicketPos = (Button) findViewById(R.id.button_TicketPos);
         TicketPos_base = (Button) findViewById(R.id.button_TicketPos_Buttom);
+        Apis_key = (Button) findViewById(R.id.button_ApiKey);
+
+
 
         razon_social = (EditText) findViewById(R.id.editText_Razon_Social);
         ruc = (EditText) findViewById(R.id.editText_Ruc);
         direccion1 = (EditText) findViewById(R.id.editText_Direccion1);
-        api_key = (EditText) findViewById(R.id.editText_Api_Key);
         correo = (EditText) findViewById(R.id.editText_Correo);
-        telefono = (EditText) findViewById(R.id.editText_Telefono);
+    //    telefono = (EditText) findViewById(R.id.editText_Telefono);
         licencia = (EditText) findViewById(R.id.editText_Licencia);
+        tipo_impresora = (EditText) findViewById(R.id.editText_Tipo_Impresora);
 
         Modificar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,9 +103,9 @@ public class Empresas extends Activity {
                         razon_social.getText().toString(),
                         ruc.getText().toString(),
                         direccion1.getText().toString(),
-                        api_key.getText().toString(),
-                        correo.getText().toString(),
-                        telefono.getText().toString(),
+                        icbper.getText().toString(),
+          //              telefono.getText().toString(),
+                        tipo_impresora.getText().toString(),
                         licencia.getText().toString());}
         });
 
@@ -134,6 +142,17 @@ public class Empresas extends Activity {
         });
 
 
+        Apis_key.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Empresas.this,Apis_key.class );
+                startActivity(intent);
+
+            }
+        });
+
+
+
 
     }
 
@@ -142,9 +161,9 @@ public class Empresas extends Activity {
                            String _razon_social,
                            String _ruc,
                            String _direccion1,
-                           String _api_key,
-                           String _correo,
-                           String _telefono,
+                           String _icbper,
+                //           String _telefono,
+                           String _tipo_impresora,
                            String _licencia
     ) {
 
@@ -153,9 +172,9 @@ public class Empresas extends Activity {
         valoresEmpresa.put("razon_social_empresa", _razon_social);
         valoresEmpresa.put("ruc_empresa", _ruc);
         valoresEmpresa.put("direccion_empresa_1", _direccion1);
-        valoresEmpresa.put("api_key", _api_key);
-        valoresEmpresa.put("correo_empresa", _correo);
-        valoresEmpresa.put("telefono_empresa", _telefono);
+        valoresEmpresa.put("impuesto_icbper", _icbper);
+     //   valoresEmpresa.put("telefono_empresa", _telefono);
+        valoresEmpresa.put("tipo_impresora", _tipo_impresora);
         valoresEmpresa.put("licencia", _licencia);
 
 

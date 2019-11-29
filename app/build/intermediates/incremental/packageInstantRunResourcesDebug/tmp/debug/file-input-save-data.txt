@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu Aug 30 12:52:42 PET 2018
+#Sat Aug 31 13:49:47 PET 2019
 2.base=/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/assets/debug
 0.path=factura global logo3ch.png
 2.baseType=DIRECTORY

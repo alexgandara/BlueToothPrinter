@@ -56,6 +56,14 @@
         "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/layout/activity_main_series_qr.xml"
     },
     {
+        "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/layout_activity_password_productos.xml.flat",
+        "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/layout/activity_password_productos.xml"
+    },
+    {
+        "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/layout_activity_password_series.xml.flat",
+        "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/layout/activity_password_series.xml"
+    },
+    {
         "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/layout_activity_clientes_qr.xml.flat",
         "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/layout/activity_clientes_qr.xml"
     },
@@ -76,6 +84,10 @@
         "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/drawable/app_icon.png"
     },
     {
+        "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/layout_activity_apis_key.xml.flat",
+        "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/layout/activity_apis_key.xml"
+    },
+    {
         "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/drawable-xxhdpi_ic_launcher.png.flat",
         "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/drawable-xxhdpi/ic_launcher.png"
     },
@@ -86,6 +98,10 @@
     {
         "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/menu_menu_clientes.xml.flat",
         "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/menu/menu_clientes.xml"
+    },
+    {
+        "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/layout_actualizar_desde_verp.xml.flat",
+        "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/layout/actualizar_desde_verp.xml"
     },
     {
         "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/menu_menu_productos.xml.flat",
@@ -134,6 +150,10 @@
     {
         "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/layout_activity_main_unidades_qr.xml.flat",
         "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/layout/activity_main_unidades_qr.xml"
+    },
+    {
+        "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/layout_activity_password_empresas.xml.flat",
+        "source": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/src/main/res/layout/activity_password_empresas.xml"
     },
     {
         "merged": "/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/res/merged/debug/drawable-xhdpi_ic_launcher.png.flat",

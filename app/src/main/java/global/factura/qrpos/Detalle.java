@@ -29,6 +29,7 @@ public class Detalle extends Activity {
 
     public int    Mid;
     public int    Mcabecera_id;
+
     public String Mproducto;
     public String Mdescripcion;
     public String Munidad;

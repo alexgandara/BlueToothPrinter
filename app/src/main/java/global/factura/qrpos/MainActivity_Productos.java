@@ -104,7 +104,12 @@ public class MainActivity_Productos extends Activity {
         db = new connectionDB(this);
         Cursor c = db.getNotes_productos();
         item = new ArrayList<String>();
-        String _producto="",  _descripcion_producto="", _unidad="";
+        String _producto="",  _descripcion_producto="", _unidad="", _id_velneo="";
+        double _existencia=0;
+        double _ventas=0;
+        double _saldo=0;
+
+
 
         int _id, folio;
 
@@ -114,9 +119,13 @@ public class MainActivity_Productos extends Activity {
                 _producto = c.getString(1);
                 _descripcion_producto = c.getString(2);
                 _unidad = c.getString(3);
+                _existencia= c.getDouble(7);
+                _ventas= c.getDouble(8);
+                _saldo= c.getDouble(9);
+                _id_velneo= c.getString(10);
 
 
-                item.add(_id+" - "+_producto+" - "+_descripcion_producto+" - "+_unidad);
+                item.add(_id+" - "+_producto+" - "+_descripcion_producto+" - Exis:"+_existencia+" Vtas:"+_ventas+" Sdo:"+_saldo+" ID:"+_id_velneo);
             } while (c.moveToNext());
 
         }

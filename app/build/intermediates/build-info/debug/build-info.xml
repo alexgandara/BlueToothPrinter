@@ -6,22 +6,22 @@
     density="xhdpi"
     format="10"
     plugin-version="3.1.4"
-    timestamp="1549984128892"
+    timestamp="1571380313133"
     token="-2325475471948164731"
     verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="4488" />
+        duration="4963" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="239" />
+        duration="318" />
     <task
         name="verifier"
-        duration="209" />
+        duration="229" />
 
     <artifact
         location="/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/split-apk/debug/slices/slice_7.apk"
@@ -62,7 +62,7 @@
 
     <build
         build-mode="FULL"
-        timestamp="1549984128892"
+        timestamp="1571380313133"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/Volumes/hd2/AndroidStudioProjects/BlueToothPrinter/app/build/intermediates/split-apk/debug/slices/slice_7.apk"

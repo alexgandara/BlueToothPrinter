@@ -272,6 +272,12 @@ public class addDatos_Detalle extends Activity {
         Cursor c = db.getNotes_productos();
         _lista_productos = new ArrayList<String>();
         String _producto="",  _descripcion_producto="", _unidad_producto, _precio, _precio_mayoreo, _igv;
+        double _existencia=0;
+        double _ventas=0;
+        double _saldo=0;
+
+
+
 
 
         // {TABLE_ID,ID_PRODUCTO, DESCRIPCION_PRODUCTO, UNIDAD, PRECIO_PRODUCTO, IGV_PRODUCTO};
@@ -294,15 +300,23 @@ public class addDatos_Detalle extends Activity {
                 _precio = c.getString(4);
                 _precio_mayoreo = c.getString(5);
                 _igv = c.getString(6);
+                _existencia=c.getDouble(7);
+                _ventas=c.getDouble(8);
+
+                _saldo=_existencia-_ventas;
 
 
+                if (_saldo!=0) {
+                    _lista_productos.add(_producto+"/"+
+                            _descripcion_producto+"/"+
+                            _saldo+"/"+
+                            _precio+"/"+
+                            _precio_mayoreo+"/"+
+                            _igv);
 
-                _lista_productos.add(_producto+"/"+
-                         _descripcion_producto+"/"+
-                              _unidad_producto+"/"+
-                                       _precio+"/"+
-                               _precio_mayoreo+"/"+
-                               _igv);
+                }
+
+
             } while (c.moveToNext());
 
         }

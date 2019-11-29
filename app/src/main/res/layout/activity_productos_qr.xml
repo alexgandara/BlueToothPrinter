@@ -102,6 +102,22 @@
         android:inputType="numberDecimal"
         android:maxLength="60" />
 
+    <EditText
+        android:id="@+id/editText_existencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText_igv"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="Existencia"
+        android:inputType="numberDecimal"
+        android:maxLength="60" />
+
+
+
+
+
 
     <Button
         android:id="@+id/button_Modificar"
@@ -109,7 +125,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_Salir"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="86dp"
+        android:layout_marginBottom="45dp"
         android:text="Modificar" />
 
 
@@ -119,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="105dp"
+        android:layout_marginBottom="61dp"
         android:text="Eliminar" />
 
 

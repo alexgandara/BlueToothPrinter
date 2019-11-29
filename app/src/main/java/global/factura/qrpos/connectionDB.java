@@ -63,6 +63,7 @@ public class connectionDB extends SQLiteOpenHelper {
     // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA CABECERA DE FACTURA  "cabecera"
 
     public static final String TABLE_ID = "_id";
+    public static final String ID_VELNEO = "_id_velneo";
     public static final String SERIE = "serie";
     public static final String FOLIO = "folio";
     public static final String FECHA = "fecha";
@@ -91,6 +92,7 @@ public class connectionDB extends SQLiteOpenHelper {
     // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA DETALLE DE FACTURA  "detalle"
 
     public static final String CABECERA_ID = "cabecera_id";
+    public static final String LINEA = "linea";
     public static final String PRODUCTO = "producto";
     public static final String DESCRIPCION = "descripcion";
     public static final String UNIDAD = "unidad";
@@ -99,8 +101,20 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String DET_SUBTOTAL = "det_subtotal";
     public static final String DET_IGV = "det_igv";
     public static final String DET_TOTAL = "det_total";
+    public static final String COLOR = "color";
+    public static final String TALLA = "talla";
+
+    // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA COLORES  "colores"
+
+    public static final String COLOR_ID = "color_id";
+    public static final String NOMBRE_COLOR = "color";
 
 
+
+    // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA TALLAS  "tallas"
+
+    public static final String TALLA_ID = "talla_id";
+    public static final String NOMBRE_TALLA = "talla";
 
 
     // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA EMPRESAS SERA UN SOLO REGISTRO DONDE IRA LA INFORMACION DE LA COMPAÑIA   "empresa"
@@ -129,17 +143,34 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String BASE04 = "base04";
     public static final String BASE05 = "base05";
     public static final String BASE06 = "base06";
-    public static final String API_KEY = "api_key";
-
-
-
-
+    public static final String API_KEY_DOCTOS = "api_key_doctos";
+    public static final String API_KEY_MOVTOS = "api_key_movtos";
+    public static final String API_KEY_PRODUCTOS = "api_key_productos";
+    public static final String API_KEY_CLIENTES = "api_key_clientes";
+    public static final String API_KEY_ALMACEN = "api_key_almacen";
+    public static final String API_KEY_MOVIMIENTOS = "api_key_movimientos";
+    public static final String API_KEY_00 = "api_key_00";
+    public static final String API_KEY_01 = "api_key_01";
+    public static final String API_KEY_02 = "api_key_02";
+    public static final String API_KEY_03 = "api_key_03";
+    public static final String API_KEY_04 = "api_key_04";
+    public static final String API_KEY_05 = "api_key_05";
+    public static final String API_KEY_06 = "api_key_06";
+    public static final String API_KEY_07 = "api_key_07";
+    public static final String API_KEY_08 = "api_key_08";
+    public static final String API_KEY_09 = "api_key_09";
+    public static final String API_KEY_10 = "api_key_10";
+    public static final String IMPRESORA = "tipo_impresora";
+    public static final String IMPUESTO_IBCPER = "impuesto_icbper";
+    public static final String ALMACEN = "almacen";
+    public static final String SALDO_INICIAL_CAJA = "saldo_inicial_caja";
+    public static final String VENTAS = "ventas";
+    public static final String SALIDAS = "salidas";
+    public static final String SALDO_FINAL_CAJA = "saldo_final_caja";
 
     public static final String LOGO = "logo";
 
-
     // variables para table clientes
-
     public static final String RAZON_SOCIAL_CLIENTE = "razon_social_cliente";
     public static final String RUC_CLIENTE = "ruc_cliente";
     public static final String DIRECCION_CLIENTE = "direccion_cliente";
@@ -160,10 +191,38 @@ public class connectionDB extends SQLiteOpenHelper {
     public static final String PRECIO_PRODUCTO = "precio";
     public static final String PRECIO_PRODUCTO_MAYOREO = "precio_mayoreo";
     public static final String IGV_PRODUCTO = "igv";
+    public static final String EXISTENCIA = "existencia";
+    public static final String VENTAS_PRO = "ventas_pro";
+    public static final String SALDO_PRO = "saldo_pro";
+   // public static final String ID_VELNEO = "_id_velneo";
 
 
 
-    private static final String DATABASE = "miniPOS2";
+    /*
+
+    EXS
+    PDT_REC
+    PDT_SRV
+    EXS_DIS
+    EXS_TEO
+
+     */
+
+
+    // variables para table movimientos
+    public static final String FECHA_MOV = "fecha";
+    public static final String HORA_MOV = "hora";
+    public static final String PRODUCTO_MOV = "producto";
+    public static final String PRECIO_PRODUCTO_MOV = "precio";
+    public static final String COSTO_PRODUCTO_MOV = "costo";
+    public static final String TIPO_MOV = "tipo_mov";
+    public static final String SALDO = "saldo";
+
+
+
+
+
+    private static final String DATABASE = "miniPOS8";
     private static final String TABLE = "cabecera";
 
     // tablas
@@ -174,6 +233,9 @@ public class connectionDB extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCTOS = "productos";
     private static final String TABLE_SYNCRO = "syncro";
     private static final String TABLE_CIERRE = "cierre";
+    private static final String TABLE_MOVIMIENTOS = "movimientos";
+    private static final String TABLE_COLORES = "colores";
+    private static final String TABLE_TALLAS = "tallas";
 
 
     public connectionDB(Context context) {
@@ -210,6 +272,7 @@ public class connectionDB extends SQLiteOpenHelper {
                 TOTAL+" DOUBLE,"+
                 ENVIADO_CORREO+" INTEGER DEFAULT 0,"+
                 ENVIADO_NUBE+" INTEGER DEFAULT 0,"+
+                ID_VELNEO+" TEXT, "+
                 ARCHIVADA+" INTEGER DEFAULT 0)"
         );
 
@@ -250,8 +313,11 @@ public class connectionDB extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE "+ TABLE_DET + " (" +
                 TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
                 CABECERA_ID +" INTEGER,"+
+                LINEA +" INTEGER,"+
                 PRODUCTO +" TEXT,"+
                 DESCRIPCION +" TEXT,"+
+                COLOR +" TEXT,"+
+                TALLA  + " TEXT DEFAULT 'ST',"+
                 UNIDAD + " TEXT DEFAULT 'NIU',"+
                 PRECIO +" DOUBLE,"+
                 CANTIDAD +" DOUBLE,"+
@@ -343,7 +409,31 @@ public class connectionDB extends SQLiteOpenHelper {
                 BASE04 + " TEXT NOT NULL, "+
                 BASE05 + " TEXT NOT NULL, "+
                 BASE06 + " TEXT NOT NULL, "+
-                API_KEY + " TEXT NOT NULL)"
+                API_KEY_DOCTOS + " TEXT NOT NULL, "+
+                API_KEY_MOVTOS + " TEXT NOT NULL, "+
+                API_KEY_ALMACEN + " TEXT NOT NULL, "+
+                API_KEY_MOVIMIENTOS + " TEXT NOT NULL, "+
+                API_KEY_CLIENTES + " TEXT NOT NULL, "+
+                API_KEY_PRODUCTOS + " TEXT NOT NULL, "+
+                API_KEY_00 + " TEXT NOT NULL, "+
+                API_KEY_01 + " TEXT NOT NULL, "+
+                API_KEY_02 + " TEXT NOT NULL, "+
+                API_KEY_03 + " TEXT NOT NULL, "+
+                API_KEY_04 + " TEXT NOT NULL, "+
+                API_KEY_05 + " TEXT NOT NULL, "+
+                API_KEY_06 + " TEXT NOT NULL, "+
+                API_KEY_07 + " TEXT NOT NULL, "+
+                API_KEY_08 + " TEXT NOT NULL, "+
+                API_KEY_09 + " TEXT NOT NULL, "+
+                API_KEY_10 + " TEXT NOT NULL, "+
+                IMPRESORA + " TEXT NOT NULL, "+
+                IMPUESTO_IBCPER+" TEXT NOT NULL)"
+
+
+                
+
+
+
         );
 
 
@@ -377,9 +467,25 @@ public class connectionDB extends SQLiteOpenHelper {
                 valuesEmpresa.put(BASE04, "");
                 valuesEmpresa.put(BASE05, "");
                 valuesEmpresa.put(BASE06, "");
-                valuesEmpresa.put(API_KEY, "-");
-
-
+                valuesEmpresa.put(API_KEY_DOCTOS, "");
+                valuesEmpresa.put(API_KEY_MOVTOS, "");
+                valuesEmpresa.put(API_KEY_ALMACEN, "");
+                valuesEmpresa.put(API_KEY_MOVIMIENTOS, "");
+                valuesEmpresa.put(API_KEY_CLIENTES, "");
+                valuesEmpresa.put(API_KEY_PRODUCTOS, "");
+                valuesEmpresa.put(API_KEY_00, "admin");
+                valuesEmpresa.put(API_KEY_01, "");
+                valuesEmpresa.put(API_KEY_02, "");
+                valuesEmpresa.put(API_KEY_03, "");
+                valuesEmpresa.put(API_KEY_04, "");
+                valuesEmpresa.put(API_KEY_05, "");
+                valuesEmpresa.put(API_KEY_06, "");
+                valuesEmpresa.put(API_KEY_07, "");
+                valuesEmpresa.put(API_KEY_08, "");
+                valuesEmpresa.put(API_KEY_09, "");
+                valuesEmpresa.put(API_KEY_10, "");
+                valuesEmpresa.put(IMPRESORA, "normal");
+                valuesEmpresa.put(IMPUESTO_IBCPER,".10");
                 db.insert(TABLE_EMPRESA, null, valuesEmpresa);
             }
             db.setTransactionSuccessful();
@@ -396,6 +502,12 @@ public class connectionDB extends SQLiteOpenHelper {
                 CORREO_CLIENTE + " TEXT DEFAULT '',"+
                 TIPO_INDENTIDAD + " TEXT DEFAULT '1',"+
                 TELEFONO_CLIENTE + " TEXT DEFAULT '')");
+
+        // CREATE INDEX
+        db.execSQL("CREATE INDEX RUC ON "+ TABLE_CLIENTES + " (" +
+                RUC_CLIENTE + ")");
+
+
 
 
         db.beginTransaction();
@@ -428,7 +540,7 @@ public class connectionDB extends SQLiteOpenHelper {
         try {
             ContentValues valuesUnidades = new ContentValues();
             for (int i = 0; i < 1; i++) {
-                valuesUnidades.put(UNIDAD, "NIU");
+                valuesUnidades.put(UNIDAD, "UNI");
                 valuesUnidades.put(DESCRIPCION_UNIDAD, "Unidades");
                 db.insert(TABLE_UNIDADES, null, valuesUnidades);
 
@@ -460,12 +572,19 @@ public class connectionDB extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE "+ TABLE_PRODUCTOS + " (" +
                 TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
                 ID_PRODUCTO +" TEXT,"+
+                ID_VELNEO + " TEXT,"+
                 DESCRIPCION_PRODUCTO +" TEXT,"+
-                UNIDAD_PRODUCTO + " TEXT DEFAULT 'UNI',"+
+                UNIDAD_PRODUCTO + " TEXT DEFAULT 'NIU',"+
                 PRECIO_PRODUCTO + " TEXT,"+
                 PRECIO_PRODUCTO_MAYOREO + " TEXT,"+
-                IGV_PRODUCTO + " DOUBLE DEFAULT .18)");
+                EXISTENCIA + " DOUBLE,"+
+                IGV_PRODUCTO + " DOUBLE DEFAULT .18,"+
+                VENTAS_PRO + " DOUBLE,"+
+                SALDO_PRO + " DOUBLE)");
 
+        // CREATE INDEX
+        db.execSQL("CREATE INDEX ID_PRODUCTO ON "+ TABLE_PRODUCTOS + " (" +
+                ID_PRODUCTO + ")");
 
 
         db.beginTransaction();
@@ -477,15 +596,35 @@ public class connectionDB extends SQLiteOpenHelper {
                 valuesProductos.put(UNIDAD_PRODUCTO, "UNI");
                 valuesProductos.put(PRECIO_PRODUCTO, 1.00);
                 valuesProductos.put(PRECIO_PRODUCTO_MAYOREO, 1.00);
+                valuesProductos.put(EXISTENCIA, 0.00);
               //  valuesProductos.put(IGV_PRODUCTO, .18);
 
 
                 db.insert(TABLE_PRODUCTOS, null, valuesProductos);
+
+
+                valuesProductos.put(ID_PRODUCTO, "BOLSA");
+                valuesProductos.put(DESCRIPCION_PRODUCTO, "BOLSA DE PLASTICO");
+                valuesProductos.put(UNIDAD_PRODUCTO, "UNI");
+                valuesProductos.put(PRECIO_PRODUCTO, 0.10);
+                valuesProductos.put(PRECIO_PRODUCTO_MAYOREO, 0.10);
+                valuesProductos.put(EXISTENCIA, 0.00);
+                valuesProductos.put(IGV_PRODUCTO, .18);
+
+
+                db.insert(TABLE_PRODUCTOS, null, valuesProductos);
+
+
+
+
             }
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
+
+
+
 
 
         // TABLE = "sycro";
@@ -528,7 +667,7 @@ public class connectionDB extends SQLiteOpenHelper {
             for (int i = 0; i < 1; i++) {
                 valuesCierre.put(CIERRE_SERIE, "FXXX");
                 valuesCierre.put(CIERRE_DEL_FOLIO, "00000");
-                valuesCierre.put(CIERRE_DEL_FOLIO, "9999");
+                valuesCierre.put(CIERRE_DEL_FOLIO, "99999");
 
                 db.insert(TABLE_CIERRE, null, valuesCierre);
             }
@@ -539,11 +678,50 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
 
+    // TABLA PARA movimiento
 
+
+
+
+        // variables para table movimientos
+
+        db.execSQL("CREATE TABLE "+ TABLE_MOVIMIENTOS + " (" +
+                TABLE_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                FECHA_MOV +" DATE,"+
+                HORA_MOV +" TEXT,"+
+                PRODUCTO_MOV + " TEXT,"+
+                COSTO_PRODUCTO_MOV + " DOUBLE,"+
+                PRECIO_PRODUCTO_MOV + " DOUBLE,"+
+                TIPO_MOV + " TEXT,"+
+                SALDO + " DOUBLE)");
+
+
+
+        // TABLA PARA colores
+
+       // variables para table colores
+
+
+        //   // DEFINICION DE CONSTANTES PARA CAMPOS DE TABLA COLORES  "colores"
+        //
+        //    public static final String COLOR_ID = "color_id";
+        //    public static final String NOMBRE_COLOR = "color";
+
+        db.execSQL("CREATE TABLE "+ TABLE_COLORES + " (" +
+                COLOR_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                NOMBRE_COLOR +" TEXT)");
+
+
+        db.execSQL("CREATE TABLE "+ TABLE_TALLAS + " (" +
+                TALLA_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                NOMBRE_TALLA +" TEXT)");
 
 
 
     }
+
+
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -683,8 +861,9 @@ public class connectionDB extends SQLiteOpenHelper {
                                    String _descripcion_producto,
                                    String _unidad,
                                    String _precio,
-                                    String _precio_mayoreo,
-                                   String _igv
+                                   String _precio_mayoreo,
+                                   String _igv,
+                                   String _id_velneo
 
     ) {
 
@@ -697,7 +876,7 @@ public class connectionDB extends SQLiteOpenHelper {
         valoresProductos.put(PRECIO_PRODUCTO, _precio);
         valoresProductos.put(PRECIO_PRODUCTO_MAYOREO, _precio_mayoreo);
         valoresProductos.put(IGV_PRODUCTO, _igv);
-
+        valoresProductos.put(ID_VELNEO, _id_velneo);
 
 
         this.getWritableDatabase().insert(TABLE_PRODUCTOS,null, valoresProductos);
@@ -756,7 +935,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
         int _criterio=0; // activas
 
-        String columnas[] = {TABLE_ID, SERIE, FOLIO, RUC,  RAZON_SOCIAL, FECHA, SERIE_REL, FOLIO_REL, ARCHIVADA};
+        String columnas[] = {TABLE_ID, SERIE, FOLIO, RUC,  RAZON_SOCIAL, FECHA, SERIE_REL, FOLIO_REL, ARCHIVADA, ID_VELNEO};
         Cursor c = this.getReadableDatabase().query(TABLE, columnas,
                 ARCHIVADA + "=?",  new String[] { String.valueOf(_criterio) },
                 null, null, " _id DESC ");
@@ -779,7 +958,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getNotes_detalle(int _id) {
-        String columnas[] = {TABLE_ID, PRODUCTO, DESCRIPCION, UNIDAD, CANTIDAD, PRECIO_PRODUCTO,  DET_IGV};
+        String columnas[] = {TABLE_ID, PRODUCTO, DESCRIPCION, UNIDAD, CANTIDAD, PRECIO_PRODUCTO,  DET_IGV, LINEA, "_id" };
         Cursor c = this.getReadableDatabase().query(TABLE_DET, columnas, "cabecera_id" + "=?",
                 new String[] { String.valueOf(_id) },  null, null, null, null);
         //  Cursor c = this.getReadableDatabase().query(TABLE_DET, columnas, null, null, null, null, null);
@@ -815,7 +994,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getNotes_clientes() {
-        String columnas[] = {"_id", "ruc_cliente", "razon_social_cliente", "direccion_cliente", "correo_cliente", "telefono_cliente"};
+        String columnas[] = {"_id", "ruc_cliente", "razon_social_cliente", "direccion_cliente", "correo_cliente", "telefono_cliente", "tipo_identidad"};
         Cursor c = this.getReadableDatabase().query("clientes", columnas, null, null, null, null, null);
         return c;
     }
@@ -911,8 +1090,8 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getNotes_productos() {
-        String columnas[] = {TABLE_ID,ID_PRODUCTO, DESCRIPCION_PRODUCTO, UNIDAD_PRODUCTO, PRECIO_PRODUCTO, PRECIO_PRODUCTO_MAYOREO, IGV_PRODUCTO};
-        Cursor c = this.getReadableDatabase().query("productos", columnas, null, null, null, null, null);
+        String columnas[] = {TABLE_ID,ID_PRODUCTO, DESCRIPCION_PRODUCTO, UNIDAD_PRODUCTO, PRECIO_PRODUCTO, PRECIO_PRODUCTO_MAYOREO, IGV_PRODUCTO, EXISTENCIA, VENTAS_PRO, SALDO_PRO,ID_VELNEO};
+        Cursor c = this.getReadableDatabase().query("productos", columnas, null, null, null, null, "descripcion_producto");
         return c;
     }
 
@@ -997,7 +1176,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getReg_Empresas(int _id) {
-        String columnas[] = {"_id","razon_social_empresa", "ruc_empresa", "direccion_empresa_1", "api_key", "correo_empresa", "telefono_empresa", "licencia"};
+        String columnas[] = {"_id","razon_social_empresa", "ruc_empresa",   "direccion_empresa_1", "impuesto_icbper", "telefono_empresa", "licencia", "tipo_impresora"};
 
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
                 return c;
@@ -1006,11 +1185,24 @@ public class connectionDB extends SQLiteOpenHelper {
     public Cursor getReg_TicketPos(int _id) {
         String columnas[] = {"_id","linea01", "linea02", "linea03", "linea04", "linea05", "linea06","linea07", "linea08", "linea09",
                 "ruc_empresa",
-                "base01", "base02", "base03", "base04", "base05", "base06","api_key"};
+                "base01", "base02", "base03", "base04", "base05", "base06","direccion_empresa_1"};
 
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
         return c;
     }
+
+
+
+
+
+
+    public Cursor getReg_Apiskey(int _id) {
+        String columnas[] = {"_id","api_key_doctos", "api_key_movtos", "api_key_productos", "api_key_clientes", "api_key_almacen", "api_key_movimientos","api_key_00", "api_key_01", "api_key_02" };
+
+        Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
+        return c;
+    }
+
 
     public Cursor getReg_Licencia(int _id) {
         String columnas[] = {"_id","licencia"};
@@ -1018,6 +1210,24 @@ public class connectionDB extends SQLiteOpenHelper {
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
         return c;
     }
+
+
+    public Cursor getReg_tickect(int _id) {
+        String columnas[] = {"_id","tipo_impresora"};
+
+        Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
+        return c;
+    }
+
+
+
+    public Cursor getReg_icbper(int _id) {
+        String columnas[] = {"_id","impuesto_icbper"};
+
+        Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
+        return c;
+    }
+
 
 
     public Cursor getReg_Clientes(int _id) {
@@ -1030,7 +1240,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getReg_Productos(int _id) {
-        String columnas[] = {"_id", "producto","descripcion_producto","precio", "precio_mayoreo", "igv", "unidad" };
+        String columnas[] = {"_id", "producto","descripcion_producto","precio", "precio_mayoreo", "igv", "unidad", "existencia", "ventas_pro", "saldo_pro"};
 
         Cursor c = this.getReadableDatabase().query("productos", columnas, "_id" + "=?",
                 new String[] { String.valueOf(_id) },  null, null, null, null);
@@ -1039,7 +1249,7 @@ public class connectionDB extends SQLiteOpenHelper {
 
 
     public Cursor getReg_Productos_codigo(String _producto) {
-        String columnas[] = {"_id", "producto","descripcion_producto","precio", "precio_mayoreo", "igv", "unidad" };
+        String columnas[] = {"_id", "producto","descripcion_producto","precio", "precio_mayoreo", "igv", "unidad", "existencia", "ventas_pro", "saldo_pro" };
 
         Cursor c = this.getReadableDatabase().query("productos", columnas, "producto" + "=?",
                 new String[] { String.valueOf(_producto) },  null, null, null, null);
@@ -1104,6 +1314,110 @@ public class connectionDB extends SQLiteOpenHelper {
         Cursor c = this.getReadableDatabase().query("empresa", columnas, null, null,  null, null, null, null);
         return c;
     }
+
+
+
+
+
+    public int exits_Client(String _ruc) {
+        Cursor cursor = null;
+        int _resultado=0;
+            String columnas[] = {"_id", "ruc_cliente"};
+            cursor = this.getReadableDatabase().query("clientes", columnas, "ruc_cliente" + "=?",
+                     new String[] { String.valueOf(_ruc) },
+                    null, null, null, null);
+            if(cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                _resultado=1;
+            }
+            return _resultado;
+    }
+
+
+
+
+    public int exits_Productos(String _prod) {
+        Cursor cursor = null;
+        int _resultado=0;
+        String columnas[] = {"producto"};
+        cursor = this.getReadableDatabase().query("productos", columnas, "producto" + "=?",
+                new String[] { String.valueOf(_prod) },
+                null, null, null, null);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            _resultado=1;
+        }
+        return _resultado;
+    }
+
+
+    public double total_ventas_Productos(String _prod) {
+        Cursor cursor = null;
+        double _resultado=0;
+        String columnas[] = {"producto", "ventas_pro"};
+        cursor = this.getReadableDatabase().query("productos", columnas, "producto" + "=?",
+                new String[] { String.valueOf(_prod) },
+                null, null, null, null);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            _resultado = cursor.getDouble(1);
+
+        }
+        return _resultado;
+    }
+
+
+    public double total_existecias_Productos(String _prod) {
+        Cursor cursor = null;
+        double _resultado=0;
+        String columnas[] = {"producto", "existencia"};
+        cursor = this.getReadableDatabase().query("productos", columnas, "producto" + "=?",
+                new String[] { String.valueOf(_prod) },
+                null, null, null, null);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            _resultado = cursor.getDouble(1);
+
+        }
+        return _resultado;
+    }
+
+
+    public String _id_factura_velneo(String _id_app) {
+        Cursor cursor = null;
+
+        String _resultado="";
+
+        String columnas[] = {"_id_velneo"};
+        cursor = this.getReadableDatabase().query("cabecera", columnas, "_id" + "=?",
+                new String[] { String.valueOf(_id_app) },
+                null, null, null, null);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            _resultado = cursor.getString(0);
+
+        }
+        return _resultado;
+    }
+
+
+
+
+
+
+//    public Cursor getNotes_detalle(int _id) {
+//        String columnas[] = {TABLE_ID, PRODUCTO, DESCRIPCION, UNIDAD, CANTIDAD, PRECIO_PRODUCTO,  DET_IGV};
+//        Cursor c = this.getReadableDatabase().query(TABLE_DET, columnas, "cabecera_id" + "=?",
+//                new String[] { String.valueOf(_id) },  null, null, null, null);
+//        //  Cursor c = this.getReadableDatabase().query(TABLE_DET, columnas, null, null, null, null, null);
+//        return c;
+//    }
+
+
+
+
+
+
 
 
 

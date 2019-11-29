@@ -49,45 +49,37 @@
         android:gravity="center"
         android:hint="Direccion Fiscal"
         android:inputType="textPersonName"
-        android:maxLength="60" />
+        android:maxLength="120" />
+
 
 
     <EditText
-        android:id="@+id/editText_Api_Key"
+        android:id="@+id/editText_Tipo_Impresora"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_marginTop="140dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="API KEY"
-        android:inputType="textPersonName"
-        android:maxLength="120" />
-
-
-    <EditText
-        android:id="@+id/editText_Telefono"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="195dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="Telefono"
+        android:hint="Tipo Impresora"
         android:inputType="textPersonName"
         android:maxLength="60" />
 
 
 
+
+
+
+
     <EditText
-        android:id="@+id/editText_Correo"
+        android:id="@+id/editText_ICBPER"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="240dp"
+        android:layout_marginTop="185dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="Correo"
+        android:hint="ICBPER"
         android:inputType="textPersonName"
         android:maxLength="60" />
 
@@ -97,12 +89,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="285dp"
+        android:layout_marginTop="230dp"
         android:ems="10"
         android:gravity="center"
         android:hint="Licencia"
         android:inputType="textPersonName"
         android:maxLength="60" />
+
+
+
+
 
     <Button
         android:id="@+id/button_TicketPos"
@@ -110,8 +106,20 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="138dp"
+        android:layout_marginBottom="180dp"
         android:text="Ticket POS Cabecera" />
+
+
+    <Button
+        android:id="@+id/button_ApiKey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="95dp"
+        android:text="APIs Keys" />
+
+
 
     <Button
         android:id="@+id/button_TicketPos_Buttom"
@@ -119,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="95dp"
+        android:layout_marginBottom="138dp"
         android:text="Ticket POS Base" />
 
 

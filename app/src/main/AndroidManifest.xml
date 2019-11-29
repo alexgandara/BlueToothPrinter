@@ -166,6 +166,31 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/select_device"
             android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name="global.factura.qrpos.Apis_key"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <activity
+            android:name="global.factura.qrpos.Get_Pasword_Productos"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <activity
+            android:name="global.factura.qrpos.Get_Pasword_Empresas"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog" />
+
+        <activity
+            android:name="global.factura.qrpos.Get_Pasword_Series"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/select_device"
+            android:theme="@android:style/Theme.Dialog" />
+
+
 
 
 

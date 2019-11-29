@@ -20,7 +20,8 @@ import zj.com.cn.bluetooth.sdk.R;
 
 /**
  * Created by Alejandro on 3/12/2018.
-    alex alex 
+    alex alex
+ * 20191128
  */
 
 public class addDatos extends Activity {

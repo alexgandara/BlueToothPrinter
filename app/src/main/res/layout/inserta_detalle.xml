@@ -34,7 +34,7 @@
             android:gravity="center"
             android:hint="Codigo del Producto"
             android:inputType="textPersonName"
-            android:maxLength="10"/>
+            android:maxLength="20"/>
 
         <EditText
             android:id="@+id/editText_Descripcion"

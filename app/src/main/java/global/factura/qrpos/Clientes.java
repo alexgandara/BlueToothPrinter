@@ -10,7 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import zj.com.cn.bluetooth.sdk.R;
+import zj.com.command.sdk.Command;
+import zj.com.command.sdk.PrinterCommand;
 
 /**
  * Created by Alejandro on 3/19/2018.
@@ -32,6 +46,13 @@ public class Clientes extends Activity {
     public String Mdireccion;
     public String Mcorreo;
     public String Mtelefono;
+
+    public String _base01="";
+    public String _base02="";
+    public String _base03="";
+    public String _base04="";
+    public String _base05="";
+    public String _base06="";
 
 
     EditText editText_Ruc, editText_Razon_Social, editText_Direccion, editText_Correo, editText_Telefono;
@@ -129,6 +150,12 @@ public class Clientes extends Activity {
 
 
 
+
+
+    }
+
+    private void _Subir_Clientes() {
+
     }
 
     private void _Salir() {
@@ -179,6 +206,7 @@ public class Clientes extends Activity {
         startActivity(intent);
 
     }
+
 
 
 

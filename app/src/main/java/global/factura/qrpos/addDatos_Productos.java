@@ -39,6 +39,8 @@ public class addDatos_Productos extends Activity {
     public String _igv;
 
 
+
+
     connectionDB db;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +115,7 @@ public class addDatos_Productos extends Activity {
 
 
         db = new connectionDB(this);
-        db.addNotes_Productos(_Producto,_Descripcion_Producto, _Unidad, _Precio, _Precio_Mayoreo, _igv);
+        db.addNotes_Productos(_Producto,_Descripcion_Producto, _Unidad, _Precio, _Precio_Mayoreo, _igv,"");
         //    db.close();
         Intent intent = new Intent(this,MainActivity_Productos.class );
         startActivity(intent);

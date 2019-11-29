@@ -106,7 +106,7 @@ public class MainActivity_Detalle extends Activity {
         Cursor c = db.getNotes_detalle(_id);
         item = new ArrayList<String>();
         String producto = "",  descripcion="", unidad="";
-        int id, folio;
+        int id, folio, linea;
         double precio, cantidad;
 
 
@@ -118,8 +118,9 @@ public class MainActivity_Detalle extends Activity {
                 unidad = c.getString(3);
                 cantidad = c.getDouble(4);
                 precio = c.getDouble(5);
+                linea = c.getInt(7);
 
-                item.add(id+" - "+producto+" - "+descripcion+" - "+unidad+" - "+cantidad+" "+precio);
+                item.add(id+" - "+producto+" - "+descripcion+" - "+unidad+" - "+cantidad+" "+precio+" "+linea);
 
 
             } while (c.moveToNext());

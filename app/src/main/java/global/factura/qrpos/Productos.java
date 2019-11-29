@@ -28,6 +28,9 @@ public class Productos extends Activity {
     public static final String PRECIO_PRODUCTO_MAYOREO = "precio_mayoreo";
     public static final String IGV_PRODUCTO = "igv";
     public static final String UNIDAD_PRODUCTO = "unidad";
+    public static final String EXISTENCIA = "existencia";
+    public static final String VENTAS = "ventas_pro";
+    public static final String SALDO = "saldo_pro";
 
 
     private static final String TABLE_PRODUCTOS = "productos";
@@ -39,9 +42,16 @@ public class Productos extends Activity {
     public Double Mprecio;
     public Double Mprecio_Mayoreo;
     public Double Migv;
+    public Double Mexistencia;
+    public Double Mventas_pro;
+    public Double Msaldo_pro;
 
 
-    EditText editText_Producto, editText_Descripcion_Producto, editText_Precio, editText_Precio_Mayoreo, editText_igv, editText_Unidad;
+
+
+
+    EditText editText_Producto, editText_Descripcion_Producto, editText_Precio, editText_Precio_Mayoreo, editText_igv, editText_Unidad,
+            editText_existencia;
 
     Spinner spinner_Unidedes;
 
@@ -76,6 +86,7 @@ public class Productos extends Activity {
                 editText_Precio_Mayoreo = (EditText) findViewById(R.id.editText_Precio_Mayoreo);
                 editText_igv = (EditText) findViewById(R.id.editText_igv);
                 editText_Unidad = (EditText) findViewById(R.id.editText_Unidad);
+                editText_existencia = (EditText) findViewById(R.id.editText_existencia);
 
                 spinner_Unidedes = (Spinner) findViewById(R.id.spinner_Unidades);
 
@@ -85,6 +96,11 @@ public class Productos extends Activity {
                 Mprecio_Mayoreo = cursor.getDouble (4);
                 Migv = cursor.getDouble(5);
                 Munidad = cursor.getString(6);
+                Mexistencia = cursor.getDouble(7);
+                Mventas_pro = cursor.getDouble(8);
+                Msaldo_pro = cursor.getDouble(9);
+
+
 
                 editText_Producto.setText(Mproducto);
                 editText_Descripcion_Producto.setText(Mdescripcion_producto);
@@ -92,6 +108,7 @@ public class Productos extends Activity {
                 editText_Precio_Mayoreo.setText(Mprecio_Mayoreo.toString());
                 editText_igv.setText(Migv.toString());
                 editText_Unidad.setText(Munidad.toString());
+                editText_existencia.setText(Mexistencia.toString());
 
                 //  Toast.makeText(Modificar.this,"Razon Social :"+Mrazon_social, Toast.LENGTH_SHORT ).show();
 
@@ -109,7 +126,7 @@ public class Productos extends Activity {
         editText_Precio = (EditText) findViewById(R.id.editText_Precio);
         editText_Precio_Mayoreo = (EditText) findViewById(R.id.editText_Precio_Mayoreo);
         editText_igv = (EditText) findViewById(R.id.editText_igv);
-
+        editText_existencia = (EditText) findViewById(R.id.editText_existencia);
 
     /*    // llenar datos del spiner de precios
         showNotes_unidades();
@@ -129,6 +146,10 @@ public class Productos extends Activity {
 
 */
 
+
+        Msaldo_pro=(Double.parseDouble(editText_existencia.getText().toString())-Mventas_pro);
+
+
         Modificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,7 +159,10 @@ public class Productos extends Activity {
                         editText_Precio.getText().toString(),
                         editText_Precio_Mayoreo.getText().toString(),
                         editText_igv.getText().toString(),
-                        editText_Unidad.getText().toString()
+                        editText_Unidad.getText().toString(),
+                        editText_existencia.getText().toString(),
+                        Mventas_pro.toString(),
+                        Msaldo_pro.toString()
                         );
 
 
@@ -179,7 +203,10 @@ public class Productos extends Activity {
                            String _editText_Precio,
                            String _editText_Precio_Mayoreo,
                            String _editText_igv,
-                           String _editText_unidad
+                           String _editText_unidad,
+                           String _editText_existencia,
+                           String _editText_ventas_pro,
+                           String _editText_saldo_pro
                            ) {
 
         ContentValues valoresProductos = new ContentValues();
@@ -189,6 +216,10 @@ public class Productos extends Activity {
         valoresProductos.put(PRECIO_PRODUCTO_MAYOREO, _editText_Precio_Mayoreo);
         valoresProductos.put(IGV_PRODUCTO, _editText_igv);
         valoresProductos.put(UNIDAD_PRODUCTO, _editText_unidad);
+        valoresProductos.put(EXISTENCIA, _editText_existencia);
+        valoresProductos.put(VENTAS, _editText_ventas_pro);
+        valoresProductos.put(SALDO, _editText_saldo_pro);
+
 
 
         db = new connectionDB(this);
